@@ -21,28 +21,34 @@ class Main {
                 .withCredentials(new AWSStaticCredentialsProvider(credentials)).withRegion(Regions.EU_NORTH_1).build();
         List<Bucket> buckets = s3client.listBuckets();
 
+        // Print all buckets in account
+
         System.out.println("________");
         for (Bucket bucket : buckets) {
             System.out.println(bucket.getName());
         }
 
         // HOW TO UPLOAD FILE TO BUCKET
-        // File testFile = new File("Jens.txt");
-        // s3client.putObject(buckets.get(0).getName(), testFile.getName(), testFile);
 
         /*
-         * //HOW TO LIST FILES IN BUCKET ObjectListing objectListing =
-         * s3client.listObjects(buckets.get(0).getName()); for (S3ObjectSummary os :
-         * objectListing.getObjectSummaries()) { System.out.println(os.getKey()); }
+         * File testFile = new File("Jens.txt");
+         * s3client.putObject(buckets.get(0).getName(), testFile.getName(), testFile);
+         */
+
+        // HOW TO LIST FILES IN BUCKET
+        /*
+         * ObjectListing objectListing = s3client.listObjects(buckets.get(0).getName());
+         * for (S3ObjectSummary os : objectListing.getObjectSummaries()) {
+         * System.out.println(os.getKey()); }
          */
 
         // HOW TO DOWNLOAD FILE FROM BUCKET
-        S3Object s3object = s3client.getObject(buckets.get(0).getName(), "Jens.txt");
-        S3ObjectInputStream inputStream = s3object.getObjectContent();
-        try {
-            FileUtils.copyInputStreamToFile(inputStream, new File("Jens.txt"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        /*
+         * S3Object s3object = s3client.getObject(buckets.get(0).getName(), "Jens.txt");
+         * S3ObjectInputStream inputStream = s3object.getObjectContent(); try {
+         * FileUtils.copyInputStreamToFile(inputStream, new File("Jens.txt")); } catch
+         * (IOException e) { e.printStackTrace(); }
+         */
     }
 }
