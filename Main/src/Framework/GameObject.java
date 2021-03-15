@@ -11,6 +11,7 @@ public abstract class GameObject {
         this.ID = idCounter;
         idCounter++;
         Main.allObjects.add(this);
+        Main.nearObjects.add(this);
     }
 
     public abstract void draw();

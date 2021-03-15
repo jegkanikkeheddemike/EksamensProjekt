@@ -3,10 +3,10 @@ package Setup;
 import java.util.ArrayList;
 
 import Framework.GameObject;
+import Framework.Threads.NearThread;
 import Objects.Player;
 import processing.core.PApplet;
 import processing.event.MouseEvent;
-
 
 public class Main extends PApplet {
     public static boolean isRunning = true;
@@ -26,6 +26,7 @@ public class Main extends PApplet {
 
     @Override
     public void setup() {
+        NearThread.thread.start();
     }
 
     @Override
@@ -34,15 +35,25 @@ public class Main extends PApplet {
         step();
     }
 
-    void render(){
+    void render() {
         clear();
         background(255, 255, 0);
         fill(255, 0, 0);
         circle(width / 2, height / 2, 100);
     }
 
-    void step(){
+    void step() {
 
+
+
+        //MUST BE LAST
+        updateObjectLists();
+    }
+
+    void updateObjectLists() {
+        if (NearThread.isReady) {
+            nearObjects = NearThread.nearObjectsUpdated;
+        }
     }
 
     ArrayList<Integer> downKeys = new ArrayList<Integer>();
@@ -91,7 +102,7 @@ public class Main extends PApplet {
     }
 
     boolean keyDown(char input) {
-        if (downKeys.contains(input)) {
+        if (downKeys.contains((int) input)) {
             return true;
         }
         return false;
@@ -105,7 +116,7 @@ public class Main extends PApplet {
     }
 
     boolean keyTapped(char input) {
-        if (tappedKeys.contains(input)) {
+        if (tappedKeys.contains((int) input)) {
             return true;
         }
         return false;
