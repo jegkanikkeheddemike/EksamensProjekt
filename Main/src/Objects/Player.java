@@ -1,7 +1,6 @@
 package Objects;
 
 import Framework.GameObject;
-import processing.core.PApplet;
 import processing.core.PVector;
 import Setup.*;
 
