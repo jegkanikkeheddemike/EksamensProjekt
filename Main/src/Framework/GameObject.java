@@ -5,7 +5,7 @@ public abstract class GameObject {
     public float x, y, width, height;
     public int ID;
 
-    public GameObject() {
+    protected GameObject() {
         this.ID = idCounter;
         idCounter++;
     }
