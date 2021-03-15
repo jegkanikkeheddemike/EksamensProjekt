@@ -36,13 +36,15 @@ public class Main extends PApplet {
 
     void render(){
         clear();
-        background(255, 255, 0);
-        fill(255, 0, 0);
-        circle(width / 2, height / 2, 100);
+        for (GameObject object:allObjects){ // Change to nearObjects
+            object.draw();
+        }
     }
 
     void step(){
-
+        for (GameObject object:allObjects){ // Change to nearObjects
+            object.step();
+        }
     }
 
     ArrayList<Integer> downKeys = new ArrayList<Integer>();
@@ -90,28 +92,28 @@ public class Main extends PApplet {
         scrollAmount = -8 * e.getCount();
     }
 
-    boolean keyDown(char input) {
+    public boolean keyDown(char input) {
         if (downKeys.contains(input)) {
             return true;
         }
         return false;
     }
 
-    boolean keyDown(int input) {
+    public boolean keyDown(int input) {
         if (downKeys.contains(input)) {
             return true;
         }
         return false;
     }
 
-    boolean keyTapped(char input) {
+    public boolean keyTapped(char input) {
         if (tappedKeys.contains(input)) {
             return true;
         }
         return false;
     }
 
-    boolean keyTapped(int input) {
+    public boolean keyTapped(int input) {
         if (tappedKeys.contains(input)) {
             return true;
         }
