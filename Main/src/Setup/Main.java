@@ -3,14 +3,17 @@ package Setup;
 import java.util.ArrayList;
 
 import Framework.GameObject;
+import Objects.Player;
 import processing.core.PApplet;
 import processing.event.MouseEvent;
+
 
 public class Main extends PApplet {
     public static boolean isRunning = true;
     public static Main main;
     public static ArrayList<GameObject> allObjects = new ArrayList<GameObject>();
     public static ArrayList<GameObject> nearObjects = new ArrayList<GameObject>();
+    public static Player player = new Player();
 
     public Main() {
         main = this;
@@ -27,10 +30,19 @@ public class Main extends PApplet {
 
     @Override
     public void draw() {
+        render();
+        step();
+    }
+
+    void render(){
         clear();
         background(255, 255, 0);
         fill(255, 0, 0);
         circle(width / 2, height / 2, 100);
+    }
+
+    void step(){
+
     }
 
     ArrayList<Integer> downKeys = new ArrayList<Integer>();
