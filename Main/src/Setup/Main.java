@@ -44,7 +44,9 @@ public class Main extends PApplet {
 
     void step() {
 
-
+        for (GameObject object: nearObjects){
+            object.step();
+        }
 
         //MUST BE LAST
         updateObjectLists();

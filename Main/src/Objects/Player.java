@@ -5,14 +5,18 @@ import Framework.Movables;
 import Setup.*;
 
 public class Player extends Movables {
-
+    float xAcc = 1;
+    float yAcc = 1;
+    float friction = (float)0.92;
+    float maxXSpeed = 10, maxYSpeed = 10;
     public Player() {
         super();
         x = 1920 / 2;// Temporary
         y = 1080 / 2; 
         w = 20;
         h = 50;
-        ySpeed = 10;xSpeed = 10;
+
+        ySpeed = 0;xSpeed = 0;
     }
 
     @Override
@@ -28,16 +32,23 @@ public class Player extends Movables {
 
     void UpdateMove() {
         if(Main.main.keyDown('s')||Main.main.keyDown('S')){
-            y += ySpeed;
-            Main.main.text("You Dumb",100,100);
+            ySpeed +=yAcc;
+            if (ySpeed>maxYSpeed){ySpeed = maxYSpeed;}
         }if(Main.main.keyDown('w')||Main.main.keyDown('W')){
-            y -= ySpeed;
+            ySpeed -=yAcc;
+            if (ySpeed<-maxYSpeed){ySpeed = -maxYSpeed;}
         }if(Main.main.keyDown('a')||Main.main.keyDown('A')){
-            x += xSpeed;
+            xSpeed -= xAcc;
+            if (xSpeed<-maxXSpeed){xSpeed = -maxXSpeed;}
         }if(Main.main.keyDown('d')||Main.main.keyDown('D')){
-            x -= xSpeed;
+            xSpeed += xAcc;
+            if (xSpeed>maxXSpeed){xSpeed = maxXSpeed;}
         }
-        
+        Main.main.text(xSpeed,100,100);
+        x+=xSpeed;
+        y+=ySpeed;
+        xSpeed *= friction;
+        ySpeed *= friction;
     }
 
 }
