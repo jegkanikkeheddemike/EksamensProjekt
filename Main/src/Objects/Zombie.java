@@ -1,8 +1,9 @@
 package Objects;
 
 import Framework.GameObject;
+import Framework.Movables;
 
-public class Zombie extends GameObject {
+public class Zombie extends Movables {
 
     public Zombie() {
         super();
