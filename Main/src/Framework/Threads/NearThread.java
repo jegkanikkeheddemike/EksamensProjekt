@@ -7,7 +7,7 @@ import Framework.GameObject;
 import Setup.Main;
 
 public class NearThread extends Thread {
-    public static ArrayList<GameObject> nearObjectsUpdated;
+    public static ArrayList<GameObject> nearObjectsUpdated = new ArrayList<GameObject>();
     public static boolean isReady = false;
     public static NearThread thread = new NearThread();
 
