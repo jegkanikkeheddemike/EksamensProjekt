@@ -1,5 +1,3 @@
-package Setup;
-
 import processing.core.PApplet;
 
 public class Main extends PApplet {
@@ -21,9 +19,12 @@ public class Main extends PApplet {
     @Override
     public void draw() {
         clear();
+        background(255, 255, 0);
+        fill(255, 0, 0);
+        circle(width/2, height/2, 100);
     }
 
     public static void main(String[] args) {
-        PApplet.main(new Main().getClass());
+        PApplet.main("Main");
     }
-}
+} 
