@@ -5,8 +5,11 @@ import Setup.Main;
 
 public class Wall extends GameObject {
     int color = Main.main.color(255, 100, 100);
+
     public Wall() {
         super();
+        w = 100;
+        h = 100;
     }
 
     @Override
@@ -18,5 +21,4 @@ public class Wall extends GameObject {
     @Override
     public void step() {
     }
-    
 }

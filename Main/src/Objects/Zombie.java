@@ -1,6 +1,5 @@
 package Objects;
 
-import Framework.GameObject;
 import Framework.Movables;
 
 public class Zombie extends Movables {
