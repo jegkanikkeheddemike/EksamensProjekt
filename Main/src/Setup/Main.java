@@ -1,7 +1,13 @@
+package Setup;
+import java.util.ArrayList;
+
+import Framework.GameObject;
 import processing.core.PApplet;
 
 public class Main extends PApplet {
     public static Main main;
+    public static ArrayList<GameObject> allObjects = new ArrayList<GameObject>();
+    public static ArrayList<GameObject> nearObjects = new ArrayList<GameObject>();
 
     public Main() {
         main = this;
@@ -23,8 +29,7 @@ public class Main extends PApplet {
         fill(255, 0, 0);
         circle(width/2, height/2, 100);
     }
-
     public static void main(String[] args) {
-        PApplet.main("Main");
+        PApplet.main("Setup.Main");
     }
 } 
