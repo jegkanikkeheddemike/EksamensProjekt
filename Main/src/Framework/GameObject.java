@@ -2,7 +2,7 @@ package Framework;
 
 public abstract class GameObject {
     private static int idCounter = 0;
-    public float x, y, width, height;
+    public float x, y, w, h;
     public int ID;
 
     protected GameObject() {
