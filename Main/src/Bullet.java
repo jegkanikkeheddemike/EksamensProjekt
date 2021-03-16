@@ -8,6 +8,7 @@ public class Bullet extends Movables{
         this.y = y;
         xSpeed = (float)Math.sin(dir);
         ySpeed = (float)Math.cos(dir);
+        classID = "Bullet";
     }
 
     @Override
