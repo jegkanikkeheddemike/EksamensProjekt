@@ -1,6 +1,6 @@
-package Objects;
+//package Objects;
 
-import Framework.Movables;
+//import Framework.Movables;
 
 public class Zombie extends Movables {
 

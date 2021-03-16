@@ -1,6 +1,6 @@
-package Framework;
+//package Framework;
 
-import Setup.Main;
+//import Setup.Main;
 
 public abstract class GameObject {
     private static int idCounter = 0;

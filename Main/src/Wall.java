@@ -1,7 +1,7 @@
-package Objects;
+//package Objects;
 
-import Framework.GameObject;
-import Setup.Main;
+//import Framework.GameObject;
+//import Setup.Main;
 
 public class Wall extends GameObject {
     int color = Main.main.color(255, 100, 100);

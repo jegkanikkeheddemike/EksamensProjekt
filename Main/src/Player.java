@@ -1,8 +1,8 @@
-package Objects;
+//package Objects;
 
-import Framework.GameMath;
-import Framework.Movables;
-import Setup.*;
+//import Framework.GameMath;
+//import Framework.Movables;
+//import Setup.*;
 
 public class Player extends Movables {
     float xAcc = 2;

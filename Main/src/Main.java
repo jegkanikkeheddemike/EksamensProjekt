@@ -1,10 +1,5 @@
-package Setup;
-
 import java.util.ArrayList;
 
-import Framework.GameObject;
-import Framework.Threads.NearThread;
-import Objects.Player;
 import processing.core.PApplet;
 import processing.event.MouseEvent;
 
@@ -149,6 +144,6 @@ public class Main extends PApplet {
     }
 
     public static void main(String[] args) {
-        PApplet.main("Setup.Main");
+        PApplet.main("Main");
     }
 }
