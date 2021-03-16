@@ -8,27 +8,37 @@ public class Player extends Movables {
         super();
         x = 1920 / 2;// Temporary
         y = 1080 / 2;
-        w = 20;
+        w = 50;
         h = 50;
-
         ySpeed = 0;
         xSpeed = 0;
+        classID = "Player";
     }
 
     @Override
     public void draw() {
+
+        Main.main.noStroke();
+        Main.main.fill(255);
         Main.main.pushMatrix();
         Main.main.translate(middleX(), middleY());
         Main.main.rotate(rotation);
         Main.main.rect(0 - w / 2, -h / 2, w, h);
         Main.main.popMatrix();
-
+        drawBorder();
     }
 
     @Override
     public void step() {
         updateAngle();
         updateMove();
+
+        if (getCollisions().length > 0)
+            System.out.println("COLL" + Main.gameTime);
+
+
+        x += xSpeed;
+        y += ySpeed;
     }
 
     void updateAngle() {
@@ -53,8 +63,7 @@ public class Player extends Movables {
             xSpeed += xAcc;
             acceleratingX = true;
         }
-        x += xSpeed;
-        y += ySpeed;
+       
 
         if (Math.abs(xSpeed) >= maxSpeed)
             xSpeed = Math.signum(xSpeed) * maxSpeed;

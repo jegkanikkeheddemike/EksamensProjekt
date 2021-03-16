@@ -1,10 +1,13 @@
 public class Wall extends GameObject {
     int color = Main.main.color(255, 100, 100);
 
-    public Wall() {
+    public Wall(int x, int y) {
         super();
+        this.x = x;
+        this.y = y;
         w = 100;
         h = 100;
+        classID = "Wall";
     }
 
     @Override
