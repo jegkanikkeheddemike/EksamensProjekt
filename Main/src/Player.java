@@ -68,8 +68,12 @@ public class Player extends Movables {
         if (!acceleratingY)
             ySpeed *= friction;
 
-        if (getCollisions().length > 0)
-            System.out.println("COLL" + Main.gameTime);
+        GameObject[] horiColl = getCollisions(Math.signum(xSpeed), 0);
+        for (int i = 0; i < horiColl.length; i++) {
+            if (horiColl[i].classID == "Wall") {
+                
+            }
+        }
 
         x += xSpeed;
         y += ySpeed;
@@ -77,7 +81,7 @@ public class Player extends Movables {
 
     void updateShoot() {
         if (Main.mousePressed) {
-           new Bullet(rotation, x, y);
+            new Bullet(rotation, x, y);
 
         }
     }

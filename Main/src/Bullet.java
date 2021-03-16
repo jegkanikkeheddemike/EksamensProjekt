@@ -9,6 +9,7 @@ public class Bullet extends Movables{
         this.y = Main.player.middleY()+(float)Math.cos(dir-Math.PI/2)*Main.player.h;
         xSpeed = -(float)Math.sin(dir-Math.PI/2)*10;
         ySpeed = (float)Math.cos(dir-Math.PI/2)*10;
+        classID = "Bullet";
     }
 
     @Override
