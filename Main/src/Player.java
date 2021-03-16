@@ -31,11 +31,13 @@ public class Player extends Movables {
     @Override
     public void step() {
         updateAngle();
+        updateShoot();
         updateMove();
 
         if (getCollisions().length > 0)
             System.out.println("COLL" + Main.gameTime);
-
+        
+        
 
         x += xSpeed;
         y += ySpeed;
@@ -63,7 +65,6 @@ public class Player extends Movables {
             xSpeed += xAcc;
             acceleratingX = true;
         }
-       
 
         if (Math.abs(xSpeed) >= maxSpeed)
             xSpeed = Math.signum(xSpeed) * maxSpeed;
@@ -74,7 +75,13 @@ public class Player extends Movables {
             xSpeed *= friction;
         if (!acceleratingY)
             ySpeed *= friction;
+    }
 
+    void updateShoot() {
+        if (Main.mousePressed) {
+            new Bullet(rotation, x, y);
+
+        }
     }
 
 }

@@ -7,11 +7,7 @@ public abstract class GameObject {
     protected GameObject() {
         this.ID = idCounter;
         idCounter++;
-        Main.allObjects.add(this);
-        if (Main.player != null) {
-            if (GameMath.objectDistance(this, Main.player) < 2000)
-                Main.nearObjects.add(this);
-        }
+        Main.toBeCreated.add(this);
     }
 
     public void draw(){
@@ -37,4 +33,6 @@ public abstract class GameObject {
     public void delete() {
         Main.toBeDelted.add(this);
     }
+
+
 }
