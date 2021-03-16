@@ -1,9 +1,3 @@
-//package Objects;
-
-//import Framework.GameMath;
-//import Framework.Movables;
-//import Setup.*;
-
 public class Player extends Movables {
     float xAcc = 2;
     float yAcc = 2;
@@ -42,22 +36,22 @@ public class Player extends Movables {
     }
 
     void updateMove() {
-        boolean accelerating = false;
+        boolean acceleratingX = false, acceleratingY = false;
         if (Main.main.keyDown('s') || Main.main.keyDown('S')) {
             ySpeed += yAcc;
-            accelerating = true;
+            acceleratingY = true;
         }
         if (Main.main.keyDown('w') || Main.main.keyDown('W')) {
             ySpeed -= yAcc;
-            accelerating = true;
+            acceleratingY = true;
         }
         if (Main.main.keyDown('a') || Main.main.keyDown('A')) {
             xSpeed -= xAcc;
-            accelerating = true;
+            acceleratingX = true;
         }
         if (Main.main.keyDown('d') || Main.main.keyDown('D')) {
             xSpeed += xAcc;
-            accelerating = true;
+            acceleratingX = true;
         }
         x += xSpeed;
         y += ySpeed;
@@ -67,10 +61,10 @@ public class Player extends Movables {
         if (Math.abs(ySpeed) >= maxSpeed)
             ySpeed = Math.signum(ySpeed) * maxSpeed;
 
-        if (!accelerating) {
+        if (!acceleratingX)
             xSpeed *= friction;
+        if (!acceleratingY)
             ySpeed *= friction;
-        }
 
     }
 

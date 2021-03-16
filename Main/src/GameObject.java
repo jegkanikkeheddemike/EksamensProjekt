@@ -1,7 +1,3 @@
-//package Framework;
-
-//import Setup.Main;
-
 public abstract class GameObject {
     private static int idCounter = 0;
     public float x, y, w, h;
@@ -27,5 +23,9 @@ public abstract class GameObject {
 
     public float middleY() {
         return y + h / 2;
+    }
+
+    public void delete() {
+        Main.toBeDelted.add(this);
     }
 }
