@@ -68,10 +68,25 @@ public class Player extends Movables {
         if (!acceleratingY)
             ySpeed *= friction;
 
-        GameObject[] horiColl = getCollisions(Math.signum(xSpeed), 0);
+        GameObject[] horiColl = getCollisions(xSpeed, 0);
         for (int i = 0; i < horiColl.length; i++) {
             if (horiColl[i].classID == "Wall") {
-                
+                while (!collisionWith(horiColl[i], Math.signum(xSpeed), 0)) {
+                    x += Math.signum(xSpeed);
+                }
+                xSpeed = 0;
+                break;
+            }
+        }
+
+        GameObject[] vertColl = getCollisions(0, ySpeed);
+        for (int i = 0; i < vertColl.length; i++) {
+            if (vertColl[i].classID == "Wall") {
+                while (!collisionWith(vertColl[i], 0, Math.signum(ySpeed))) {
+                    y += Math.signum(ySpeed);
+                }
+                ySpeed = 0;
+                break;
             }
         }
 
