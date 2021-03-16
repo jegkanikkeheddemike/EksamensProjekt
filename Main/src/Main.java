@@ -8,6 +8,7 @@ public class Main extends PApplet {
     public static Main main;
     public static ArrayList<GameObject> allObjects = new ArrayList<GameObject>();
     public static ArrayList<GameObject> nearObjects = new ArrayList<GameObject>();
+    public static ArrayList<GameObject> toBeDelted = new ArrayList<GameObject>();
     public static Player player = new Player();
 
     public Main() {
@@ -32,19 +33,25 @@ public class Main extends PApplet {
 
     void render() {
         clear();
-        for (GameObject object:allObjects){ // Change to nearObjects
+        for (GameObject object : allObjects) { // Change to nearObjects
             object.draw();
         }
     }
 
     void step() {
 
-        for (GameObject object: nearObjects){
+        for (GameObject object : nearObjects) {
             object.step();
         }
 
-        //MUST BE LAST
+        // MUST BE LAST
+        clearLists();
         updateObjectLists();
+    }
+
+    void clearLists() {
+        allObjects.removeAll(toBeDelted);
+        nearObjects.removeAll(toBeDelted);
     }
 
     void updateObjectLists() {

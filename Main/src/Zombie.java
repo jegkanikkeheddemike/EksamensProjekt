@@ -1,7 +1,3 @@
-//package Objects;
-
-//import Framework.Movables;
-
 public class Zombie extends Movables {
 
     public Zombie() {
