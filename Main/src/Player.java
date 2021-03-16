@@ -33,14 +33,6 @@ public class Player extends Movables {
         updateAngle();
         updateShoot();
         updateMove();
-
-        if (getCollisions().length > 0)
-            System.out.println("COLL" + Main.gameTime);
-        
-        
-
-        x += xSpeed;
-        y += ySpeed;
     }
 
     void updateAngle() {
@@ -75,11 +67,17 @@ public class Player extends Movables {
             xSpeed *= friction;
         if (!acceleratingY)
             ySpeed *= friction;
+
+        if (getCollisions().length > 0)
+            System.out.println("COLL" + Main.gameTime);
+
+        x += xSpeed;
+        y += ySpeed;
     }
 
     void updateShoot() {
         if (Main.mousePressed) {
-            new Bullet(rotation, x, y);
+           new Bullet(rotation, x, y);
 
         }
     }

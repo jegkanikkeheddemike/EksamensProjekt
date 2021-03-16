@@ -36,13 +36,12 @@ public class Main extends PApplet {
 
     void render() {
         clear();
-        for (GameObject object : allObjects) { // Change to nearObjects
+        for (GameObject object : nearObjects) {
             object.draw();
         }
     }
 
     void step() {
-
         for (GameObject object : nearObjects) {
             object.step();
         }
@@ -59,6 +58,9 @@ public class Main extends PApplet {
         nearObjects.removeAll(toBeDelted);
         allObjects.addAll(toBeCreated);
         nearObjects.addAll(toBeCreated);
+
+        toBeCreated.clear();
+        toBeDelted.clear();
     }
 
     void updateObjectLists() {
