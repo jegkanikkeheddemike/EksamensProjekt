@@ -8,6 +8,7 @@ public class Main extends PApplet {
     public static Main main;
     public static ArrayList<GameObject> allObjects = new ArrayList<GameObject>();
     public static ArrayList<GameObject> nearObjects = new ArrayList<GameObject>();
+    public static ArrayList<GameObject> toBeCreated = new ArrayList<GameObject>();
     public static ArrayList<GameObject> toBeDelted = new ArrayList<GameObject>();
     public static Player player = new Player();
 
@@ -52,6 +53,8 @@ public class Main extends PApplet {
     void clearLists() {
         allObjects.removeAll(toBeDelted);
         nearObjects.removeAll(toBeDelted);
+        allObjects.addAll(toBeCreated);
+        nearObjects.addAll(toBeCreated);
     }
 
     void updateObjectLists() {
@@ -63,7 +66,8 @@ public class Main extends PApplet {
     ArrayList<Integer> downKeys = new ArrayList<Integer>();
     ArrayList<Integer> tappedKeys = new ArrayList<Integer>();
     ArrayList<Integer> ignoredChar = new ArrayList<Integer>();
-    boolean mouseReleased = false;
+    public static boolean mousePressed = false;
+    public static boolean mouseReleased = false;
     float scrollAmount = 0;
 
     public void keyPressed() {
@@ -133,11 +137,16 @@ public class Main extends PApplet {
         return false;
     }
 
+    public void mousePressed() {
+        mousePressed = true;
+    }
+
     public void mouseReleased() {
         mouseReleased = true;
     }
 
     void cleanKeyboard() {
+        mousePressed = false;
         mouseReleased = false;
         tappedKeys.clear();
         scrollAmount *= 0.7;

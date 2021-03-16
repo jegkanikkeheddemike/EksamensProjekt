@@ -29,6 +29,7 @@ public class Player extends Movables {
     public void step() {
         updateAngle();
         updateMove();
+        updateShoot();
     }
 
     void updateAngle() {
@@ -65,7 +66,14 @@ public class Player extends Movables {
             xSpeed *= friction;
         if (!acceleratingY)
             ySpeed *= friction;
-
     }
+
+    void updateShoot(){
+        if(Main.mousePressed){
+            new Bullet(rotation,x,y);
+        
+        }
+    }
+    
 
 }
