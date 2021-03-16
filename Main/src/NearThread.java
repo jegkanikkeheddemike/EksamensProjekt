@@ -1,8 +1,5 @@
 
-
 import java.util.ArrayList;
-
-
 
 public class NearThread extends Thread {
     public static ArrayList<GameObject> nearObjectsUpdated = new ArrayList<GameObject>();
@@ -14,7 +11,9 @@ public class NearThread extends Thread {
         while (Main.isRunning) {
             isReady = false;
             nearObjectsUpdated.clear();
-            for (GameObject gameObject : Main.allObjects) {
+
+            for (int i = 0; i < Main.allObjects.size(); i++) {
+                GameObject gameObject = Main.allObjects.get(i);
                 if (GameMath.objectDistance(gameObject, Main.player) < 2000) {
                     nearObjectsUpdated.add(gameObject);
                 }

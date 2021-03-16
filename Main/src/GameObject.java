@@ -7,19 +7,21 @@ public abstract class GameObject {
     protected GameObject() {
         this.ID = idCounter;
         idCounter++;
-        Main.toBeCreated.add(this);
+        Main.allObjects.add(this);
+        Main.nearObjects.add(this);
     }
 
-    public void draw(){
+    public void draw() {
         drawBorder();
     }
+
     public abstract void step();
 
-    public void drawBorder(){
+    public void drawBorder() {
         Main.main.noFill();
-        Main.main.stroke(255,0,0);
+        Main.main.stroke(255, 0, 0);
         Main.main.strokeWeight(3);
-        Main.main.rect(x,y,w,h);
+        Main.main.rect(x, y, w, h);
     }
 
     public float middleX() {
@@ -33,6 +35,5 @@ public abstract class GameObject {
     public void delete() {
         Main.toBeDelted.add(this);
     }
-
 
 }
