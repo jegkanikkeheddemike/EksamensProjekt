@@ -29,13 +29,13 @@ public class Main extends PApplet {
 
     @Override
     public void draw() {
+        clear();
         render();
         step();
     }
 
     void render() {
-        clear();
-        for (int i = 0; i < nearObjects.size(); i ++) {
+        for (int i = 0; i < nearObjects.size(); i++) {
             GameObject gameObject = nearObjects.get(i);
             gameObject.draw();
         }
@@ -43,7 +43,7 @@ public class Main extends PApplet {
 
     void step() {
 
-        for (int i = 0; i < nearObjects.size(); i ++) {
+        for (int i = 0; i < nearObjects.size(); i++) {
             GameObject gameObject = nearObjects.get(i);
             gameObject.step();
         }
