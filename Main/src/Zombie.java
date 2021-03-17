@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+
+import processing.core.PShape;
+import processing.core.PVector;
+
 public class Zombie extends Movables {
 
     public Zombie(float x, float y) {
@@ -23,30 +28,102 @@ public class Zombie extends Movables {
         Main.main.line(0, 0, 35, 0);
         Main.main.popMatrix();
 
-        Main.main.text(playerAwareness, middleX(), y);
+        String awarenesIcon = "";
+        if (awareness > 100f / 3f) {
+            Main.main.textSize(50);
+            awarenesIcon = "?";
+            Main.main.fill(255, 255, 0);
+        }
+        if (awareness > 100f / 1.5f) {
+            awarenesIcon = "!";
+            Main.main.fill(255, 0, 0);
+        }
+        Main.main.text(awarenesIcon, middleX(), middleY() - h);
+
+        Main.main.fill(255);
+        Main.main.textSize(20);
+        Main.main.text(awareness, middleX(), y);
+
+        drawFOVCone();
+    }
+
+    float triangles = 100;
+
+    void drawFOVCone() {
+
+        ArrayList<PVector> points = new ArrayList<PVector>();
+
+        for (int i = 0; i < triangles; i++) {
+            double angle = (2f * Math.PI * (float) i / triangles) * (fov / 360f) + (fov / 360f) * Math.PI / 2f;
+            PVector v = new PVector(middleX() + seeRange * (float) Math.sin(angle),
+                    middleY() + seeRange * (float) Math.cos(angle));
+            LineData vData = GameMath.lineCollision(middleX(), middleY(), v.x, v.y,
+                    new String[] { "Player", "Zombie" });
+            if (vData.collision) {
+                v.x = vData.x;
+                v.y = vData.y;
+            }
+            points.add(v);
+        }
+
+        Main.main.beginShape();
+        Main.main.vertex(middleX(), middleY());
+        for (int i = 0; i < points.size(); i++) {
+            Main.main.vertex(points.get(i).x, points.get(i).y);
+        }
+        Main.main.vertex(middleX(), middleY());
+
+        Main.main.fill(100, 100, 255, 50);
+        Main.main.noStroke();
+        Main.main.endShape();
     }
 
     @Override
     public void step() {
         lookForPlayer();
+        walk();
     }
 
-    float playerAwareness;
-    static final float fov = 120;
+    float targetX;
+    float targetY;
+
+    void walk() {
+        xSpeed = 0.5f;
+
+        x += xSpeed;
+        y += ySpeed;
+    }
+
+    float awareness;
+
+    static final float fov = 120f;
+    static final float seeRange = 800;
+    static final float seeSense = 15;
+    static final float awarenessMulitplier = 0.997f;
+
+    float fovReal = (fov / 360f) * (float) Math.PI * 2;
 
     void lookForPlayer() {
-        playerAwareness -= 0.5;
+        awareness *= awarenessMulitplier;
 
         LineData lineToPlayer = GameMath.lineCollision(middleX(), middleY(), Main.player.middleX(),
                 Main.player.middleY(), new String[] { "Zombie", "Player" });
 
-        if (!lineToPlayer.collision)
-            playerAwareness += 30 / Math.sqrt(GameMath.objectDistance(this, Main.player));
+        if (!lineToPlayer.collision) {
+            float dist = GameMath.objectDistance(this, Main.player);
+            if (dist < seeRange)
+                awareness += seeSense / Math.sqrt(GameMath.objectDistance(this, Main.player));
+        }
 
-        if (playerAwareness < 0)
-            playerAwareness = 0;
-        if (playerAwareness > 100)
-            playerAwareness = 100;
+        if (awareness < 0)
+            awareness = 0;
+        if (awareness > 100)
+            awareness = 100;
+
+        // IF SEES PLAYER
+        if (awareness > 100f / 1.5f) {
+            targetX = Main.player.x;
+            targetY = Main.player.y;
+        }
     }
-
 }
