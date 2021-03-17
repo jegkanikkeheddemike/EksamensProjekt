@@ -31,6 +31,9 @@ public abstract class GameObject {
     public float middleY() {
         return y + h / 2;
     }
+    public void reactGetShot(float dmg, String vpnType){
+
+    }
 
     public void delete() {
         Main.toBeDelted.add(this);

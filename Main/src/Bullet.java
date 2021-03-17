@@ -40,7 +40,7 @@ public class Bullet extends GameObject {
 
         for (int i = 0; i < Main.nearObjects.size(); i++) {
             GameObject g = Main.nearObjects.get(i);
-            if (g.classID != "Wall")
+            if (g.classID != "Wall" && g.classID != "Zombie")
                 continue;
 
             LineData newData = GameMath.lineRect(x, y, xEnd, yEnd, g.x, g.y, g.w, g.h);
@@ -52,6 +52,7 @@ public class Bullet extends GameObject {
             }
         }
         if (data.collision) {
+            collidedWith.reactGetShot(damage, "Bullet");
             xEnd = data.x;
             yEnd = data.y;
         }
