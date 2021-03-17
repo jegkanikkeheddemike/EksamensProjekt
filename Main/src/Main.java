@@ -30,8 +30,8 @@ public class Main extends PApplet {
     @Override
     public void draw() {
         clear();
-        render();
         step();
+        render();
     }
 
     void render() {

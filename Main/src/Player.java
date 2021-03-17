@@ -24,6 +24,9 @@ public class Player extends Movables {
         Main.main.translate(middleX(), middleY());
         Main.main.rotate(rotation);
         Main.main.rect(0 - w / 2, -h / 2, w, h);
+        Main.main.stroke(255, 0, 0);
+        Main.main.strokeWeight(5);
+        Main.main.line(0, 0, 35, 0);
         Main.main.popMatrix();
         drawBorder();
     }
@@ -37,6 +40,8 @@ public class Player extends Movables {
 
     void updateAngle() {
         rotation = GameMath.pointAngle(middleX(), middleY(), Main.main.mouseX, Main.main.mouseY);
+        if (Main.main.keyDown(' '))
+            rotation = 0;
     }
 
     void updateMove() {
@@ -96,7 +101,7 @@ public class Player extends Movables {
 
     void updateShoot() {
         if (Main.mousePressed) {
-            new Bullet(rotation, x, y);
+            new Bullet(rotation);
 
         }
     }
