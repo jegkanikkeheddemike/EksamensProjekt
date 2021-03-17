@@ -56,9 +56,6 @@ public class GameMath {
                 }
             }
         }
-        if (closest.collision)
-            System.out.println("Length: " + closest.length);
-
         return closest;
     }
 
