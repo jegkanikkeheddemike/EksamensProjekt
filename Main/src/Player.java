@@ -28,7 +28,6 @@ public class Player extends Movables {
         Main.main.strokeWeight(5);
         Main.main.line(0, 0, 35, 0);
         Main.main.popMatrix();
-        drawBorder();
     }
 
     @Override

@@ -6,5 +6,6 @@ public class TESTMAP {
         for (int i = 0; i < 15; i++) {
             new Wall(r.nextInt(1920), r.nextInt(1080));
         }
+        new Zombie(r.nextInt(1920), r.nextInt(1080));
     }
 }
