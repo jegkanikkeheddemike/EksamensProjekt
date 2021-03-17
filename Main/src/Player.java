@@ -72,48 +72,13 @@ public class Player extends Movables {
         if (!acceleratingY)
             ySpeed *= friction;
 
-        GameObject[] horiColl = getCollisions(xSpeed, 0);
-        for (int i = 0; i < horiColl.length; i++) {
-            if (horiColl[i].classID == "Wall") {
-                float preX = x;
-                int attemps = 0;
-                while (!collisionWith(horiColl[i], Math.signum(xSpeed), 0)) {
-                    x += Math.signum(xSpeed);
-                    attemps++;
-                    if (attemps > xSpeed) {
-                        x = preX;
-                        xSpeed = 0;
-                        break;
-                    }
-
-                }
-                xSpeed = 0;
-                break;
-            }
-        }
-
-        GameObject[] vertColl = getCollisions(0, ySpeed);
-        for (int i = 0; i < vertColl.length; i++) {
-            if (vertColl[i].classID == "Wall") {
-                float preY = y;
-                int attempts = 0;
-                while (!collisionWith(vertColl[i], 0, Math.signum(ySpeed))) {
-                    y += Math.signum(ySpeed);
-                    attempts++;
-                    if (attempts > ySpeed) {
-                        y = preY;
-                        ySpeed = 0;
-                        break;
-                    }
-                }
-                ySpeed = 0;
-                break;
-            }
-        }
+        runStandardCollisions();
 
         x += xSpeed;
         y += ySpeed;
     }
+
+    
 
     void updateShoot() {
         if (Main.mousePressed) {

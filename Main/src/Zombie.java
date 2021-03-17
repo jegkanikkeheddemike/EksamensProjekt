@@ -1,15 +1,19 @@
 import java.util.ArrayList;
+import java.util.Random;
 
-import processing.core.PShape;
 import processing.core.PVector;
 
 public class Zombie extends Movables {
+    float walkSpeed = 0.8f;
+    float sprintSpeed = 2;
 
     public Zombie(float x, float y) {
         super();
         classID = "Zombie";
         this.x = x;
         this.y = y;
+        targetX = x;
+        targetY = y;
         w = 40;
         h = 40;
     }
@@ -29,21 +33,18 @@ public class Zombie extends Movables {
         Main.main.popMatrix();
 
         String awarenesIcon = "";
-        if (awareness > 100f / 3f) {
+        if (state == "Find") {
             Main.main.textSize(50);
             awarenesIcon = "?";
             Main.main.fill(255, 255, 0);
         }
-        if (awareness > 100f / 1.5f) {
+        if (state == "Chase") {
             awarenesIcon = "!";
             Main.main.fill(255, 0, 0);
         }
         Main.main.text(awarenesIcon, middleX(), middleY() - h);
-
-        Main.main.fill(255);
         Main.main.textSize(20);
-        Main.main.text(awareness, middleX(), y);
-
+        //Main.main.text(state, middleX(), middleY() - 2 * h);
         drawFOVCone();
     }
 
@@ -54,7 +55,8 @@ public class Zombie extends Movables {
         ArrayList<PVector> points = new ArrayList<PVector>();
 
         for (int i = 0; i < triangles; i++) {
-            double angle = (2f * Math.PI * (float) i / triangles) * (fov / 360f) + (fov / 360f) * Math.PI / 2f;
+            double angle = -rotation + Math.PI * 2f + (2f * Math.PI * (float) i / triangles) * (fov / 360f)
+                    + (fov / 360f) * Math.PI / 2f;
             PVector v = new PVector(middleX() + seeRange * (float) Math.sin(angle),
                     middleY() + seeRange * (float) Math.cos(angle));
             LineData vData = GameMath.lineCollision(middleX(), middleY(), v.x, v.y,
@@ -76,6 +78,9 @@ public class Zombie extends Movables {
         Main.main.fill(100, 100, 255, 50);
         Main.main.noStroke();
         Main.main.endShape();
+
+        Main.main.fill(255, 0, 0);
+        Main.main.circle(targetX, targetY, 20);
     }
 
     @Override
@@ -86,9 +91,48 @@ public class Zombie extends Movables {
 
     float targetX;
     float targetY;
+    String state = "Patrol";
 
     void walk() {
-        xSpeed = 0.5f;
+        rotation = GameMath.pointAngle(middleX(), middleY(), targetX, targetY);
+        if (state == "Find") {
+            if (GameMath.pointDistance(x, y, targetX, targetY) < 100) {
+                state = "Patrol";
+            }
+        } else if (state == "Look") {
+            rotation = GameMath.pointAngle(middleX(), middleY(), Main.player.middleX(), Main.player.middleY());
+        } else if (state == "Patrol") {
+            if (GameMath.pointDistance(x, y, targetX, targetY) < 100) {
+                float randomDir = new Random().nextFloat() * 2f * (float) Math.PI;
+                float length = new Random().nextFloat() * 1000;
+
+                LineData newLine = GameMath.lineCollision(x, y, x + length * (float) Math.sin(randomDir),
+                        y + length * (float) Math.cos(randomDir), new String[] { "Player", "Zombie" });
+                if (newLine.collision) {
+                    targetX = newLine.x;
+                    targetY = newLine.y;
+                } else {
+                    targetX = x + length * (float) Math.sin(randomDir);
+                    targetY = y + length * (float) Math.cos(randomDir);
+                }
+
+            }
+        }
+
+        float walkdir = -rotation + (float) Math.PI / 2f;
+
+        if (state == "Chase" || state == "Find") {
+            xSpeed = (float) Math.sin(walkdir) * sprintSpeed;
+            ySpeed = (float) Math.cos(walkdir) * sprintSpeed;
+        } else if (state == "Patrol") {
+            xSpeed = (float) Math.sin(walkdir) * walkSpeed;
+            ySpeed = (float) Math.cos(walkdir) * walkSpeed;
+        } else if (state == "Look") {
+            xSpeed = 0;
+            ySpeed = 0;
+        }
+
+        runStandardCollisions();
 
         x += xSpeed;
         y += ySpeed;
@@ -111,8 +155,28 @@ public class Zombie extends Movables {
 
         if (!lineToPlayer.collision) {
             float dist = GameMath.objectDistance(this, Main.player);
-            if (dist < seeRange)
-                awareness += seeSense / Math.sqrt(GameMath.objectDistance(this, Main.player));
+            if (dist < seeRange) {
+                float angToPlayer = GameMath.objectAngle(this, Main.player);
+                float relAngle = Math.abs(rotation - angToPlayer);
+
+                if (relAngle >= Math.PI * 2f)
+                    relAngle -= Math.PI * 2f;
+
+                if (relAngle < (fov / 360f) * Math.PI) {
+                    awareness += seeSense / Math.sqrt(GameMath.objectDistance(this, Main.player));
+                    if (awareness > 100f / 3f)
+                        state = "Look";
+                }
+
+            }
+        } else {
+            if (awareness > 100f / 1.5f) {
+                awareness = 100f / 1.5f;
+                state = "Find";
+            } else if (awareness < 100f / 1.5f && state != "Find") {
+                state = "Patrol";
+            }
+
         }
 
         if (awareness < 0)
@@ -122,8 +186,13 @@ public class Zombie extends Movables {
 
         // IF SEES PLAYER
         if (awareness > 100f / 1.5f) {
-            targetX = Main.player.x;
-            targetY = Main.player.y;
+            {
+                // Minusser med speed for at finde hvor spilleren stod før for Bedre til at
+                // finde vej
+                state = "Chase";
+                targetX = Main.player.middleX() - 5 * Main.player.xSpeed;
+                targetY = Main.player.middleY() - 5 * Main.player.ySpeed;
+            }
         }
     }
 }

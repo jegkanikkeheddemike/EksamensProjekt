@@ -12,10 +12,9 @@ public class Wall extends GameObject {
 
     @Override
     public void draw() {
+        Main.main.noStroke();
         Main.main.fill(color);
         Main.main.rect(x, y, w, h);
-        Main.main.fill(255);
-        Main.main.text(ID, x, y);
     }
 
     @Override

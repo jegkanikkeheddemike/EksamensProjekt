@@ -20,7 +20,7 @@ public class NearThread extends Thread {
             }
             isReady = true;
             try {
-                sleep(300);
+                sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
