@@ -34,6 +34,24 @@ public class GameMath {
         return (float) Math.atan2(dy, dx);
     }
 
+    public static LineData lineCollision(float x1, float y1, float x2, float y2) {
+        LineData data = LineData.noCollision;
+        for (int i = 0; i < Main.nearObjects.size(); i++) {
+            GameObject g = Main.nearObjects.get(i);
+            if (g.classID == "Player")
+                continue;
+
+            LineData newData = GameMath.lineRect(x1, y1, x2, y2, g.x, g.y, g.w, g.h);
+            if (newData.collision) {
+                if (data.equals(LineData.noCollision) || newData.length < data.length) {
+                    data = newData;
+                    data.gameObject = g;
+                }
+            }
+        }
+        return data;
+    }
+
     // LINE/RECTANGLE
     public static LineData lineRect(float x1, float y1, float x2, float y2, float rx, float ry, float rw, float rh) {
 
@@ -82,11 +100,13 @@ public class GameMath {
 class LineData {
     boolean collision;
     float x, y, length;
+    GameObject gameObject;
 
     public LineData(float x, float y) {
         collision = true;
         this.x = x;
-        this.y = y;;
+        this.y = y;
+        ;
     }
 
     LineData() {
