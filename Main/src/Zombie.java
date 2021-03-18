@@ -39,12 +39,12 @@ public class Zombie extends Movables {
             Main.main.fill(255, 255, 0);
         }
         if (state == "Chase") {
+            Main.main.textSize(50);
             awarenesIcon = "!";
             Main.main.fill(255, 0, 0);
         }
         Main.main.text(awarenesIcon, middleX(), middleY() - h);
         Main.main.textSize(20);
-        // Main.main.text(state, middleX(), middleY() - 2 * h);
         drawFOVCone();
     }
 
