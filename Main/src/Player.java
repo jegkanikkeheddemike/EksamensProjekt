@@ -83,7 +83,6 @@ public class Player extends Movables {
     void updateShoot() {
         if (Main.mousePressed) {
             new Bullet(rotation);
-
         }
     }
 

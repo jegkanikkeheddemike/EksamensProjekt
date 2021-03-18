@@ -33,7 +33,7 @@ public class Zombie extends Movables {
         Main.main.popMatrix();
 
         String awarenesIcon = "";
-        if (state == "Find") {
+        if (state == "Find" || state == "Look") {
             Main.main.textSize(50);
             awarenesIcon = "?";
             Main.main.fill(255, 255, 0);
@@ -44,7 +44,7 @@ public class Zombie extends Movables {
         }
         Main.main.text(awarenesIcon, middleX(), middleY() - h);
         Main.main.textSize(20);
-        //Main.main.text(state, middleX(), middleY() - 2 * h);
+        // Main.main.text(state, middleX(), middleY() - 2 * h);
         drawFOVCone();
     }
 
@@ -96,13 +96,13 @@ public class Zombie extends Movables {
     void walk() {
         rotation = GameMath.pointAngle(middleX(), middleY(), targetX, targetY);
         if (state == "Find") {
-            if (GameMath.pointDistance(x, y, targetX, targetY) < 100) {
+            if (GameMath.pointDistance(x, y, targetX, targetY) < 80) {
                 state = "Patrol";
             }
         } else if (state == "Look") {
             rotation = GameMath.pointAngle(middleX(), middleY(), Main.player.middleX(), Main.player.middleY());
         } else if (state == "Patrol") {
-            if (GameMath.pointDistance(x, y, targetX, targetY) < 100) {
+            if (GameMath.pointDistance(x, y, targetX, targetY) < 80) {
                 float randomDir = new Random().nextFloat() * 2f * (float) Math.PI;
                 float length = new Random().nextFloat() * 1000;
 

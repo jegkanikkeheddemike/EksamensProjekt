@@ -7,8 +7,8 @@ public abstract class Movables extends GameObject {
         super();
     }
 
-    protected void runStandardCollisions(){
-        GameObject[] horiColl = getCollisions(xSpeed, 0);
+    protected void runStandardCollisions() {
+        GameObject[] horiColl = getCollisions(xSpeed, 0, new String[] {});
         for (int i = 0; i < horiColl.length; i++) {
             if (horiColl[i].classID == "Wall") {
                 float preX = x;
@@ -28,7 +28,7 @@ public abstract class Movables extends GameObject {
             }
         }
 
-        GameObject[] vertColl = getCollisions(0, ySpeed);
+        GameObject[] vertColl = getCollisions(0, ySpeed, new String[] {});
         for (int i = 0; i < vertColl.length; i++) {
             if (vertColl[i].classID == "Wall") {
                 float preY = y;
@@ -48,14 +48,22 @@ public abstract class Movables extends GameObject {
         }
     }
 
-
-    GameObject[] getCollisions(float offsetX, float offsetY) {
+    GameObject[] getCollisions(float offsetX, float offsetY, String[] ingnoreList) {
         ArrayList<GameObject> collisions = new ArrayList<GameObject>();
 
         for (int i = 0; i < Main.nearObjects.size(); i++) {
             GameObject g = Main.nearObjects.get(i);
             if (g == this)
                 continue;
+
+            boolean doBreak = false;
+            for (int j = 0; j < ingnoreList.length; j++) {
+                if (g.classID == ingnoreList[j])
+                    doBreak = true;
+            }
+            if (doBreak)
+                continue;
+
             // TOPLEFT
             if (x + offsetX >= g.x && g.x + g.w >= x + offsetX) {
                 if (y + offsetY >= g.y && g.y + g.w >= y + offsetY) {
