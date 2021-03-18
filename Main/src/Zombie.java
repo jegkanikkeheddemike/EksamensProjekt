@@ -45,11 +45,21 @@ public class Zombie extends Movables {
         }
         Main.main.text(awarenesIcon, middleX(), middleY() - h);
         Main.main.textSize(20);
+        drawAwarenessbar();
         drawFOVCone();
     }
 
-    float triangles = 100;
+    void drawAwarenessbar(){
+        Main.main.noFill();
+        Main.main.stroke(0);
+        Main.main.strokeWeight(2);
+        Main.main.rect(middleX()-5, middleY()-50, 10, 40);
+        Main.main.noStroke();
+        Main.main.fill(255*(awareness/100f),255-255*(awareness/100f),0);
+        Main.main.rect(middleX()-5, middleY()-10, 10, -40*(awareness/100f));
+    }
 
+    float triangles = 100;
     void drawFOVCone() {
 
         ArrayList<PVector> points = new ArrayList<PVector>();
