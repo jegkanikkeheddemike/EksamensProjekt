@@ -161,7 +161,6 @@ public class Zombie extends Movables {
             GameObject g = Main.nearObjects.get(i);
             if (g.classID == "Sound") {
                 awareness += ((Sound) g).volume * soundSense / GameMath.objectDistance(this, g);
-                System.out.println(((Sound) g).volume * soundSense / GameMath.objectDistance(this, g));
             }
         }
 
