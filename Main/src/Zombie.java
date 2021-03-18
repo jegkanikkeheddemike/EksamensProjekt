@@ -83,6 +83,8 @@ public class Zombie extends Movables {
         Main.main.circle(targetX, targetY, 20);
     }
 
+    float timeSinceLastPatrolChange = 0;
+
     @Override
     public void step() {
         lookForPlayer();
@@ -102,7 +104,9 @@ public class Zombie extends Movables {
         } else if (state == "Look") {
             rotation = GameMath.pointAngle(middleX(), middleY(), Main.player.middleX(), Main.player.middleY());
         } else if (state == "Patrol") {
-            if (GameMath.pointDistance(x, y, targetX, targetY) < 80) {
+            timeSinceLastPatrolChange++;
+            if (GameMath.pointDistance(x, y, targetX, targetY) < 80 || timeSinceLastPatrolChange > 600) {
+                timeSinceLastPatrolChange = 0;
                 float randomDir = new Random().nextFloat() * 2f * (float) Math.PI;
                 float length = new Random().nextFloat() * 1000;
 

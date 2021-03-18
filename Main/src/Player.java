@@ -6,7 +6,7 @@ public class Player extends Movables {
 
     public Player() {
         super();
-        x = 1920 / 2;// Temporary
+        x = 1920 / 1.5f;// Temporary
         y = 1080 / 2;
         w = 50;
         h = 50;

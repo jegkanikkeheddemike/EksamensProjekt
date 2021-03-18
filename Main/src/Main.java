@@ -32,6 +32,12 @@ public class Main extends PApplet {
         clear();
         step();
         render();
+
+        // MUST BE LAST
+        clearLists();
+        updateObjectLists();
+        cleanKeyboard();
+        gameTime++;
     }
 
     void render() {
@@ -47,12 +53,6 @@ public class Main extends PApplet {
             GameObject gameObject = nearObjects.get(i);
             gameObject.step();
         }
-
-        // MUST BE LAST
-        clearLists();
-        updateObjectLists();
-        cleanKeyboard();
-        gameTime++;
     }
 
     void clearLists() {
