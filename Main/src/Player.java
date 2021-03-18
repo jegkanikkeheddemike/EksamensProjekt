@@ -2,7 +2,8 @@ public class Player extends Movables {
     float xAcc = 2;
     float yAcc = 2;
     float friction = 0.85f;
-    float maxSpeed = 5;
+    float sprintSpeed = 5;
+    float walkSpeed = 2f;
 
     public Player() {
         super();
@@ -39,11 +40,16 @@ public class Player extends Movables {
 
     void updateAngle() {
         rotation = GameMath.pointAngle(middleX(), middleY(), Main.main.mouseX, Main.main.mouseY);
-        if (Main.main.keyDown(' '))
-            rotation = 0;
     }
 
     void updateMove() {
+        float cMaxSpeed;
+        if (Main.main.keyDown(-1/* SHIFT */)) {
+            cMaxSpeed = sprintSpeed;
+        } else {
+            cMaxSpeed = walkSpeed;
+        }
+
         boolean acceleratingX = false, acceleratingY = false;
         if (Main.main.keyDown('s') || Main.main.keyDown('S')) {
             ySpeed += yAcc;
@@ -62,10 +68,10 @@ public class Player extends Movables {
             acceleratingX = true;
         }
 
-        if (Math.abs(xSpeed) >= maxSpeed)
-            xSpeed = Math.signum(xSpeed) * maxSpeed;
-        if (Math.abs(ySpeed) >= maxSpeed)
-            ySpeed = Math.signum(ySpeed) * maxSpeed;
+        if (Math.abs(xSpeed) >= cMaxSpeed)
+            xSpeed = Math.signum(xSpeed) * cMaxSpeed;
+        if (Math.abs(ySpeed) >= sprintSpeed)
+            ySpeed = Math.signum(ySpeed) * cMaxSpeed;
 
         if (!acceleratingX)
             xSpeed *= friction;
@@ -73,12 +79,22 @@ public class Player extends Movables {
             ySpeed *= friction;
 
         runStandardCollisions();
+        makeSound();
 
         x += xSpeed;
         y += ySpeed;
     }
 
-    
+    int timeSinceLastWalkSound = 0;
+    int timePerWalkSound = 10;
+
+    void makeSound() {
+        timeSinceLastWalkSound++;
+        if (Main.main.keyDown(-1) && timeSinceLastWalkSound > timePerWalkSound) {
+            timeSinceLastWalkSound = 0;
+            new Sound(middleX(), middleY(), 20, Sound.footsteps);
+        }
+    }
 
     void updateShoot() {
         if (Main.mousePressed) {

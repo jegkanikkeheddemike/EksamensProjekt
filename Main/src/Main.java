@@ -25,6 +25,7 @@ public class Main extends PApplet {
     public void setup() {
         NearThread.thread.start();
         TESTMAP.createRandomMap();
+        Sound.setupSound();
     }
 
     @Override
@@ -41,17 +42,24 @@ public class Main extends PApplet {
     }
 
     void render() {
-        for (int i = 0; i < nearObjects.size(); i++) {
-            GameObject gameObject = nearObjects.get(i);
-            gameObject.draw();
+        try {
+            for (int i = 0; i < nearObjects.size(); i++) {
+                GameObject gameObject = nearObjects.get(i);
+                gameObject.draw();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     void step() {
-
-        for (int i = 0; i < nearObjects.size(); i++) {
-            GameObject gameObject = nearObjects.get(i);
-            gameObject.step();
+        try {
+            for (int i = 0; i < nearObjects.size(); i++) {
+                GameObject gameObject = nearObjects.get(i);
+                gameObject.step();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -105,7 +113,7 @@ public class Main extends PApplet {
         } else {
             k = (int) key;
         }
-        if (downKeys.contains(k)) {
+        while (downKeys.contains(k)) {
             downKeys.remove(downKeys.indexOf(k));
         }
     }

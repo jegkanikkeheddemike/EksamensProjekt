@@ -98,7 +98,9 @@ public class Zombie extends Movables {
     void walk() {
         rotation = GameMath.pointAngle(middleX(), middleY(), targetX, targetY);
         if (state == "Find") {
-            if (GameMath.pointDistance(x, y, targetX, targetY) < 80) {
+            timeSinceLastPatrolChange++;
+            if (GameMath.pointDistance(x, y, targetX, targetY) < 80 || timeSinceLastPatrolChange > 600) {
+                timeSinceLastPatrolChange = 0;
                 state = "Patrol";
             }
         } else if (state == "Look") {
@@ -148,11 +150,20 @@ public class Zombie extends Movables {
     static final float seeRange = 800;
     static final float seeSense = 15;
     static final float awarenessMulitplier = 0.997f;
+    static final float soundSense = 30;
 
     float fovReal = (fov / 360f) * (float) Math.PI * 2;
 
     void lookForPlayer() {
         awareness *= awarenessMulitplier;
+        //INCREASE AWARENESS BASED ON SOUND
+        for (int i = 0; i < Main.nearObjects.size(); i++) {
+            GameObject g = Main.nearObjects.get(i);
+            if (g.classID == "Sound") {
+                awareness += ((Sound) g).volume * soundSense / GameMath.objectDistance(this, g);
+                System.out.println(((Sound) g).volume * soundSense / GameMath.objectDistance(this, g));
+            }
+        }
 
         LineData lineToPlayer = GameMath.lineCollision(middleX(), middleY(), Main.player.middleX(),
                 Main.player.middleY(), new String[] { "Zombie", "Player" });
@@ -171,16 +182,16 @@ public class Zombie extends Movables {
                     if (awareness > 100f / 3f)
                         state = "Look";
                 }
-
             }
         } else {
             if (awareness > 100f / 1.5f) {
                 awareness = 100f / 1.5f;
                 state = "Find";
+                timeSinceLastPatrolChange = 0;
             } else if (awareness < 100f / 1.5f && state != "Find") {
                 state = "Patrol";
+                timeSinceLastPatrolChange = 0;
             }
-
         }
 
         if (awareness < 0)

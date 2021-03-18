@@ -7,6 +7,10 @@ public abstract class Movables extends GameObject {
         super();
     }
 
+    public float speed() {
+        return (float) Math.sqrt(xSpeed * xSpeed + ySpeed * ySpeed);
+    }
+
     protected void runStandardCollisions() {
         GameObject[] horiColl = getCollisions(xSpeed, 0, new String[] {});
         // DEN SIGER i++ IKKE GØR NOGET WTF DET ER IKKE SANDT??????
