@@ -3,7 +3,8 @@ public class Player extends Movables {
     float yAcc = 2;
     float friction = 0.85f;
     float sprintSpeed = 5;
-    float walkSpeed = 2f;
+    float walkSpeed = 2;
+    float sneakSpeed = 1;
 
     public Player() {
         super();
@@ -46,8 +47,10 @@ public class Player extends Movables {
 
     void updateMove() {
         float cMaxSpeed;
-        if (Main.main.keyDown(-1/* SHIFT */)) {
+        if (Main.main.keyDown(-1/* SHIFT */)) { 
             cMaxSpeed = sprintSpeed;
+        } else if(Main.main.keyDown(-4/* CONTROL */)){
+            cMaxSpeed = sneakSpeed;
         } else {
             cMaxSpeed = walkSpeed;
         }
@@ -72,8 +75,9 @@ public class Player extends Movables {
 
         if (Math.abs(xSpeed) >= cMaxSpeed)
             xSpeed = Math.signum(xSpeed) * cMaxSpeed;
-        if (Math.abs(ySpeed) >= sprintSpeed)
+        if (Math.abs(ySpeed) >= cMaxSpeed)
             ySpeed = Math.signum(ySpeed) * cMaxSpeed;
+        
 
         if (!acceleratingX)
             xSpeed *= friction;
@@ -92,9 +96,17 @@ public class Player extends Movables {
 
     void makeSound() {
         timeSinceLastWalkSound++;
+        if(Math.floor(speed()) == 0)
+            return;
         if (Main.main.keyDown(-1) && timeSinceLastWalkSound > timePerWalkSound) {
             timeSinceLastWalkSound = 0;
             new Sound(middleX(), middleY(), 20, Sound.footsteps);
+        }else if(Main.main.keyDown(-4) && timeSinceLastWalkSound > timePerWalkSound){
+            timeSinceLastWalkSound = 0;
+            new Sound(middleX(), middleY(), 2, Sound.footsteps);
+        }else if(timeSinceLastWalkSound > timePerWalkSound){
+            timeSinceLastWalkSound = 0;
+            new Sound(middleX(), middleY(), 7, Sound.footsteps);
         }
     }
 
