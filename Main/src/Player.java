@@ -14,6 +14,8 @@ public class Player extends Movables {
         ySpeed = 0;
         xSpeed = 0;
         classID = "Player";
+        hasHealth = true;
+        health = 100;
     }
 
     @Override
@@ -102,4 +104,7 @@ public class Player extends Movables {
         }
     }
 
+    public void reactGetHit(float dmg, String vpnType) {
+        health -= dmg;
+    }
 }

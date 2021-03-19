@@ -50,6 +50,7 @@ public class Main extends PApplet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        UI.drawUI();
     }
 
     void step() {
