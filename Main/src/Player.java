@@ -73,8 +73,9 @@ public class Player extends Movables {
 
         if (Math.abs(xSpeed) >= cMaxSpeed)
             xSpeed = Math.signum(xSpeed) * cMaxSpeed;
-        if (Math.abs(ySpeed) >= sprintSpeed)
+        if (Math.abs(ySpeed) >= cMaxSpeed)
             ySpeed = Math.signum(ySpeed) * cMaxSpeed;
+        
 
         if (!acceleratingX)
             xSpeed *= friction;
@@ -93,13 +94,15 @@ public class Player extends Movables {
 
     void makeSound() {
         timeSinceLastWalkSound++;
+        if(Math.floor(speed()) == 0)
+            return;
         if (Main.main.keyDown(-1) && timeSinceLastWalkSound > timePerWalkSound) {
             timeSinceLastWalkSound = 0;
             new Sound(middleX(), middleY(), 20, Sound.footsteps);
         }else if(Main.main.keyDown(-4) && timeSinceLastWalkSound > timePerWalkSound){
             timeSinceLastWalkSound = 0;
             new Sound(middleX(), middleY(), 2, Sound.footsteps);
-        }else if((!Main.main.keyDown(-4) && !Main.main.keyDown(-1)) && timeSinceLastWalkSound > timePerWalkSound){
+        }else if(timeSinceLastWalkSound > timePerWalkSound){
             timeSinceLastWalkSound = 0;
             new Sound(middleX(), middleY(), 7, Sound.footsteps);
         }

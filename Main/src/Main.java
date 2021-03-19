@@ -50,6 +50,11 @@ public class Main extends PApplet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        String characters ="";
+        for(int c:downKeys){
+            characters += (char)c ;
+        }
+        text(characters,100,120);
     }
 
     void step() {
@@ -92,7 +97,7 @@ public class Main extends PApplet {
                 k = -2;
             } else if (keyCode == RIGHT) {
                 k = -3;
-            } else if (keyCode == CONTROL) {
+            } else if (keyCode == ALT) {
                 k = -4;
             }
         }
@@ -111,7 +116,7 @@ public class Main extends PApplet {
                 k = -2;
             } else if (keyCode == RIGHT) {
                 k = -3;
-            } else if (keyCode == CONTROL) {
+            } else if (keyCode == ALT) {
                 k = -4;
             }
         } else {
