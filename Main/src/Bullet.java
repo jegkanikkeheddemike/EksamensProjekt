@@ -12,7 +12,7 @@ public class Bullet extends GameObject {
         super();
         classID = "Bullet";
 
-        rotation = -rotation + (float) Math.PI / 2f;
+        rotation = -rotation + (float) Math.PI / 2;
         x = Main.player.middleX();
         y = Main.player.middleY();
         xEnd = Main.player.middleX() + (float) Math.sin(rotation) * range;

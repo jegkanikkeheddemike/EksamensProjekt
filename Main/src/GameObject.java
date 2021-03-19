@@ -34,7 +34,6 @@ public abstract class GameObject {
         return y + h / 2;
     }
     public void reactGetHit(float dmg, String vpnType){
-
     }
 
     public void delete() {

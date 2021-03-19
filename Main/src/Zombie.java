@@ -129,9 +129,55 @@ public class Zombie extends Movables {
     float targetX;
     float targetY;
     String state = "Patrol";
+    float targetRotation;
+
+    void rotateToTargetAngle() {
+        targetRotation = GameMath.pointAngle(middleX(), middleY(), targetX, targetY);
+        // find which way to rotate
+        // get surrounding universe equivalents of desiredAngle
+        float desiredAngleM1 = (float) (targetRotation - 2 * Math.PI);
+        float desiredAngleP1 = (float) (targetRotation + 2 * Math.PI);
+
+        // find closest universe equivalent of desiredAngle
+        float dADiff = Math.abs(targetRotation - rotation);
+        float dAM1Diff = Math.abs(desiredAngleM1 - rotation);
+        float dAP1Diff = Math.abs(desiredAngleP1 - rotation);
+
+        float closestUniverse = targetRotation;
+        float closestDiffToZero = dADiff;
+        if (dAM1Diff < closestDiffToZero) {
+            closestDiffToZero = dAM1Diff;
+            closestUniverse = desiredAngleM1;
+        }
+        if (dAP1Diff < closestDiffToZero) {
+            closestDiffToZero = dAP1Diff;
+            closestUniverse = dAM1Diff;
+        }
+
+        float rotateSpeed = 0.02f;
+        if (state == "Chase" || state == "Find")
+            rotateSpeed = 0.05f;
+
+        // rotate towards it
+        if (closestUniverse > rotation) {
+            rotation += rotateSpeed;
+        } else {
+            rotation -= rotateSpeed;
+        }
+        // ensure angle stays under PI
+        if (rotation > Math.PI) {
+            rotation -= 2 * Math.PI;
+        }
+
+        // Lock to target if within this
+        if (Math.abs(rotation - closestUniverse) < .05f) {
+            rotation = targetRotation;
+        }
+    }
 
     void walk() {
-        rotation = GameMath.pointAngle(middleX(), middleY(), targetX, targetY);
+        rotateToTargetAngle();
+
         if (state == "Find") {
             timeSinceLastPatrolChange++;
             if (GameMath.pointDistance(x, y, targetX, targetY) < 80 || timeSinceLastPatrolChange > 600) {
@@ -139,7 +185,7 @@ public class Zombie extends Movables {
                 state = "Patrol";
             }
         } else if (state == "Look") {
-            rotation = GameMath.pointAngle(middleX(), middleY(), Main.player.middleX(), Main.player.middleY());
+            targetRotation = GameMath.pointAngle(middleX(), middleY(), Main.player.middleX(), Main.player.middleY());
         } else if (state == "Patrol") {
             timeSinceLastPatrolChange++;
             if (GameMath.pointDistance(x, y, targetX, targetY) < 80 || timeSinceLastPatrolChange > 600) {
