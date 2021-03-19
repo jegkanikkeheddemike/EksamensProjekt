@@ -13,6 +13,7 @@ public class Sound extends GameObject {
         this.x = x;
         this.y = y;
         int r = new Random().nextInt(sounds.size());
+        sounds.get(r).amp(volume/100);
         sounds.get(r).play();
         classID = "Sound";
     }

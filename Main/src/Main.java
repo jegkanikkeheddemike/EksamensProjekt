@@ -92,6 +92,8 @@ public class Main extends PApplet {
                 k = -2;
             } else if (keyCode == RIGHT) {
                 k = -3;
+            } else if (keyCode == CONTROL) {
+                k = -4;
             }
         }
         if (!downKeys.contains(k) && !ignoredChar.contains(k)) {
@@ -109,6 +111,8 @@ public class Main extends PApplet {
                 k = -2;
             } else if (keyCode == RIGHT) {
                 k = -3;
+            } else if (keyCode == CONTROL) {
+                k = -4;
             }
         } else {
             k = (int) key;
