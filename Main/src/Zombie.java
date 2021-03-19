@@ -202,22 +202,22 @@ public class Zombie extends Movables {
                     targetX = x + length * (float) Math.sin(randomDir);
                     targetY = y + length * (float) Math.cos(randomDir);
                 }
-
             }
         }
 
         float walkdir = -rotation + (float) Math.PI / 2;
 
+        float cSpeed = 0;
+
         if (state == "Chase" || state == "Find") {
-            xSpeed = (float) Math.sin(walkdir) * sprintSpeed;
-            ySpeed = (float) Math.cos(walkdir) * sprintSpeed;
+            cSpeed = sprintSpeed;
         } else if (state == "Patrol") {
-            xSpeed = (float) Math.sin(walkdir) * walkSpeed;
-            ySpeed = (float) Math.cos(walkdir) * walkSpeed;
+            cSpeed = walkSpeed;
         } else if (state == "Look") {
-            xSpeed = 0;
-            ySpeed = 0;
+            cSpeed = 0;
         }
+        xSpeed = (float) Math.sin(walkdir) * cSpeed;
+        ySpeed = (float) Math.cos(walkdir) * cSpeed;
 
         runStandardCollisions();
 

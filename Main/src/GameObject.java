@@ -33,7 +33,7 @@ public abstract class GameObject {
     public float middleY() {
         return y + h / 2;
     }
-    public void reactGetHit(float dmg, String vpnType){
+    public void reactGetHit(float dmg, String wpnType){
     }
 
     public void delete() {

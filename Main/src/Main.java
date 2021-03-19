@@ -96,6 +96,8 @@ public class Main extends PApplet {
             } else if (keyCode == ALT) {
                 k = -4;
             }
+        } else {
+            k = (int) Character.toLowerCase(key);
         }
         if (!downKeys.contains(k) && !ignoredChar.contains(k)) {
             downKeys.add(k);
@@ -116,7 +118,7 @@ public class Main extends PApplet {
                 k = -4;
             }
         } else {
-            k = (int) key;
+            k = (int) Character.toLowerCase(key);
         }
         while (downKeys.contains(k)) {
             downKeys.remove(downKeys.indexOf(k));
