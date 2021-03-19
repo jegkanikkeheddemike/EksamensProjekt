@@ -49,7 +49,7 @@ public class Player extends Movables {
         float cMaxSpeed;
         if (Main.main.keyDown(-1/* SHIFT */)) { 
             cMaxSpeed = sprintSpeed;
-        } else if(Main.main.keyDown(-4/* CONTROL */)){
+        } else if(Main.main.keyDown('c'/* CONTROL */)){
             cMaxSpeed = sneakSpeed;
         } else {
             cMaxSpeed = walkSpeed;
@@ -101,7 +101,7 @@ public class Player extends Movables {
         if (Main.main.keyDown(-1) && timeSinceLastWalkSound > timePerWalkSound) {
             timeSinceLastWalkSound = 0;
             new Sound(middleX(), middleY(), 20, Sound.footsteps);
-        }else if(Main.main.keyDown(-4) && timeSinceLastWalkSound > timePerWalkSound){
+        }else if(Main.main.keyDown('c') && timeSinceLastWalkSound > timePerWalkSound){
             timeSinceLastWalkSound = 0;
             new Sound(middleX(), middleY(), 2, Sound.footsteps);
         }else if(timeSinceLastWalkSound > timePerWalkSound){
