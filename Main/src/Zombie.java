@@ -16,6 +16,8 @@ public class Zombie extends Movables {
         targetY = y;
         w = 40;
         h = 40;
+        hasHealth = true;
+        health = 50;
     }
 
     @Override
@@ -49,17 +51,18 @@ public class Zombie extends Movables {
         drawFOVCone();
     }
 
-    void drawAwarenessbar(){
+    void drawAwarenessbar() {
         Main.main.noFill();
         Main.main.stroke(0);
         Main.main.strokeWeight(2);
-        Main.main.rect(middleX()-5, middleY()-50, 10, 40);
+        Main.main.rect(middleX() - 5, middleY() - 50, 10, 40);
         Main.main.noStroke();
-        Main.main.fill(255*(awareness/100f),255-255*(awareness/100f),0);
-        Main.main.rect(middleX()-5, middleY()-10, 10, -40*(awareness/100f));
+        Main.main.fill(255 * (awareness / 100f), 255 - 255 * (awareness / 100f), 0);
+        Main.main.rect(middleX() - 5, middleY() - 10, 10, -40 * (awareness / 100f));
     }
 
     float triangles = 100;
+
     void drawFOVCone() {
 
         ArrayList<PVector> points = new ArrayList<PVector>();
@@ -99,6 +102,28 @@ public class Zombie extends Movables {
     public void step() {
         lookForPlayer();
         walk();
+        fight();
+    }
+
+    float dmg = 40;
+    float range = 100;
+    float maxCooldown = 120;
+    float cooldown = 0;
+
+    void fight() {
+        cooldown--;
+        if (state != "Chase")
+            return;
+        if (GameMath.objectDistance(this, Main.player) <= range) {
+            if (cooldown < 0) {
+                attack();
+            }
+        }
+    }
+
+    void attack() {
+        cooldown = maxCooldown;
+        Main.player.reactGetHit(dmg, "ZMeele");
     }
 
     float targetX;
@@ -135,7 +160,7 @@ public class Zombie extends Movables {
             }
         }
 
-        float walkdir = -rotation + (float) Math.PI / 2f;
+        float walkdir = -rotation + (float) Math.PI / 2;
 
         if (state == "Chase" || state == "Find") {
             xSpeed = (float) Math.sin(walkdir) * sprintSpeed;
@@ -156,17 +181,17 @@ public class Zombie extends Movables {
 
     float awareness;
 
-    static final float fov = 120f;
+    static final float fov = 120;
     static final float seeRange = 800;
     static final float seeSense = 15;
     static final float awarenessMulitplier = 0.997f;
     static final float soundSense = 30;
 
-    float fovReal = (fov / 360f) * (float) Math.PI * 2;
+    float fovReal = (fov / 360) * (float) Math.PI * 2;
 
     void lookForPlayer() {
         awareness *= awarenessMulitplier;
-        //INCREASE AWARENESS BASED ON SOUND
+        // INCREASE AWARENESS BASED ON SOUND
         for (int i = 0; i < Main.nearObjects.size(); i++) {
             GameObject g = Main.nearObjects.get(i);
             if (g.classID == "Sound") {
@@ -218,5 +243,13 @@ public class Zombie extends Movables {
                 targetY = Main.player.middleY() - 5 * Main.player.ySpeed;
             }
         }
+    }
+
+    @Override
+    public void reactGetHit(float dmg, String vpnType) {
+        health -= dmg;
+        awareness += 30;
+        if (health <= 0)
+            delete();
     }
 }

@@ -39,7 +39,7 @@ public class Bullet extends GameObject {
         LineData data = GameMath.lineCollision(x, y, xEnd, yEnd, new String[] { "Player" });
         if (data.collision) {
             collidedWith = data.gameObject;
-            collidedWith.reactGetShot(damage, "Bullet");
+            collidedWith.reactGetHit(damage, "Bullet");
             xEnd = data.x;
             yEnd = data.y;
         }

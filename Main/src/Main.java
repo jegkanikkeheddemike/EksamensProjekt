@@ -50,11 +50,7 @@ public class Main extends PApplet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String characters ="";
-        for(int c:downKeys){
-            characters += (char)c ;
-        }
-        text(characters,100,120);
+        UI.drawUI();
     }
 
     void step() {

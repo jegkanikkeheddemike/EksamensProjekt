@@ -3,6 +3,8 @@ public abstract class GameObject {
     public float x, y, w, h;
     public int ID;
     public String classID = "NO CLASS ID PLZ FIX";
+    public boolean hasHealth;
+    public float health;
 
     protected GameObject() {
         this.ID = idCounter;
@@ -31,7 +33,7 @@ public abstract class GameObject {
     public float middleY() {
         return y + h / 2;
     }
-    public void reactGetShot(float dmg, String vpnType){
+    public void reactGetHit(float dmg, String vpnType){
 
     }
 
