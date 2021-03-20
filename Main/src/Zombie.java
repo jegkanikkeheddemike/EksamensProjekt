@@ -223,7 +223,7 @@ public class Zombie extends Movables {
         xSpeed = (float) Math.sin(walkdir) * cSpeed;
         ySpeed = (float) Math.cos(walkdir) * cSpeed;
 
-        if (speed() < cSpeed) {
+        if (speed() < cSpeed && (state == "Chase" || state == "Find")) {
             GameObject[] collisions = getCollisions(xSpeed, ySpeed, new String[] {});
             GameObject nearest = null;
             for (int i = 0; i < collisions.length; i++) {
