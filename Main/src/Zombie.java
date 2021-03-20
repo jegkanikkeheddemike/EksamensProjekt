@@ -49,6 +49,15 @@ public class Zombie extends Movables {
         Main.main.textSize(20);
         drawAwarenessbar();
         drawFOVCone();
+        Main.main.stroke(0, 255, 255);
+
+        Main.main.line(middleX(), middleY(), middleX() + (float) Math.sin(angleToNearest) * 50,
+                middleY() + (float) Math.cos(angleToNearest) * 50);
+
+        Main.main.stroke(255, 255, 0);
+        Main.main.line(middleX(), middleY(), middleX() + (float) Math.sin(mirrorAngle) * 50,
+                middleY() + (float) Math.cos(mirrorAngle) * 50);
+
     }
 
     void drawAwarenessbar() {
@@ -131,8 +140,8 @@ public class Zombie extends Movables {
     String state = "Patrol";
     float targetRotation;
 
-    void rotateToTargetAngle() {
-        targetRotation = GameMath.pointAngle(middleX(), middleY(), targetX, targetY);
+    void rotateToAngle(float targetRotation, int multiplier) {
+
         // find which way to rotate
         // get surrounding universe equivalents of desiredAngle
         float desiredAngleM1 = (float) (targetRotation - 2 * Math.PI);
@@ -154,9 +163,9 @@ public class Zombie extends Movables {
             closestUniverse = dAM1Diff;
         }
 
-        float rotateSpeed = 0.02f;
+        float rotateSpeed = 0.02f * multiplier;
         if (state == "Chase" || state == "Find")
-            rotateSpeed = 0.05f;
+            rotateSpeed = 0.05f * multiplier;
 
         // rotate towards it
         if (closestUniverse > rotation) {
@@ -175,8 +184,12 @@ public class Zombie extends Movables {
         }
     }
 
+    boolean avoid;
+
     void walk() {
-        rotateToTargetAngle();
+        if (!avoid)
+            targetRotation = GameMath.pointAngle(middleX(), middleY(), targetX, targetY);
+        rotateToAngle(targetRotation, 1);
 
         if (state == "Find") {
             timeSinceLastPatrolChange++;
@@ -219,11 +232,36 @@ public class Zombie extends Movables {
         xSpeed = (float) Math.sin(walkdir) * cSpeed;
         ySpeed = (float) Math.cos(walkdir) * cSpeed;
 
+        if (speed() < cSpeed) {
+            GameObject[] collisions = getCollisions(xSpeed, ySpeed, new String[] {});
+            GameObject nearest = null;
+            for (int i = 0; i < collisions.length; i++) {
+                if (nearest == null
+                        || GameMath.objectDistance(this, collisions[i]) < GameMath.objectDistance(this, nearest)) {
+                    nearest = collisions[i];
+                }
+            }
+            if (nearest != null) {
+                angleToNearest = -GameMath.objectAngle(this, nearest) + (float) Math.PI / 2;
+                float deltaAngle = walkdir - angleToNearest;
+                mirrorAngle = walkdir + deltaAngle;
+                targetRotation = -mirrorAngle + (float) Math.PI / 2;
+                avoid = true;
+            } else {
+                avoid = false;
+            }
+        } else {
+            avoid = false;
+        }
+
         runStandardCollisions();
 
         x += xSpeed;
         y += ySpeed;
     }
+
+    float mirrorAngle = 0.5f;
+    float angleToNearest;
 
     float awareness;
 
