@@ -49,15 +49,6 @@ public class Zombie extends Movables {
         Main.main.textSize(20);
         drawAwarenessbar();
         drawFOVCone();
-        Main.main.stroke(0, 255, 255);
-
-        Main.main.line(middleX(), middleY(), middleX() + (float) Math.sin(angleToNearest) * 50,
-                middleY() + (float) Math.cos(angleToNearest) * 50);
-
-        Main.main.stroke(255, 255, 0);
-        Main.main.line(middleX(), middleY(), middleX() + (float) Math.sin(mirrorAngle) * 50,
-                middleY() + (float) Math.cos(mirrorAngle) * 50);
-
     }
 
     void drawAwarenessbar() {
