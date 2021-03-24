@@ -12,8 +12,8 @@ public class TESTMAP {
         new Wall(0, 100, 100, 1080 - 200);
         new Wall(1920 - 100, 100, 100, 1080 - 200);
 
-        new Zombie(1920f / 3f, 1080f / 2f);
-        new Zombie(1920f / 2f, 1080f / 2f);
+        new Zombie(1920f / 3f, 1080f / 2f, Zombie.randomGenes());
+        new Zombie(1920f / 2f, 1080f / 2f, Zombie.randomGenes());
 
     }
 }
