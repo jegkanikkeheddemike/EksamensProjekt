@@ -10,6 +10,15 @@ public class Wall extends GameObject {
         classID = "Wall";
     }
 
+    public Wall(int x, int y, int w, int h) {
+        super();
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        classID = "Wall";
+    }
+
     @Override
     public void draw() {
         Main.main.noStroke();
