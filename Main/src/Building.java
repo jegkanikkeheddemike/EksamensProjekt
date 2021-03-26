@@ -92,6 +92,19 @@ public class Building {
         }
 
         // #endregion
+        makeRandomZombies(topleftX, topleftY, deltaX, deltaY);
+    }
+
+    void makeRandomZombies(int topleftX, int topleftY, int width, int height) {
+        Random r = new Random();
+        int amount = r.nextInt(10);
+        for (int i = 0; i < amount; i++) {
+            Zombie zombie = new Zombie(topleftX + r.nextInt(width), topleftY + r.nextInt(height), Zombie.randomGenes());
+            while (zombie.getCollisions(0, 0, new String[] {}).length > 0) {
+                zombie.x = topleftX + r.nextInt(width);
+                zombie.y = topleftY + r.nextInt(height);
+            }
+        }
     }
 
     public static final int EAST = 0;
