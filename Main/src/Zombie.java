@@ -6,8 +6,9 @@ import processing.core.PVector;
 public class Zombie extends Movables {
     float walkSpeed = 0.8f;
     float sprintSpeed = 2;
+    float[] genes;
 
-    public Zombie(float x, float y) {
+    public Zombie(float x, float y, float[] genes) {
         super();
         classID = "Zombie";
         this.x = x;
@@ -18,6 +19,14 @@ public class Zombie extends Movables {
         h = 40f;
         hasHealth = true;
         health = 50;
+        this.genes = genes;
+
+        if (genes[GENE_IS_RANGED] == 1)
+            range = 500;
+        else
+            range = 100;
+        if (genes[GENE_IS_SPRINTER] == 1)
+            sprintSpeed = 2 * sprintSpeed;
     }
 
     @Override
@@ -47,6 +56,12 @@ public class Zombie extends Movables {
         }
         Main.main.text(awarenesIcon, middleX(), middleY() - h);
         Main.main.textSize(20);
+        Main.main.fill(255);
+        String geneDescription = "";
+        for (int i = 0; i < geneDescriptions.length; i++) {
+            geneDescription += geneDescriptions[i] + genes[i] + "\n";
+        }
+        Main.main.text(geneDescription, x + w + 10, y);
         drawAwarenessbar();
         drawFOVCone();
     }
@@ -61,7 +76,7 @@ public class Zombie extends Movables {
         Main.main.rect(middleX() - 5, middleY() - 10, 10, -40 * (awareness / 100f));
     }
 
-    float triangles = 100;
+    static float triangles = 10;
 
     void drawFOVCone() {
 
@@ -106,7 +121,7 @@ public class Zombie extends Movables {
     }
 
     float dmg = 40;
-    float range = 100;
+    float range;
     float maxCooldown = 120;
     float cooldown = 0;
 
@@ -114,6 +129,7 @@ public class Zombie extends Movables {
         cooldown--;
         if (state != "Chase")
             return;
+
         if (GameMath.objectDistance(this, Main.player) <= range) {
             if (cooldown < 0) {
                 attack();
@@ -123,7 +139,12 @@ public class Zombie extends Movables {
 
     void attack() {
         cooldown = maxCooldown;
-        Main.player.reactGetHit(dmg, "ZMeele");
+        if (genes[GENE_IS_RANGED] == 0)
+            Main.player.reactGetHit(dmg, "ZMeele");
+
+        else if (genes[GENE_IS_RANGED] == 1)
+            new ZombieShot(middleX(), middleY(), rotation, genes[GENE_DAMAGE], this);
+
     }
 
     float targetX;
@@ -213,9 +234,20 @@ public class Zombie extends Movables {
 
         float cSpeed = 0;
 
-        if (state == "Chase" || state == "Find") {
+        if (state == "Chase") {
             cSpeed = sprintSpeed;
-        } else if (state == "Patrol") {
+            if (genes[GENE_IS_RANGED] == 1) {
+                if (GameMath.objectDistance(this, Main.player) < range)
+                    cSpeed = 0;
+                if (GameMath.objectDistance(this, Main.player) < range / 2f)
+                    cSpeed = -sprintSpeed;
+            }
+
+        } else if (state == "Find") {
+            cSpeed = sprintSpeed;
+        } else if (state == "Patrol")
+
+        {
             cSpeed = walkSpeed;
         } else if (state == "Look") {
             cSpeed = 0;
@@ -236,7 +268,8 @@ public class Zombie extends Movables {
                 angleToNearest = -GameMath.objectAngle(this, nearest) + (float) Math.PI / 2;
                 float deltaAngle = walkdir - angleToNearest;
                 mirrorAngle = walkdir + deltaAngle;
-                targetRotation = -mirrorAngle + (float) Math.PI / 2;
+                xSpeed += walkSpeed * Math.sin(mirrorAngle);
+                ySpeed += walkSpeed * Math.cos(mirrorAngle);
                 avoid = true;
             } else {
                 avoid = false;
@@ -270,7 +303,8 @@ public class Zombie extends Movables {
         for (int i = 0; i < Main.nearObjects.size(); i++) {
             GameObject g = Main.nearObjects.get(i);
             if (g.classID == "Sound") {
-                awareness += ((Sound) g).volume * soundSense / GameMath.objectDistance(this, g);
+                awareness += ((Sound) g).volume * (soundSense * genes[GENE_HEAR_SKILL])
+                        / GameMath.objectDistance(this, g);
             }
         }
 
@@ -287,7 +321,8 @@ public class Zombie extends Movables {
                     relAngle -= Math.PI * 2f;
 
                 if (relAngle < (fov / 360f) * Math.PI) {
-                    awareness += seeSense / Math.sqrt(GameMath.objectDistance(this, Main.player));
+                    awareness += (genes[GENE_SEE_SKILL] * seeSense)
+                            / Math.sqrt(GameMath.objectDistance(this, Main.player));
                     if (awareness > 100f / 3f)
                         state = "Look";
                 }
@@ -300,6 +335,7 @@ public class Zombie extends Movables {
             } else if (awareness < 100f / 1.5f && state != "Find") {
                 state = "Patrol";
                 timeSinceLastPatrolChange = 0;
+                hasScreeched = false;
             }
         }
 
@@ -316,9 +352,16 @@ public class Zombie extends Movables {
                 state = "Chase";
                 targetX = Main.player.middleX() - 5 * Main.player.xSpeed;
                 targetY = Main.player.middleY() - 5 * Main.player.ySpeed;
+
+                if (!hasScreeched && genes[GENE_CAN_SCREECH] == 1) {
+                    new Sound(middleX(), middleY(), 100, Sound.screech);
+                    hasScreeched = true;
+                }
             }
         }
     }
+
+    boolean hasScreeched;
 
     @Override
     public void reactGetHit(float dmg, String wpnType) {
@@ -327,4 +370,36 @@ public class Zombie extends Movables {
         if (health <= 0)
             delete();
     }
+
+    public static float[] randomGenes() {
+        Random r = new Random();
+        float hearSkill = 0.5f + r.nextFloat();
+        float seeSkill = 0.5f + r.nextFloat();
+        float isRanged = r.nextInt(2); // IS 0 OR 1
+        float canScreech = r.nextInt(2); // IS 0 OR 1;
+
+        float damage;
+
+        if (isRanged == 0)
+            damage = 30 + r.nextFloat() * 20;
+        else
+            damage = 20 + r.nextFloat() * 20;
+
+        float isSprinter = 0;
+        if (isRanged == 0)
+            isSprinter = r.nextInt(2);
+
+        return new float[] { hearSkill, seeSkill, isRanged, canScreech, damage, isSprinter };
+
+    }
+
+    public static final String[] geneDescriptions = { "Hearing: ", "Seeing: ", "Is Ranged: ", "Can Screech: ", "Damage: ",
+            "Is Sprinter: " };
+
+    public static final int GENE_HEAR_SKILL = 0;
+    public static final int GENE_SEE_SKILL = 1;
+    public static final int GENE_IS_RANGED = 2;
+    public static final int GENE_CAN_SCREECH = 3;
+    public static final int GENE_DAMAGE = 4;
+    public static final int GENE_IS_SPRINTER = 5;
 }

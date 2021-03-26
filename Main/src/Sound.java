@@ -13,8 +13,18 @@ public class Sound extends GameObject {
         this.x = x;
         this.y = y;
         int r = new Random().nextInt(sounds.size());
-        sounds.get(r).amp(volume/100);
+        sounds.get(r).amp(volume / 100);
         sounds.get(r).play();
+        classID = "Sound";
+    }
+
+    public Sound(float x, float y, float volume, SoundFile soundFile) {
+        super();
+        this.volume = volume;
+        this.x = x;
+        this.y = y;
+        soundFile.amp(volume / 100);
+        soundFile.play();
         classID = "Sound";
     }
 
@@ -35,11 +45,13 @@ public class Sound extends GameObject {
     }
 
     public static ArrayList<SoundFile> footsteps = new ArrayList<SoundFile>();
+    public static SoundFile screech;
 
     public static void setupSound() {
         for (int i = 1; i < 11; i++) {
-            footsteps.add(new SoundFile(Main.main,"\\Sound\\FootSteps\\"+ i + ".wav"));
+            footsteps.add(new SoundFile(Main.main, "\\Sound\\FootSteps\\" + i + ".wav"));
         }
+        screech = new SoundFile(Main.main,"Sound\\Zombies\\Screech.wav");
     }
 
 }
