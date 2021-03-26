@@ -10,7 +10,7 @@ public class GameMath {
         float y1 = o1.middleY();
         float x2 = o2.middleX();
         float y2 = o2.middleY();
-        ;
+        
 
         float dx = x2 - x1;
         float dy = y2 - y1;
