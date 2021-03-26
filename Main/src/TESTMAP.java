@@ -6,6 +6,7 @@ public class TESTMAP {
         for (int i = 0; i < 10; i++) {
             new Wall(r.nextInt(1920), r.nextInt(1080));
         }
+        new Pistol(200,200);
 
         new Wall(0, 0, 1920, 100);
         new Wall(0, 1080 - 100, 1920, 100);

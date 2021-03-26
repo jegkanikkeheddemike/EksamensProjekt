@@ -14,8 +14,8 @@ public class Zombie extends Movables {
         this.y = y;
         targetX = x;
         targetY = y;
-        w = 40;
-        h = 40;
+        w = 40f;
+        h = 40f;
         hasHealth = true;
         health = 50;
     }
@@ -73,7 +73,7 @@ public class Zombie extends Movables {
             PVector v = new PVector(middleX() + seeRange * (float) Math.sin(angle),
                     middleY() + seeRange * (float) Math.cos(angle));
             LineData vData = GameMath.lineCollision(middleX(), middleY(), v.x, v.y,
-                    new String[] { "Player", "Zombie" });
+                    new String[] { "Player", "Zombie", "Weapon"});
             if (vData.collision) {
                 v.x = vData.x;
                 v.y = vData.y;
@@ -198,7 +198,7 @@ public class Zombie extends Movables {
                 float length = new Random().nextFloat() * 1000;
 
                 LineData newLine = GameMath.lineCollision(x, y, x + length * (float) Math.sin(randomDir),
-                        y + length * (float) Math.cos(randomDir), new String[] { "Player", "Zombie" });
+                        y + length * (float) Math.cos(randomDir), new String[] { "Player", "Zombie", "Weapon"});
                 if (newLine.collision) {
                     targetX = newLine.x;
                     targetY = newLine.y;
@@ -321,7 +321,7 @@ public class Zombie extends Movables {
     }
 
     @Override
-    public void reactGetHit(float dmg, String vpnType) {
+    public void reactGetHit(float dmg, String wpnType) {
         health -= dmg;
         awareness += 30;
         if (health <= 0)

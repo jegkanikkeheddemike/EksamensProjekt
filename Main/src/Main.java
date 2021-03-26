@@ -9,7 +9,8 @@ public class Main extends PApplet {
     public static ArrayList<GameObject> allObjects = new ArrayList<GameObject>();
     public static ArrayList<GameObject> nearObjects = new ArrayList<GameObject>();
     public static ArrayList<GameObject> toBeDelted = new ArrayList<GameObject>();
-    public static Player player = new Player();
+    public static Player player;
+    
     public static int gameTime;
 
     public Main() {
@@ -24,8 +25,12 @@ public class Main extends PApplet {
     @Override
     public void setup() {
         NearThread.thread.start();
-        TESTMAP.createRandomMap();
+        //GroundItems.loadImages();
         Sound.setupSound();
+        TESTMAP.createRandomMap();
+        player = new Player();
+        
+        
     }
 
     @Override

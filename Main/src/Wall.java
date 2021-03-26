@@ -3,19 +3,19 @@ public class Wall extends GameObject {
 
     public Wall(int x, int y) {
         super();
-        this.x = x;
-        this.y = y;
-        w = 100;
-        h = 100;
+        this.x = (float)x;
+        this.y = (float)y;
+        w = 100f;
+        h = 100f;
         classID = "Wall";
     }
 
     public Wall(int x, int y, int w, int h) {
         super();
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
+        this.x = (float)x;
+        this.y = (float)y;
+        this.w = (float)w;
+        this.h = (float)h;
         classID = "Wall";
     }
 

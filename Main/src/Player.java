@@ -5,23 +5,26 @@ public class Player extends Movables {
     float sprintSpeed = 5;
     float walkSpeed = 2;
     float sneakSpeed = 1;
+    Weapon cWeapon1;
+    
 
     public Player() {
         super();
         x = 1920 / 1.5f;// Temporary
-        y = 1080 / 2;
-        w = 50;
-        h = 50;
+        y = 1080 / 2f;
+        w = 50f;
+        h = 50f;
         ySpeed = 0;
         xSpeed = 0;
         classID = "Player";
         hasHealth = true;
         health = 100;
+        cWeapon1 = new Starter(x,y);
     }
 
     @Override
     public void draw() {
-
+        
         Main.main.noStroke();
         Main.main.fill(255);
         Main.main.pushMatrix();
@@ -112,7 +115,7 @@ public class Player extends Movables {
 
     void updateShoot() {
         if (Main.mousePressed) {
-            new Bullet(rotation);
+            cWeapon1.reactShoot();
         }
     }
 
