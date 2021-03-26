@@ -12,6 +12,8 @@ public class Main extends PApplet {
     public static Player player = new Player();
     public static int gameTime;
 
+    public Map m;
+
     public Main() {
         main = this;
     }
@@ -24,8 +26,10 @@ public class Main extends PApplet {
     @Override
     public void setup() {
         NearThread.thread.start();
-        TESTMAP.createRandomMap();
-        Sound.setupSound();
+        //TESTMAP.createRandomMap();
+        //Sound.setupSound();
+        m = new Map(5);
+        m.generateMap();
     }
 
     @Override
@@ -33,7 +37,7 @@ public class Main extends PApplet {
         clear();
         step();
         render();
-
+        m.draw();
         // MUST BE LAST
         clearLists();
         updateObjectLists();
