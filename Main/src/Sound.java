@@ -4,14 +4,12 @@ import java.util.Random;
 import processing.sound.*;
 
 public class Sound extends GameObject {
-    float x, y, volume;
+    float volume;
     int timeAlive;
 
     public Sound(float x, float y, float volume, ArrayList<SoundFile> sounds) {
-        super();
+        super(x, y, 1, 1);
         this.volume = volume;
-        this.x = x;
-        this.y = y;
         int r = new Random().nextInt(sounds.size());
         sounds.get(r).amp(volume / 100);
         sounds.get(r).play();
@@ -19,10 +17,8 @@ public class Sound extends GameObject {
     }
 
     public Sound(float x, float y, float volume, SoundFile soundFile) {
-        super();
+        super(x, y, 1, 1);
         this.volume = volume;
-        this.x = x;
-        this.y = y;
         soundFile.amp(volume / 100);
         soundFile.play();
         classID = "Sound";
@@ -51,7 +47,7 @@ public class Sound extends GameObject {
         for (int i = 1; i < 11; i++) {
             footsteps.add(new SoundFile(Main.main, "\\Sound\\FootSteps\\" + i + ".wav"));
         }
-        screech = new SoundFile(Main.main,"Sound\\Zombies\\Screech.wav");
+        screech = new SoundFile(Main.main, "Sound\\Zombies\\Screech.wav");
     }
 
 }

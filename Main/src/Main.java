@@ -32,6 +32,8 @@ public class Main extends PApplet {
         Sound.setupSound();
         new Building(0, 0, 1900 - 100, 0, 0, 1100 - 100, 1900 - 100, 1100 - 100, new Random().nextInt(4));
         player = new Player();
+        
+        new Bandage(400,400);
 
     }
 

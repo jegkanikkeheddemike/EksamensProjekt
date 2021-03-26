@@ -3,8 +3,8 @@ import java.util.ArrayList;
 public abstract class Movables extends GameObject {
     public float xSpeed, ySpeed, rotation;
 
-    protected Movables() {
-        super();
+    protected Movables(float x, float y, float w, float h) {
+        super(x, y, w, h);
     }
 
     public float speed() {
@@ -12,7 +12,7 @@ public abstract class Movables extends GameObject {
     }
 
     protected void runStandardCollisions() {
-        GameObject[] horiColl = getCollisions(xSpeed, 0, new String[] {"Weapon"});
+        GameObject[] horiColl = getCollisions(xSpeed, 0, new String[] { "Weapon", "Item" });
         // DEN SIGER i++ IKKE GØR NOGET WTF DET ER IKKE SANDT??????
         for (int i = 0; i < horiColl.length; i++) {
             float preX = x;
@@ -31,7 +31,7 @@ public abstract class Movables extends GameObject {
             break;
         }
 
-        GameObject[] vertColl = getCollisions(0, ySpeed, new String[] {"Weapon"});
+        GameObject[] vertColl = getCollisions(0, ySpeed, new String[] { "Weapon", "Item" });
         for (int i = 0; i < vertColl.length; i++) {
             float preY = y;
             int attempts = 0;

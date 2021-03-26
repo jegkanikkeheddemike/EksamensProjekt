@@ -11,16 +11,14 @@ public class Bullet extends GameObject {
     GameObject collidedWith;
 
     Bullet(float rotation) {
-        super();
+        super(Main.player.middleX(), Main.player.middleY(), 0, 0);
         classID = "Bullet";
         Random r = new Random();
-        rotation = (-rotation + (float) Math.PI / 2)+(Main.player.getWeapon().spread/2-((float)r.nextDouble())*Main.player.getWeapon().spread);
-        x = Main.player.middleX();
-        y = Main.player.middleY();
+        rotation = (-rotation + (float) Math.PI / 2)
+                + (Main.player.getWeapon().spread / 2 - ((float) r.nextDouble()) * Main.player.getWeapon().spread);
         xEnd = Main.player.middleX() + (float) Math.sin(rotation) * range;
         yEnd = Main.player.middleY() + (float) Math.cos(rotation) * range;
         checkCollide();
-
     }
 
     @Override

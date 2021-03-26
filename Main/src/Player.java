@@ -9,25 +9,48 @@ public class Player extends Movables {
     Weapon cWeapon1;
     boolean cWNumber;
 
+    Item[] inventory = new Item[10];
+
+    int getEmptyInventorySpace() {
+        for (int i = 0; i < inventory.length; i++) {
+            if (inventory[i] == null)
+                return i;
+        }
+        return -1;
+    }
+
+    Item getItemTypeFromInventory(String itemType) {
+        for (int i = 0; i < inventory.length; i++) {
+            if (inventory[i].itemType.equals(itemType))
+                return inventory[i];
+        }
+        return null;
+    }
+
+    int getItemIndexFromInventory(Item item) {
+        for (int i = 0; i < inventory.length; i++) {
+            if (inventory[i] == item)
+                return i;
+        }
+        return -1;
+    }
+
     public Player() {
-        super();
-        x = 1920 / 1.5f;// Temporary
-        y = 1080 / 2f;
-        w = 50f;
-        h = 50f;
+        super(1920 / 2, 1080 / 2, 50, 50);
         ySpeed = 0;
         xSpeed = 0;
         classID = "Player";
         hasHealth = true;
-        health = 100;
-        cWeapon0 = new Pistol(x,y);
-        cWeapon1 = new Starter(x,y);
+        maxHealth = 100;
+        health = maxHealth;
+        cWeapon0 = new Pistol(x, y);
+        cWeapon1 = new Starter(x, y);
         cWNumber = true;
     }
 
     @Override
     public void draw() {
-        
+
         Main.main.noStroke();
         Main.main.fill(255);
         Main.main.pushMatrix();
@@ -46,6 +69,7 @@ public class Player extends Movables {
         updateShoot();
         updateMove();
         updateWeapons();
+        updateUseItems();
     }
 
     void updateAngle() {
@@ -54,9 +78,9 @@ public class Player extends Movables {
 
     void updateMove() {
         float cMaxSpeed;
-        if (Main.keyDown(-1/* SHIFT */)) { 
+        if (Main.keyDown(-1/* SHIFT */)) {
             cMaxSpeed = sprintSpeed;
-        } else if(Main.keyDown('c'/* CONTROL */)){
+        } else if (Main.keyDown('c'/* CONTROL */)) {
             cMaxSpeed = sneakSpeed;
         } else {
             cMaxSpeed = walkSpeed;
@@ -84,7 +108,6 @@ public class Player extends Movables {
             xSpeed = Math.signum(xSpeed) * cMaxSpeed;
         if (Math.abs(ySpeed) >= cMaxSpeed)
             ySpeed = Math.signum(ySpeed) * cMaxSpeed;
-        
 
         if (!acceleratingX)
             xSpeed *= friction;
@@ -98,22 +121,21 @@ public class Player extends Movables {
         y += ySpeed;
     }
 
-    public Weapon getWeapon(){
-        if (!cWNumber){
+    public Weapon getWeapon() {
+        if (!cWNumber) {
             return cWeapon0;
-        } else{
+        } else {
             return cWeapon1;
         }
 
     }
 
-    void updateWeapons(){
-        if (Main.keyTapped('1')&&cWeapon0 != null){
+    void updateWeapons() {
+        if (Main.keyTapped('1') && cWeapon0 != null) {
             cWNumber = false;
-        } else if(Main.keyTapped('2')&&cWeapon1 != null){
+        } else if (Main.keyTapped('2') && cWeapon1 != null) {
             cWNumber = true;
         }
-
 
     }
 
@@ -122,30 +144,43 @@ public class Player extends Movables {
 
     void makeSound() {
         timeSinceLastWalkSound++;
-        if(Math.floor(speed()) == 0)
+        if (Math.floor(speed()) == 0)
             return;
         if (Main.keyDown(-1) && timeSinceLastWalkSound > timePerWalkSound) {
             timeSinceLastWalkSound = 0;
             new Sound(middleX(), middleY(), 20, Sound.footsteps);
-        }else if(Main.keyDown('c') && timeSinceLastWalkSound > timePerWalkSound){
+        } else if (Main.keyDown('c') && timeSinceLastWalkSound > timePerWalkSound) {
             timeSinceLastWalkSound = 0;
             new Sound(middleX(), middleY(), 2, Sound.footsteps);
-        }else if(timeSinceLastWalkSound > timePerWalkSound){
+        } else if (timeSinceLastWalkSound > timePerWalkSound) {
             timeSinceLastWalkSound = 0;
             new Sound(middleX(), middleY(), 7, Sound.footsteps);
         }
     }
-    
+
     void updateShoot() {
         if (Main.mousePressed && getWeapon().cooldown > getWeapon().shotCooldown) {
-            getWeapon().reactShoot();
+            getWeapon().use();
             getWeapon().cooldown = 0;
-        }else{
+        } else {
             getWeapon().cooldown += 1;
         }
     }
 
     public void reactGetHit(float dmg, String vpnType) {
         health -= dmg;
+    }
+
+    void updateUseItems() {
+        if (!Main.mouseReleased)
+            return;
+
+        if (Main.main.mouseX > Main.main.width - 120 && Main.main.mouseX < Main.main.width - 20) {
+            if (Main.main.mouseY > 20 && Main.main.mouseY < 1020) {
+                int itemIndex = (int) Math.floor((Main.main.mouseY - 20) / 100);
+                if (inventory[itemIndex] != null)
+                    inventory[itemIndex].use();
+            }
+        }
     }
 }

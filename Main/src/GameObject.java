@@ -5,10 +5,15 @@ public abstract class GameObject {
     public String classID = "NO CLASS ID PLZ FIX";
     public boolean hasHealth;
     public float health;
+    public float maxHealth;
 
-    protected GameObject() {
+    protected GameObject(float x, float y, float w, float h) {
         this.ID = idCounter;
         idCounter++;
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
         Main.allObjects.add(this);
         Main.nearObjects.add(this);
     }
@@ -33,11 +38,22 @@ public abstract class GameObject {
     public float middleY() {
         return y + h / 2;
     }
-    public void reactGetHit(float dmg, String wpnType){
+
+    public void reactGetHit(float dmg, String wpnType) {
     }
 
     public void delete() {
         Main.toBeDelted.add(this);
     }
 
+    public void heal(float amount) {
+        if (hasHealth) {
+            health += amount;
+            if (health > maxHealth) {
+                health = maxHealth;
+            }
+        } else {
+            System.out.println("Tried to heal " + classID + " which does not use health");
+        }
+    }
 }
