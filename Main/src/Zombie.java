@@ -9,16 +9,13 @@ public class Zombie extends Movables {
     float[] genes;
 
     public Zombie(float x, float y, float[] genes) {
-        super();
+        super(x, y, 40, 40);
         classID = "Zombie";
-        this.x = x;
-        this.y = y;
         targetX = x;
         targetY = y;
-        w = 40f;
-        h = 40f;
         hasHealth = true;
-        health = 50;
+        maxHealth = 50;
+        health = maxHealth;
         this.genes = genes;
 
         if (genes[GENE_IS_RANGED] == 1)
@@ -76,7 +73,7 @@ public class Zombie extends Movables {
         Main.main.rect(middleX() - 5, middleY() - 10, 10, -40 * (awareness / 100f));
     }
 
-    static float triangles = 100;
+    static float triangles = 10;
 
     void drawFOVCone() {
 
@@ -88,7 +85,7 @@ public class Zombie extends Movables {
             PVector v = new PVector(middleX() + seeRange * (float) Math.sin(angle),
                     middleY() + seeRange * (float) Math.cos(angle));
             LineData vData = GameMath.lineCollision(middleX(), middleY(), v.x, v.y,
-                    new String[] { "Player", "Zombie", "Weapon"});
+                    new String[] { "Player", "Zombie", "Weapon", "Item" });
             if (vData.collision) {
                 v.x = vData.x;
                 v.y = vData.y;
@@ -219,7 +216,8 @@ public class Zombie extends Movables {
                 float length = new Random().nextFloat() * 1000;
 
                 LineData newLine = GameMath.lineCollision(x, y, x + length * (float) Math.sin(randomDir),
-                        y + length * (float) Math.cos(randomDir), new String[] { "Player", "Zombie", "Weapon"});
+                        y + length * (float) Math.cos(randomDir),
+                        new String[] { "Player", "Zombie", "Weapon", "Item" });
                 if (newLine.collision) {
                     targetX = newLine.x;
                     targetY = newLine.y;
@@ -309,7 +307,7 @@ public class Zombie extends Movables {
         }
 
         LineData lineToPlayer = GameMath.lineCollision(middleX(), middleY(), Main.player.middleX(),
-                Main.player.middleY(), new String[] { "Zombie", "Player" });
+                Main.player.middleY(), new String[] { "Zombie", "Player", "Item", "Weapon" });
 
         if (!lineToPlayer.collision) {
             float dist = GameMath.objectDistance(this, Main.player);
@@ -393,8 +391,8 @@ public class Zombie extends Movables {
 
     }
 
-    public static final String[] geneDescriptions = { "Hearing: ", "Seeing: ", "Is Ranged: ", "Can Screech: ", "Damage: ",
-            "Is Sprinter: " };
+    public static final String[] geneDescriptions = { "Hearing: ", "Seeing: ", "Is Ranged: ", "Can Screech: ",
+            "Damage: ", "Is Sprinter: " };
 
     public static final int GENE_HEAR_SKILL = 0;
     public static final int GENE_SEE_SKILL = 1;

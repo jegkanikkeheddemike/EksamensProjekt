@@ -4,9 +4,7 @@ public class ZombieShot extends Movables {
     float speed = 10;
 
     public ZombieShot(float x, float y, float rotation, float dmg, Zombie parent) {
-        super();
-        this.x = x;
-        this.y = y;
+        super(x, y, 10, 10);
         this.rotation = -rotation + (float) Math.PI / 2f;
         this.dmg = dmg;
         this.parent = parent;
