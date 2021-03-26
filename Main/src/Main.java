@@ -1,16 +1,19 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 import processing.core.PApplet;
 import processing.event.MouseEvent;
 
 public class Main extends PApplet {
     public static boolean isRunning = true;
+
     public static Main main;
     public static ArrayList<GameObject> allObjects = new ArrayList<GameObject>();
     public static ArrayList<GameObject> nearObjects = new ArrayList<GameObject>();
+
     public static ArrayList<GameObject> toBeDelted = new ArrayList<GameObject>();
     public static Player player;
-    
+
     public static int gameTime;
 
     public Main() {
@@ -25,12 +28,11 @@ public class Main extends PApplet {
     @Override
     public void setup() {
         NearThread.thread.start();
-        //GroundItems.loadImages();
+        // GroundItems.loadImages();
         Sound.setupSound();
-        TESTMAP.createRandomMap();
+        new Building(0, 0, 1900 - 100, 0, 0, 1100 - 100, 1900 - 100, 1100 - 100, new Random().nextInt(4));
         player = new Player();
-        
-        
+
     }
 
     @Override
@@ -47,6 +49,11 @@ public class Main extends PApplet {
     }
 
     void render() {
+        float translateX = width / 2 - player.middleX();
+        float translateY = height / 2 - player.middleY();
+
+        translate(translateX, translateY);
+
         try {
             for (int i = 0; i < nearObjects.size(); i++) {
                 GameObject gameObject = nearObjects.get(i);
@@ -55,6 +62,7 @@ public class Main extends PApplet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        translate(-translateX, -translateY);
         UI.drawUI();
     }
 
