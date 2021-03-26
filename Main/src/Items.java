@@ -54,7 +54,12 @@ class Weapon extends Items {
         this.h=(float)sprite.height/3;
     }
     public void reactPickedUp(){
-        Main.player.cWeapon1 = this;
+        if(!Main.player.cWNumber){
+            Main.player.cWeapon0 = this;
+        }else{
+            Main.player.cWeapon1 = this;
+        }
+
         Main.toBeDelted.add(this);
     }
     public void reactShoot(){

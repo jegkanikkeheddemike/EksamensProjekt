@@ -134,29 +134,29 @@ public class Main extends PApplet {
         scrollAmount = -8 * e.getCount();
     }
 
-    public boolean keyDown(char input) {
-        if (downKeys.contains((int) input)) {
+    public static boolean keyDown(char input) {
+        if (main.downKeys.contains((int) input)) {
             return true;
         }
         return false;
     }
 
-    public boolean keyDown(int input) {
-        if (downKeys.contains(input)) {
+    public static boolean keyDown(int input) {
+        if (main.downKeys.contains(input)) {
             return true;
         }
         return false;
     }
 
-    public boolean keyTapped(char input) {
-        if (tappedKeys.contains((int) input)) {
+    public static boolean keyTapped(char input) {
+        if (main.tappedKeys.contains((int) input)) {
             return true;
         }
         return false;
     }
 
-    public boolean keyTapped(int input) {
-        if (tappedKeys.contains(input)) {
+    public static boolean keyTapped(int input) {
+        if (main.tappedKeys.contains(input)) {
             return true;
         }
         return false;

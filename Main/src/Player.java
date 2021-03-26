@@ -5,8 +5,9 @@ public class Player extends Movables {
     float sprintSpeed = 5;
     float walkSpeed = 2;
     float sneakSpeed = 1;
+    Weapon cWeapon0;
     Weapon cWeapon1;
-    
+    boolean cWNumber;
 
     public Player() {
         super();
@@ -19,7 +20,9 @@ public class Player extends Movables {
         classID = "Player";
         hasHealth = true;
         health = 100;
+        cWeapon0 = new Pistol(x,y);
         cWeapon1 = new Starter(x,y);
+        cWNumber = true;
     }
 
     @Override
@@ -42,6 +45,7 @@ public class Player extends Movables {
         updateAngle();
         updateShoot();
         updateMove();
+        updateWeapons();
     }
 
     void updateAngle() {
@@ -50,28 +54,28 @@ public class Player extends Movables {
 
     void updateMove() {
         float cMaxSpeed;
-        if (Main.main.keyDown(-1/* SHIFT */)) { 
+        if (Main.keyDown(-1/* SHIFT */)) { 
             cMaxSpeed = sprintSpeed;
-        } else if(Main.main.keyDown('c'/* CONTROL */)){
+        } else if(Main.keyDown('c'/* CONTROL */)){
             cMaxSpeed = sneakSpeed;
         } else {
             cMaxSpeed = walkSpeed;
         }
 
         boolean acceleratingX = false, acceleratingY = false;
-        if (Main.main.keyDown('s') || Main.main.keyDown('S')) {
+        if (Main.keyDown('s') || Main.keyDown('S')) {
             ySpeed += yAcc;
             acceleratingY = true;
         }
-        if (Main.main.keyDown('w') || Main.main.keyDown('W')) {
+        if (Main.keyDown('w') || Main.keyDown('W')) {
             ySpeed -= yAcc;
             acceleratingY = true;
         }
-        if (Main.main.keyDown('a') || Main.main.keyDown('A')) {
+        if (Main.keyDown('a') || Main.keyDown('A')) {
             xSpeed -= xAcc;
             acceleratingX = true;
         }
-        if (Main.main.keyDown('d') || Main.main.keyDown('D')) {
+        if (Main.keyDown('d') || Main.keyDown('D')) {
             xSpeed += xAcc;
             acceleratingX = true;
         }
@@ -94,6 +98,25 @@ public class Player extends Movables {
         y += ySpeed;
     }
 
+    public Weapon getWeapon(){
+        if (!cWNumber){
+            return cWeapon0;
+        } else{
+            return cWeapon1;
+        }
+
+    }
+
+    void updateWeapons(){
+        if (Main.keyTapped('1')&&cWeapon0 != null){
+            cWNumber = false;
+        } else if(Main.keyTapped('2')&&cWeapon1 != null){
+            cWNumber = true;
+        }
+
+
+    }
+
     int timeSinceLastWalkSound = 0;
     int timePerWalkSound = 10;
 
@@ -101,10 +124,10 @@ public class Player extends Movables {
         timeSinceLastWalkSound++;
         if(Math.floor(speed()) == 0)
             return;
-        if (Main.main.keyDown(-1) && timeSinceLastWalkSound > timePerWalkSound) {
+        if (Main.keyDown(-1) && timeSinceLastWalkSound > timePerWalkSound) {
             timeSinceLastWalkSound = 0;
             new Sound(middleX(), middleY(), 20, Sound.footsteps);
-        }else if(Main.main.keyDown('c') && timeSinceLastWalkSound > timePerWalkSound){
+        }else if(Main.keyDown('c') && timeSinceLastWalkSound > timePerWalkSound){
             timeSinceLastWalkSound = 0;
             new Sound(middleX(), middleY(), 2, Sound.footsteps);
         }else if(timeSinceLastWalkSound > timePerWalkSound){
@@ -115,7 +138,7 @@ public class Player extends Movables {
 
     void updateShoot() {
         if (Main.mousePressed) {
-            cWeapon1.reactShoot();
+            getWeapon().reactShoot();
         }
     }
 

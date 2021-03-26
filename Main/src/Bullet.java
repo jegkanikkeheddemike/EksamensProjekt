@@ -1,8 +1,8 @@
 import java.util.*;
 
 public class Bullet extends GameObject {
-    float damage = Main.player.cWeapon1.damage;
-    float range = Main.player.cWeapon1.range;
+    float damage = Main.player.getWeapon().damage;
+    float range = Main.player.getWeapon().range;
     float length;
     static int lifeSpan = 10;
     int timeAlive = 0;
@@ -14,7 +14,7 @@ public class Bullet extends GameObject {
         super();
         classID = "Bullet";
         Random r = new Random();
-        rotation = (-rotation + (float) Math.PI / 2)+(Main.player.cWeapon1.spread/2-((float)r.nextDouble())*Main.player.cWeapon1.spread);
+        rotation = (-rotation + (float) Math.PI / 2)+(Main.player.getWeapon().spread/2-((float)r.nextDouble())*Main.player.getWeapon().spread);
         x = Main.player.middleX();
         y = Main.player.middleY();
         xEnd = Main.player.middleX() + (float) Math.sin(rotation) * range;
