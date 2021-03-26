@@ -39,9 +39,11 @@ public class Items extends GameObject {
 class Weapon extends Items {
     String wpnType;
     float damage;
-    float fireRate;
+    int shotCooldown;
+    int cooldown;
     float range;
     float spread;
+    
 
     Weapon(float x, float y,String wpnType){
         super();
@@ -71,7 +73,7 @@ class Starter extends Weapon{
         super(x, y, "Starter");
         this.wpnType = "Starter";
         damage = 5;
-        fireRate = 1;
+        shotCooldown = 30;
         range = 300;
         spread = 0.05f;
         held = true;
@@ -86,7 +88,7 @@ class Pistol extends Weapon{
         super(x, y, "Pistol");
         this.wpnType = "Pistol";
         damage = 5;
-        fireRate = 1;
+        shotCooldown = 20;
         range = 700;
         spread = 0.02f;
     }

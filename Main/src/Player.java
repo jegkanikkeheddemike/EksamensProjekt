@@ -135,10 +135,13 @@ public class Player extends Movables {
             new Sound(middleX(), middleY(), 7, Sound.footsteps);
         }
     }
-
+    
     void updateShoot() {
-        if (Main.mousePressed) {
+        if (Main.mousePressed && getWeapon().cooldown > getWeapon().shotCooldown) {
             getWeapon().reactShoot();
+            getWeapon().cooldown = 0;
+        }else{
+            getWeapon().cooldown += 1;
         }
     }
 
