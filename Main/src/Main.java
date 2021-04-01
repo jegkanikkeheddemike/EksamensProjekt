@@ -22,18 +22,21 @@ public class Main extends PApplet {
 
     @Override
     public void settings() {
-        size(1920, 1080);
+        size(1920, 1080, P2D);
     }
 
     @Override
     public void setup() {
+        Shaders.loadShaders();
         NearThread.thread.start();
+        ShaderPreRenderWorkThread.thread.start();
+
         // GroundItems.loadImages();
         Sound.setupSound();
         new Building(0, 0, 1900 - 100, 0, 0, 1100 - 100, 1900 - 100, 1100 - 100, new Random().nextInt(4));
         player = new Player();
-        
-        new Bandage(400,400);
+
+        new Bandage(400, 400);
 
     }
 
@@ -53,6 +56,7 @@ public class Main extends PApplet {
     void render() {
         float translateX = width / 2 - player.middleX();
         float translateY = height / 2 - player.middleY();
+        
 
         translate(translateX, translateY);
 
@@ -64,11 +68,14 @@ public class Main extends PApplet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Shaders.drawZombieFOVCone();
         translate(-translateX, -translateY);
         UI.drawUI();
     }
 
     void step() {
+        // BEGYNDER FORBEREDELSERNE TIL SHADERS, PIL IKKE VED!!!!
+        ShaderPreRenderWorkThread.beginWork = true;
         try {
             for (int i = 0; i < nearObjects.size(); i++) {
                 GameObject gameObject = nearObjects.get(i);

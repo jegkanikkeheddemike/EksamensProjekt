@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class NearThread extends Thread {
     public static ArrayList<GameObject> nearObjectsUpdated = new ArrayList<GameObject>();
-    public static boolean isReady = false;
+    public static volatile boolean isReady = false;
     public static NearThread thread = new NearThread();
 
     @Override

@@ -31,7 +31,7 @@ public class GameMath {
 
         float dx = x2 - x1;
         float dy = y2 - y1;
-        return (float) Math.atan2(dy, dx);
+        return (float) (Math.atan2(dy, dx));
     }
 
     public static LineData lineCollision(float x1, float y1, float x2, float y2, String[] ignoreList) {

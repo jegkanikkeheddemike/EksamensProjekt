@@ -60,7 +60,7 @@ public class Zombie extends Movables {
         }
         Main.main.text(geneDescription, x + w + 10, y);
         drawAwarenessbar();
-        drawFOVCone();
+        // drawFOVCone();
     }
 
     void drawAwarenessbar() {
@@ -288,7 +288,7 @@ public class Zombie extends Movables {
     float awareness;
 
     static final float fov = 120;
-    static final float seeRange = 800;
+    static final float seeRange = 600;
     static final float seeSense = 15;
     static final float awarenessMulitplier = 0.997f;
     static final float soundSense = 30;
@@ -313,12 +313,12 @@ public class Zombie extends Movables {
             float dist = GameMath.objectDistance(this, Main.player);
             if (dist < seeRange) {
                 float angToPlayer = GameMath.objectAngle(this, Main.player);
-                float relAngle = Math.abs(rotation - angToPlayer);
+                float relAngle = rotation - angToPlayer;
 
-                if (relAngle >= Math.PI * 2f)
-                    relAngle -= Math.PI * 2f;
+                relAngle = (float) (relAngle % Math.PI * 2);
+                float fovReal = (float) ((fov / 360f) * Math.PI);
 
-                if (relAngle < (fov / 360f) * Math.PI) {
+                if (relAngle < fovReal || relAngle > 2. * Math.PI - fovReal) {
                     awareness += (genes[GENE_SEE_SKILL] * seeSense)
                             / Math.sqrt(GameMath.objectDistance(this, Main.player));
                     if (awareness > 100f / 3f)
