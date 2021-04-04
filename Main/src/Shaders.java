@@ -12,6 +12,7 @@ public class Shaders {
     }
 
     static void drawZombieFOVCone() {
+        
         // MAX AMOUNT OF ZOMBIES ON SCREEN IS 30 FOR NOW
         float[] zombieX = new float[30];
         float[] zombieY = new float[30];
@@ -53,7 +54,7 @@ public class Shaders {
 
         Main.main.fill(255);
         Main.main.noStroke();
-
+        
         Main.main.shader(zombieFOVConeShader);
 
         // SHADER RECT DÆKKER HELE SKÆRMEN

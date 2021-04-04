@@ -96,7 +96,7 @@ public class Building {
 
     void makeRandomZombies(int topleftX, int topleftY, int width, int height) {
         Random r = new Random();
-        int amount = r.nextInt(10);
+        int amount = 2+r.nextInt(5);
         for (int i = 0; i < amount; i++) {
             Zombie zombie = new Zombie(topleftX + r.nextInt(width), topleftY + r.nextInt(height), Zombie.randomGenes());
             while (zombie.getCollisions(0, 0, new String[] {}).length > 0) {

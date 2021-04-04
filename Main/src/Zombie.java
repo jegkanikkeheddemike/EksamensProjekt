@@ -73,10 +73,11 @@ public class Zombie extends Movables {
         Main.main.rect(middleX() - 5, middleY() - 10, 10, -40 * (awareness / 100f));
     }
 
-    static float triangles = 10;
+    @Deprecated
+    static float triangles = 100;
 
+    @Deprecated
     void drawFOVCone() {
-
         ArrayList<PVector> points = new ArrayList<PVector>();
 
         for (int i = 0; i < triangles; i++) {

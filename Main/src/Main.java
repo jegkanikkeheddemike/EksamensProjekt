@@ -56,8 +56,6 @@ public class Main extends PApplet {
     void render() {
         float translateX = width / 2 - player.middleX();
         float translateY = height / 2 - player.middleY();
-        
-
         translate(translateX, translateY);
 
         try {
