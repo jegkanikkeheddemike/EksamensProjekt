@@ -12,7 +12,7 @@ public class Shaders {
     }
 
     static void drawZombieFOVCone() {
-        
+
         // MAX AMOUNT OF ZOMBIES ON SCREEN IS 30 FOR NOW
         float[] zombieX = new float[30];
         float[] zombieY = new float[30];
@@ -54,7 +54,7 @@ public class Shaders {
 
         Main.main.fill(255);
         Main.main.noStroke();
-        
+
         Main.main.shader(zombieFOVConeShader);
 
         // SHADER RECT DÆKKER HELE SKÆRMEN
@@ -68,7 +68,7 @@ public class Shaders {
 // Den her thread forbereder de lister som shaderne skal bruge, da det kan tage
 // lang tid gøres det imens der bliver kørt step!
 class ShaderPreRenderWorkThread extends Thread {
-    static volatile boolean beginWork = false;
+    private static volatile boolean beginWork = false;
     static ShaderPreRenderWorkThread thread = new ShaderPreRenderWorkThread();
 
     @Override
@@ -95,5 +95,9 @@ class ShaderPreRenderWorkThread extends Thread {
                 beginWork = false;
             }
         }
+    }
+
+    public static void beginWork() {
+        beginWork = true;
     }
 }

@@ -8,8 +8,8 @@ public class Main extends PApplet {
     public static boolean isRunning = true;
 
     public static Main main;
-    public static ArrayList<GameObject> allObjects = new ArrayList<GameObject>();
-    public static ArrayList<GameObject> nearObjects = new ArrayList<GameObject>();
+    public static volatile ArrayList<GameObject> allObjects = new ArrayList<GameObject>();
+    public static volatile ArrayList<GameObject> nearObjects = new ArrayList<GameObject>();
 
     public static ArrayList<GameObject> toBeDelted = new ArrayList<GameObject>();
     public static Player player;
@@ -73,7 +73,7 @@ public class Main extends PApplet {
 
     void step() {
         // BEGYNDER FORBEREDELSERNE TIL SHADERS, PIL IKKE VED!!!!
-        ShaderPreRenderWorkThread.beginWork = true;
+        ShaderPreRenderWorkThread.beginWork();
         try {
             for (int i = 0; i < nearObjects.size(); i++) {
                 GameObject gameObject = nearObjects.get(i);
