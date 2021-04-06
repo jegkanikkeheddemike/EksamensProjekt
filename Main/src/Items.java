@@ -1,7 +1,7 @@
 import processing.core.*;
 
 public class Items extends GameObject {
-    PImage sprite = rect(10,10,10,10);
+    //PImage sprite = rect(10,10,10,10);
 
     Items(){
         super();
@@ -31,7 +31,7 @@ class Weapons extends Items {
         case "Pistol":
             damage = 1;
             firerate = 1;
-            sprite = Main.main.loadImage();
+            //sprite = Main.main.loadImage();
 
         }
     }

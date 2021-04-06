@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Map {
     //                                        north,   south, east, west
-    private static final int[][] directions = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    private static final int[][] directions = {{0,-1}, {0,1}, {1,0}, {-1,0}};
     public static final int NORTH = 0;
     public static final int SOUTH = 1;
     public static final int EAST  = 2;
@@ -12,12 +12,13 @@ public class Map {
     Node initialNode;
     ArrayList<Node> allNodes;
     ArrayList<Node> endNodes; // or maybe is should be called outer nodes?
+    ArrayList<Wall> roads;
     private Random rand = new Random();
     private int maxLevel;
-    private final int maxRoadLength = 300;
-    private final int minRoadLength = 100;
-    private final float minPointDist = 40f;
-    private final float minRoadDist = 30f;
+    private final int maxRoadLength = 700;
+    private final int minRoadLength = 300;
+    private final float minPointDist = 200f;
+    private final float minRoadDist = 200;
 
     Map(int maxLevel){
         initialNode = new Node(Main.main.width/2, Main.main.height/2);
@@ -27,10 +28,10 @@ public class Map {
     }
 
     public void generateMap(){
-        Node north = new Node(initialNode.x, initialNode.y+randomRoadLength(), initialNode);
-        Node south = new Node(initialNode.x, initialNode.y-randomRoadLength(), initialNode);
-        Node east  = new Node(initialNode.x+randomRoadLength(), initialNode.y, initialNode);
-        Node west  = new Node(initialNode.x-randomRoadLength(), initialNode.y, initialNode);
+        Node north = new Node(initialNode.x+directions[NORTH][0]*randomRoadLength(), initialNode.y+directions[NORTH][1]*randomRoadLength(), initialNode);
+        Node south = new Node(initialNode.x+directions[SOUTH][0]*randomRoadLength(), initialNode.y+directions[SOUTH][1]*randomRoadLength(), initialNode);
+        Node east  = new Node(initialNode.x+directions[EAST][0]*randomRoadLength(), initialNode.y+directions[EAST][1]*randomRoadLength(), initialNode);
+        Node west  = new Node(initialNode.x+directions[WEST][0]*randomRoadLength(), initialNode.y+directions[WEST][1]*randomRoadLength(), initialNode);
         ArrayList<Node> startNodes = new ArrayList<Node>(Arrays.asList(north, south, east, west));
         for (Node n : startNodes) {
             allNodes.add(n);
@@ -51,18 +52,18 @@ public class Map {
         int[] deltaCoorParents = {(n.parent.x-n.x), (n.parent.y-n.y)};
         int[] directionIndexes;// Arrays.copyOf(directions, directions.length);
         //They can not be in the opposite direction of the respective two previous parents
-        //North
-        if(deltaCoorParents[1] > 0){
-            directionIndexes = new int[]{1,2,3};
+        //PARENT IS TO THE NORTH
+        if(deltaCoorParents[1] < 0){
+            directionIndexes = new int[]{SOUTH, EAST, WEST};
         //South
-        }else if(deltaCoorParents[1] < 0){
-            directionIndexes = new int[]{0,2,3};
-        //East
+        }else if(deltaCoorParents[1] > 0){
+            directionIndexes = new int[]{NORTH, EAST, WEST};
+        //PARENT IS TO THE WEST
         }else if(deltaCoorParents[0] < 0){
-            directionIndexes = new int[]{0,1,2};
-        //West
+            directionIndexes = new int[]{NORTH, SOUTH, EAST};
+        //PARENT IS TO THE EAST
         }else{ //if (deltaCoorParents[0] > 0){
-            directionIndexes = new int[]{0,1,3};
+            directionIndexes = new int[]{NORTH, SOUTH, WEST};
         }
         int numberOfNewNodes = 1+rand.nextInt(3);
         //System.out.println("NUMBER OF NEW NODES: "+numberOfNewNodes+"");
@@ -75,54 +76,7 @@ public class Map {
             Node generatedNode = new Node(n.x+(roadLength*direction[0]), n.y+(roadLength*direction[1]), n);
             
             //Check whether the node is too close to any of the others, if it is it shouldn't be included
-            Boolean createNode = true;
-            for(Node n0 : allNodes){
-                float pointDist = GameMath.pointDistance(n0.x, n0.y, generatedNode.x, generatedNode.y);
-                //Check first for the distance between each node
-                if(pointDist <= minPointDist){
-                    System.out.println("POINT DISTANCE --- NODE NOT CREATED");
-                    createNode = false;
-                    break; // The node shouldn't be created
-                //Secondly check the distance between each node.
-                }else{
-                    //Is the road n0 makes with its parent
-                    //parallel?
-                    Boolean bothNorth = n0.parent == n0.connected[NORTH] && generatedNode.parent == generatedNode.connected[NORTH];
-                    Boolean bothSouth = n0.parent == n0.connected[SOUTH] && generatedNode.parent == generatedNode.connected[SOUTH];
-                    Boolean northSouth = (n0.parent == n0.connected[NORTH] && generatedNode.parent == generatedNode.connected[SOUTH]) || (n0.parent == n0.connected[SOUTH] && generatedNode.parent == generatedNode.connected[NORTH]);
-                    Boolean vertical = (bothNorth || bothSouth || northSouth );
-            
-                    Boolean bothEast = n0.parent == n0.connected[EAST] && generatedNode.parent == generatedNode.connected[EAST];
-                    Boolean bothWest = n0.parent == n0.connected[WEST] && generatedNode.parent == generatedNode.connected[WEST];
-                    Boolean eastWest = (n0.parent == n0.connected[EAST] && generatedNode.parent == generatedNode.connected[WEST]) || (n0.parent == n0.connected[WEST] && generatedNode.parent == generatedNode.connected[EAST]);
-                    Boolean horizontal = (bothEast || bothWest || eastWest);
-            
-                    if(vertical){
-                        //Within
-                        //Boolean yWithout = (n0.y < generatedNode.y && n0.y < generatedNode.parent.y && n0.parent.y < generatedNode.y && n0.parent.y < generatedNode.parent.y) || (n0.y > generatedNode.y && n0.y > generatedNode.parent.y && n0.parent.y > generatedNode.y && n0.parent.y > generatedNode.parent.y);
-                        //Boolean yWithin = (generatedNode.parent.y < n0.y < generatedNode.y ||generatedNode.parent.y > n0.y > generatedNode.y || generatedNode.parent.y < n0.parent.y < generatedNode.y || generatedNode.parent.y > n0.parent.y > generatedNode.y);
-                        Boolean yWithin = (generatedNode.parent.y < n0.y && n0.y < generatedNode.y ||generatedNode.parent.y > n0.y & n0.y > generatedNode.y || generatedNode.parent.y < n0.parent.y && n0.parent.y < generatedNode.y || generatedNode.parent.y > n0.parent.y && n0.parent.y > generatedNode.y);
-                        int dx = Math.abs(n0.x - generatedNode.x);
-                        if(yWithin && dx < minRoadDist){
-                            System.out.println("ROAD DISTANCE VERTICAL --- NODE NOT CREATED");
-                            createNode = false;
-                            break;
-                        }
-                    }else if(horizontal){
-                        //Boolean xWithin = n0.x || n0.parent.x should be within generatedNode.x and generatedNode.parent.x
-                        Boolean xWithin = (generatedNode.parent.x < n0.x && n0.x < generatedNode.x ||generatedNode.parent.x > n0.x & n0.x > generatedNode.x || generatedNode.parent.x < n0.parent.x && n0.parent.x < generatedNode.x || generatedNode.parent.x > n0.parent.x && n0.parent.x > generatedNode.x);
-                        //Boolean xWithout = (n0.x < generatedNode.x && n0.x < generatedNode.parent.x && n0.parent.x < generatedNode.x && n0.parent.x < generatedNode.parent.x) || (n0.x > generatedNode.x && n0.x > generatedNode.parent.x && n0.parent.x > generatedNode.x && n0.parent.x > generatedNode.parent.x);
-                        int dy = Math.abs(n0.y - generatedNode.y);
-                        if(xWithin && dy < minRoadDist){
-                            System.out.println("ROAD DISTANCE HORIZONTAL --- NODE NOT CREATED");
-                            createNode = false;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if(createNode){          
+            if(createNode(generatedNode)){          
                 //Adding the new node to the things.
                 allNodes.add(generatedNode);
                 n.addNode(generatedNode);
@@ -147,66 +101,61 @@ public class Map {
         //Check for intersection
         for(Node n1 : nodesIntersectionCheck){
             if(n1 != null){
-            int dx = n1.x - n1.parent.x;
-            int dy = n1.y - n1.parent.y;
+            int dx = n1.parent.x - n1.x;
+            int dy = n1.parent.y - n1.y;
             for(Node n2 : allNodes){
                 if(n2 != n1){
-                    int dx2 = n2.x-n2.parent.x;
-                    int dy2 = n2.y-n2.parent.y;
+                    int dx2 = n2.parent.x - n2.x;
+                    int dy2 = n2.parent.y - n2.y;
                     Boolean xWithin = ((n1.x > n2.x && n1.x < n2.parent.x) || (n1.x < n2.x && n1.x > n2.parent.x));
-                    Boolean yOut = ((n2.y > n1.y && n2.y < n1.parent.y) || (n2.y < n1.y && n2.y > n1.parent.y));
+                    Boolean yOut = ((n2.y > n1.y && n2.y < n1.parent.y) || (n2.y < n1.y && n2.y > n1.parent.y)); // or actually rather that n2.y is within the span of the n1.y and its parent's y-coordinate as well
                    
                     Boolean yWithin = ((n1.y > n2.y && n1.y < n2.parent.y) || (n1.y < n2.y && n1.y > n2.parent.y));
                     Boolean xOut = ((n2.x > n1.x && n2.x < n1.parent.x) || (n2.x < n1.x && n2.x > n1.parent.x));
                    
                     if(dx == 0 && dx2 != 0 && xWithin && yOut){
+                        System.out.println("INTERSECTIONNODE YYYYYYY");
                         //Handle this intersection
                         //the new node should n1.x and n2.y
                         Node intersectionNode = new Node(n1.x, n2.y, n1.parent);
+                        intersectionNode.isINTERSECTIONPOINT = true;
                         intersectionNode.addOtherParent(n2.parent);
-                        intersectionNode.addNode(n1); //The parent is connected in the constructor.
-                        intersectionNode.addNode(n2);
+                        //if(createNode(intersectionNode)){
+                            intersectionNode.addNode(n1); //The parent is connected in the constructor.
+                            intersectionNode.addNode(n2);
 
-                        n1.parent.connectNode(intersectionNode);
-                        n1.parent = intersectionNode;
-                        n1.connectNode(intersectionNode);
+                            n1.parent.connectNode(intersectionNode);
+                            n1.parent = intersectionNode;
+                            n1.connectNode(intersectionNode);
 
-                        n2.parent.connectNode(intersectionNode);
-                        n2.parent = intersectionNode;
-                        n2.connectNode(intersectionNode);
-
-                        /*intersectionNode.addNode(n1); //The parent is connected in the constructor.
-                        intersectionNode.addNode(n2);
-                        intersectionNode.addNode(n2.parent);
-                        //intersectionNode should n1's parent?
-                        n1.parent.connectNode(intersectionNode);
-                        n1.parent = intersectionNode;
-                        n1.connectNode(intersectionNode);
-
-                        n2.parent.connectNode(intersectionNode);
-                        n2.parent = intersectionNode;
-                        n2.connectNode(intersectionNode);*/
-
-                        nodesToBeAdded.add(intersectionNode);
+                            n2.parent.connectNode(intersectionNode);
+                            n2.parent = intersectionNode;
+                            n2.connectNode(intersectionNode);
+                            
+                            nodesToBeAdded.add(intersectionNode);
+                        //}
 
                     }else if(dy == 0 && dy2 != 0 && yWithin && xOut){
+                        System.out.println("INTERSECTIONNODE XXXXXXXX");
                         //Handle this intersection
                         //the new node should n1.y and n2.x
                         Node intersectionNode = new Node(n2.x, n1.y, n1.parent);
+                        intersectionNode.isINTERSECTIONPOINT = true;
                         intersectionNode.addOtherParent(n2.parent);
-                        intersectionNode.addNode(n1); //The parent is connected in the constructor.
-                        intersectionNode.addNode(n2);
-                        
-                        n1.parent.connectNode(intersectionNode);
-                        n1.parent = intersectionNode;
-                        n1.connectNode(intersectionNode);
+                        //if(createNode(intersectionNode)){
+                            intersectionNode.addNode(n1); //The parent is connected in the constructor.
+                            intersectionNode.addNode(n2);
+                            
+                            n1.parent.connectNode(intersectionNode);
+                            n1.parent = intersectionNode;
+                            n1.connectNode(intersectionNode);
 
-                        n2.parent.connectNode(intersectionNode);
-                        n2.parent = intersectionNode;
-                        n2.connectNode(intersectionNode);
+                            n2.parent.connectNode(intersectionNode);
+                            n2.parent = intersectionNode;
+                            n2.connectNode(intersectionNode);
 
-                        nodesToBeAdded.add(intersectionNode);//MAYBE WE CAN NOT ACTUALLY WAIT?
-
+                            nodesToBeAdded.add(intersectionNode);//MAYBE WE CAN NOT ACTUALLY WAIT?
+                        //}
                     }
                 }
             }
@@ -214,6 +163,121 @@ public class Map {
         }
         allNodes.addAll(nodesToBeAdded);
     }
+    //THIS MAY BE WRONG?
+    //If this is wrong one would see overlapping roads.
+    private Boolean createNode(Node generatedNode){
+        Boolean createNode = true;
+        for(Node n0 : allNodes){
+            float pointDist = GameMath.pointDistance(n0.x, n0.y, generatedNode.x, generatedNode.y);
+            //Check first for the distance between each node
+            if(pointDist <= minPointDist){
+                System.out.println("POINT DISTANCE --- NODE NOT CREATED");
+                createNode = false;
+                break; // The node shouldn't be created
+            //Secondly check the distance between each node.
+            }else{
+                //Is the road n0 makes with its parent
+                //parallel?
+                Boolean n0North    = n0.parent == n0.connected[NORTH];
+                Boolean gNorth     = generatedNode.parent == generatedNode.connected[NORTH];
+                Boolean bothNorth  = n0North && gNorth;
+                Boolean n0South    = n0.parent == n0.connected[SOUTH];
+                Boolean gSouth     = generatedNode.parent == generatedNode.connected[SOUTH];
+                Boolean bothSouth  = n0South && gSouth;
+                Boolean northSouth = (n0North && gSouth) || (n0South && gNorth);
+                Boolean vertical   = (bothNorth || bothSouth || northSouth );
+                
+                Boolean n0East     = n0.parent == n0.connected[EAST];
+                Boolean gEast      = generatedNode.parent == generatedNode.connected[EAST];
+                Boolean bothEast   = n0East && gEast;
+                Boolean n0West     = n0.parent == n0.connected[WEST];
+                Boolean gWest      = generatedNode.parent == generatedNode.connected[WEST];
+                Boolean bothWest   = n0West && gWest;
+                Boolean eastWest   = (n0East && gWest) || (n0West && gEast);
+                Boolean horizontal = (bothEast || bothWest || eastWest);
+        
+                if(vertical){
+                    //Within
+                    //Boolean yWithout = (n0.y < generatedNode.y && n0.y < generatedNode.parent.y && n0.parent.y < generatedNode.y && n0.parent.y < generatedNode.parent.y) || (n0.y > generatedNode.y && n0.y > generatedNode.parent.y && n0.parent.y > generatedNode.y && n0.parent.y > generatedNode.parent.y);
+                    //Boolean yWithin = (generatedNode.parent.y < n0.y < generatedNode.y ||generatedNode.parent.y > n0.y > generatedNode.y || generatedNode.parent.y < n0.parent.y < generatedNode.y || generatedNode.parent.y > n0.parent.y > generatedNode.y);
+                    Boolean yWithin = (generatedNode.parent.y < n0.y && n0.y < generatedNode.y ||generatedNode.parent.y > n0.y & n0.y > generatedNode.y || generatedNode.parent.y < n0.parent.y && n0.parent.y < generatedNode.y || generatedNode.parent.y > n0.parent.y && n0.parent.y > generatedNode.y);
+                    int dx = Math.abs(n0.x - generatedNode.x);
+                    if(yWithin && dx < minRoadDist){
+                        System.out.println("ROAD DISTANCE VERTICAL --- NODE NOT CREATED");
+                        createNode = false;
+                        break;
+                    }
+                }else if(horizontal){
+                    //Boolean xWithin = n0.x || n0.parent.x should be within generatedNode.x and generatedNode.parent.x
+                    Boolean xWithin = (generatedNode.parent.x < n0.x && n0.x < generatedNode.x ||generatedNode.parent.x > n0.x & n0.x > generatedNode.x || generatedNode.parent.x < n0.parent.x && n0.parent.x < generatedNode.x || generatedNode.parent.x > n0.parent.x && n0.parent.x > generatedNode.x);
+                    //Boolean xWithout = (n0.x < generatedNode.x && n0.x < generatedNode.parent.x && n0.parent.x < generatedNode.x && n0.parent.x < generatedNode.parent.x) || (n0.x > generatedNode.x && n0.x > generatedNode.parent.x && n0.parent.x > generatedNode.x && n0.parent.x > generatedNode.parent.x);
+                    int dy = Math.abs(n0.y - generatedNode.y);
+                    if(xWithin && dy < minRoadDist){
+                        //System.out.println("ROAD DISTANCE HORIZONTAL --- NODE NOT CREATED");
+                        createNode = false;
+                        break;
+                    }
+                }else{
+                    //If they are not perpendicular check the distance from one of the points to the other line.
+                    //check dist form generatedNode to n0's line with parent
+                    //Is generatedNode vertical
+                    if(gSouth || gNorth){
+                        //We know that n0 and its parent will be horizontal so
+                        //Is the generatedNode's x within n0 and parent?
+                        if((n0.x < generatedNode.x &&  generatedNode.x < n0.parent.x) || (n0.x > generatedNode.x &&  generatedNode.x > n0.parent.x)){
+                            int dy = Math.min(Math.abs(n0.y-generatedNode.y), Math.abs(n0.parent.y-generatedNode.y));
+                            if(dy < minRoadDist){
+                                //System.out.println("POINT TO ROAD DISTANCE TOO SMALL --- NODE NOT CREATED");
+                                createNode = false;
+                                break;
+                            }
+                        }
+                    }
+                    //Is generatedNode horizontal
+                    else if(gEast || gWest){
+                        if((n0.y < generatedNode.y &&  generatedNode.y < n0.parent.y) || (n0.y > generatedNode.y &&  generatedNode.y > n0.parent.y)){
+                            int dx = Math.min(Math.abs(n0.x-generatedNode.x), Math.abs(n0.parent.x-generatedNode.x));
+                            if(dx < minRoadDist){
+                                //System.out.println("POINT TO ROAD DISTANCE TOO SMALL --- NODE NOT CREATED");
+
+                                createNode = false;
+                                break;
+                            }
+                        }
+                    }
+                    //check dist form n0 to generatedNode's line with parent
+                    //Is n0 vertical?
+                    if(n0South || n0North){
+                        //We know that n0 and its parent will be horizontal so
+                        //Is the generatedNode's x within n0 and parent?
+                        if((generatedNode.x < n0.x &&  n0.x < generatedNode.parent.x) || (generatedNode.x > n0.x &&  n0.x > generatedNode.parent.x)){
+                            //System.out.println("POINT TO ROAD DISTANCE TOO SMALL --- NODE NOT CREATED");
+
+                            int dy = Math.min(Math.abs(n0.y-generatedNode.y), Math.abs(n0.y-generatedNode.parent.y));
+                            if(dy < minRoadDist){
+                                createNode = false;
+                                break;
+                            }
+                        }
+                    }
+                    //Is generatedNode horizontal
+                    else if(n0East || n0West){
+                        if((generatedNode.y < n0.y &&  n0.y < generatedNode.parent.y) || (generatedNode.y > n0.y &&  n0.y > generatedNode.parent.y)){
+                            //System.out.println("POINT TO ROAD DISTANCE TOO SMALL --- NODE NOT CREATED");
+
+                            int dx = Math.min(Math.abs(n0.x-generatedNode.x), Math.abs(n0.x-generatedNode.parent.x));
+                            if(dx < minRoadDist){
+                                createNode = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return createNode;
+    }
+
     private int randomRoadLength(){
         return minRoadLength + rand.nextInt(maxRoadLength - minRoadLength);
     }
@@ -224,6 +288,47 @@ public class Map {
                 endNodes.add(node);
             }
         }
+    }
+    public void removeUselessNodes(){
+        ArrayList<Node> remNodes = new ArrayList<Node>();
+        for(Node n : allNodes){
+            if(!n.isEndPoint){
+                //HORIZONTAL
+                if(n.connected[NORTH] == null && n.connected[SOUTH] == null){
+                    //If parent is to the east
+                    if(n.parent == n.connected[EAST]){
+                        n.parent.connectNode(n.connected[WEST]);
+                        n.connected[WEST].parent = n.parent;
+                        n.connected[WEST].connectNode(n.parent);
+                        remNodes.add(n);
+                    //If parent is to the west
+                    }else if(n.parent == n.connected[WEST]){
+                        n.parent.connectNode(n.connected[EAST]);
+                        n.connected[EAST].parent = n.parent;
+                        n.connected[EAST].connectNode(n.parent);
+                        remNodes.add(n);
+                    }
+                }
+                //VERTICAL
+                if(n.connected[EAST] == null && n.connected[WEST] == null){
+                    //If parent is to the North
+                    if(n.parent == n.connected[NORTH]){
+                        n.parent.connectNode(n.connected[SOUTH]);
+                        n.connected[SOUTH].parent = n.parent;
+                        n.connected[SOUTH].connectNode(n.parent);
+                        remNodes.add(n);
+                    //If parent is to the south
+                    }else if(n.parent == n.connected[SOUTH]){
+                        n.parent.connectNode(n.connected[NORTH]);
+                        n.connected[NORTH].parent = n.parent;
+                        n.connected[NORTH].connectNode(n.parent);
+                        remNodes.add(n);
+                    }
+                }
+            }
+        
+        }
+        allNodes.removeAll(remNodes);
     }
     public void draw(){
         for(Node n : allNodes){

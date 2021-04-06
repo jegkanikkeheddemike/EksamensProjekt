@@ -28,8 +28,19 @@ public class Main extends PApplet {
         NearThread.thread.start();
         //TESTMAP.createRandomMap();
         //Sound.setupSound();
-        m = new Map(5);
+        m = new Map(10);
         m.generateMap();
+        m.removeUselessNodes();
+
+        //m.initialNode.connected[Map.WEST].wallsAlongParentEdge(); //CHECK
+        //m.initialNode.connected[Map.EAST].wallsAlongParentEdge(); //CHECK
+        //m.initialNode.connected[Map.SOUTH].wallsAlongParentEdge(); //CHECK
+        //m.initialNode.connected[Map.NORTH].wallsAlongParentEdge(); //
+
+
+        for(Node n : m.allNodes){
+            n.wallsAlongParentEdge();
+        }
     }
 
     @Override
@@ -37,7 +48,6 @@ public class Main extends PApplet {
         clear();
         step();
         render();
-        m.draw();
         // MUST BE LAST
         clearLists();
         updateObjectLists();
@@ -46,14 +56,21 @@ public class Main extends PApplet {
     }
 
     void render() {
+        float translateX = width / 2 - player.middleX();
+        float translateY = height / 2 - player.middleY();
+
+        translate(translateX, translateY);
+        
         try {
             for (int i = 0; i < nearObjects.size(); i++) {
                 GameObject gameObject = nearObjects.get(i);
                 gameObject.draw();
             }
+            m.draw();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        translate(-translateX, -translateY);
         UI.drawUI();
     }
 
@@ -163,6 +180,12 @@ public class Main extends PApplet {
 
     public void mousePressed() {
         mousePressed = true;
+    }
+    public static int getMouseX(){
+        return main.mouseX + (int) player.middleX() - main.width/2;
+    }
+    public static int getMouseY(){
+        return main.mouseY + (int) player.middleY() - main.height/2;
     }
 
     public void mouseReleased() {
