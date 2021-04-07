@@ -2,8 +2,6 @@
 precision mediump float;
 #endif
 
-#define PROCESSING_COLOR_SHADER
-
 uniform int zombies;
 uniform int walls;
 uniform float zombieX[30];
@@ -19,15 +17,6 @@ uniform float camY;
 bool lineCollision(float x1,float y1,float x2,float y2,float x3,float y3,float x4,float y4){
     // calculate the direction of the lines
     float den=((y4-y3)*(x2-x1)-(x4-x3)*(y2-y1));
-    
-    //HUSK AT UNDGÅ BRANCHING!!!
-    //Branchin gør programmet MEGET langsommere hver "if" ca fordobler tiden
-    
-    /*
-    if(den==0.){
-        return false;
-    }
-    */
     
     float uA=((x4-x3)*(y1-y3)-(y4-y3)*(x1-x3))/den;
     float uB=((x2-x1)*(y1-y3)-(y2-y1)*(x1-x3))/den;
@@ -125,7 +114,6 @@ void main(){
         bool noColl=nColl==0;
         seen+=float(inRange&&inAngle&&noColl);
     }
-    seen=sign(seen);
-    
+    seen=sign(seen);    
     gl_FragColor=vec4(0.,0.,1.,.3*seen);
 }

@@ -22,7 +22,10 @@ public class Main extends PApplet {
 
     @Override
     public void settings() {
-        size(1920, 1080, P2D);
+        if (usesShaders)
+            size(1920, 1080, P2D);
+        else
+            size(1920, 1080, P2D);
     }
 
     @Override
@@ -44,7 +47,6 @@ public class Main extends PApplet {
         }
 
         new Bandage(400, 400);
-        System.out.println(Thread.currentThread().getId());
     }
 
     @Override
@@ -215,7 +217,6 @@ public class Main extends PApplet {
         if (!System.getProperty("os.name").equals("Windows 10"))
             usesShaders = false;
 
-        System.out.println(System.getProperty("os.name"));
         PApplet.main("Main");
     }
 }
