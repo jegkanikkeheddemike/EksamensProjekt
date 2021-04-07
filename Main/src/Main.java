@@ -27,16 +27,18 @@ public class Main extends PApplet {
 
     @Override
     public void setup() {
-        Shaders.loadShaders();
+        if (usesShaders)
+            Shaders.loadShaders();
         NearThread.thread.start();
-        ShaderPreRenderWorkThread.thread.start();
+        if (usesShaders)
+            ShaderPreRenderWorkThread.thread.start();
 
         // GroundItems.loadImages();
         Sound.setupSound();
         new Building(0, 0, 1900 - 100, 0, 0, 1100 - 100, 1900 - 100, 1100 - 100, new Random().nextInt(4));
         player = new Player();
         Random r = new Random();
-        while (player.getCollisions(0, 0, new String[]{}).length > 0){
+        while (player.getCollisions(0, 0, new String[] {}).length > 0) {
             player.x = r.nextInt(1920);
             player.y = r.nextInt(1080);
         }
@@ -71,14 +73,17 @@ public class Main extends PApplet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Shaders.drawZombieFOVCone();
+        if (usesShaders)
+            Shaders.drawZombieFOVCone();
+
         translate(-translateX, -translateY);
         UI.drawUI();
     }
 
     void step() {
         // BEGYNDER FORBEREDELSERNE TIL SHADERS, PIL IKKE VED!!!!
-        ShaderPreRenderWorkThread.beginWork();
+        if (usesShaders)
+            ShaderPreRenderWorkThread.beginWork();
         try {
             for (int i = 0; i < nearObjects.size(); i++) {
                 GameObject gameObject = nearObjects.get(i);
@@ -204,8 +209,13 @@ public class Main extends PApplet {
         ignoredChar.add((Integer) d);
     }
 
+    static boolean usesShaders = true;
+
     public static void main(String[] args) {
-        System.out.println(Thread.currentThread().getId());
+        if (!System.getProperty("os.name").equals("Windows 10"))
+            usesShaders = false;
+
+        System.out.println(System.getProperty("os.name"));
         PApplet.main("Main");
     }
 }
