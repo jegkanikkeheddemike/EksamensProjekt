@@ -35,6 +35,11 @@ public class Main extends PApplet {
         Sound.setupSound();
         new Building(0, 0, 1900 - 100, 0, 0, 1100 - 100, 1900 - 100, 1100 - 100, new Random().nextInt(4));
         player = new Player();
+        Random r = new Random();
+        while (player.getCollisions(0, 0, new String[]{}).length > 0){
+            player.x = r.nextInt(1920);
+            player.y = r.nextInt(1080);
+        }
 
         new Bandage(400, 400);
 
