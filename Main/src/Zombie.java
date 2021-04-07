@@ -74,10 +74,8 @@ public class Zombie extends Movables {
         Main.main.rect(middleX() - 5, middleY() - 10, 10, -40 * (awareness / 100f));
     }
 
-    @Deprecated
     static float triangles = 100;
 
-    @Deprecated
     void drawFOVCone() {
         ArrayList<PVector> points = new ArrayList<PVector>();
 
@@ -97,13 +95,13 @@ public class Zombie extends Movables {
 
         Main.main.beginShape();
         Main.main.vertex(middleX(), middleY());
+        Main.main.fill(100, 100, 255, 50);
+        Main.main.noStroke();
         for (int i = 0; i < points.size(); i++) {
             Main.main.vertex(points.get(i).x, points.get(i).y);
         }
         Main.main.vertex(middleX(), middleY());
 
-        Main.main.fill(100, 100, 255, 50);
-        Main.main.noStroke();
         Main.main.endShape();
 
         Main.main.fill(255, 0, 0);

@@ -41,5 +41,16 @@ public class UI {
             }
         }
         // #endregion
+        // #region SHADER INFO
+        
+        if (!Main.usesShaders) {
+            Main.main.strokeWeight(3);
+            Main.main.stroke(0);
+            Main.main.fill(255,0,0);
+            Main.main.textSize(30);
+            Main.main.text("SHADERS ARE DISABLED, USE WINDOWS 10 TO ENABLE SHADERS", 850, 40);
+        }
+
+        // #endregion
     }
 }
