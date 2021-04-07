@@ -2,6 +2,8 @@
 precision mediump float;
 #endif
 
+#define PROCESSING_COLOR_SHADER
+
 uniform int zombies;
 uniform int walls;
 uniform float zombieX[30];
