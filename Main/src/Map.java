@@ -281,7 +281,7 @@ public class Map {
     private int randomRoadLength(){
         return minRoadLength + rand.nextInt(maxRoadLength - minRoadLength);
     }
-    private void updateEndNodes(){
+    public void updateEndNodes(){
         endNodes = new ArrayList<Node>();
         for(Node node : allNodes){
             if(node.isEndPoint){
@@ -289,7 +289,7 @@ public class Map {
             }
         }
     }
-    public void removeUselessNodes(){
+    public void removeUselessNodes(){ // MAKE A FUNCTION FOR JUST REMOVING ONE NODE?
         ArrayList<Node> remNodes = new ArrayList<Node>();
         for(Node n : allNodes){
             if(!n.isEndPoint){

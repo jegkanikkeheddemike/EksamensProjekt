@@ -28,7 +28,7 @@ public class Main extends PApplet {
         NearThread.thread.start();
         //TESTMAP.createRandomMap();
         //Sound.setupSound();
-        m = new Map(10);
+        m = new Map(5);
         m.generateMap();
         m.removeUselessNodes();
 
@@ -41,6 +41,11 @@ public class Main extends PApplet {
         for(Node n : m.allNodes){
             n.wallsAlongParentEdge();
         }
+        //m.generateNodesAtNode(m.endNodes.get(0));
+        //m.generateNodesAtNode(m.endNodes.get(1));
+        //m.updateEndNodes();
+
+
     }
 
     @Override
