@@ -42,7 +42,7 @@ public class Main extends PApplet {
         }
 
         new Bandage(400, 400);
-
+        System.out.println(Thread.currentThread().getId());
     }
 
     @Override
@@ -205,6 +205,7 @@ public class Main extends PApplet {
     }
 
     public static void main(String[] args) {
+        System.out.println(Thread.currentThread().getId());
         PApplet.main("Main");
     }
 }
