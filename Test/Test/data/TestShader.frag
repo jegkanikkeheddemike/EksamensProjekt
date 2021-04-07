@@ -2,7 +2,9 @@
 precision mediump float;
 #endif
 
+#version 120
 #define PROCESSING_COLOR_SHADER
+
 
 void main(){
     int size = 1800;
