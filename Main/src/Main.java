@@ -22,11 +22,11 @@ public class Main extends PApplet {
 
     @Override
     public void settings() {
-        if (usesShaders) {
-            size(1920, 1080, P2D);
 
+        if (usesShaders) {
+            size(1800, 900, P2D);
         } else
-            size(1920, 1080);
+            size(1800, 900);
     }
 
     @Override

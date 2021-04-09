@@ -36,8 +36,8 @@ const float PI=3.14159265359;
 void main(){
     //translated coords
     vec2 tCoords=vec2(
-        gl_FragCoord.x-1920./2.+camX,
-        1080./2.-gl_FragCoord.y+camY
+        gl_FragCoord.x-1800./2.+camX,
+        900./2.-gl_FragCoord.y+camY
     );
     //er 0 hvis denne pixel ikke kan blive set, 1 hvis den godt kan.
     float seen=0.;
