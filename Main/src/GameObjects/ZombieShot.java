@@ -1,3 +1,4 @@
+package GameObjects;
 public class ZombieShot extends Movables {
     float dmg;
     Zombie parent;

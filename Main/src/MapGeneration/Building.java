@@ -1,3 +1,4 @@
+package MapGeneration;
 import java.util.Random;
 
 public class Building {

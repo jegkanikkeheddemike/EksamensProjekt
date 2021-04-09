@@ -1,5 +1,7 @@
 // Den her thread forbereder de lister som shaderne skal bruge, da det kan tage
 // lang tid gøres det imens der bliver kørt step!
+package Threads;
+
 public class ShaderPreRenderWorkThread extends Thread {
     private static volatile boolean beginWork = false;
     static ShaderPreRenderWorkThread thread = new ShaderPreRenderWorkThread();

@@ -1,4 +1,4 @@
-
+package Threads;
 import java.util.ArrayList;
 
 public class NearThread extends Thread {

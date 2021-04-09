@@ -1,4 +1,4 @@
-
+package Items;
 import processing.core.*;
 
 public class Item extends GameObject {

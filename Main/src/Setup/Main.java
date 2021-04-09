@@ -4,6 +4,8 @@ import java.util.Random;
 import processing.core.PApplet;
 import processing.event.MouseEvent;
 
+import Threads.*;
+
 public class Main extends PApplet {
     public static boolean isRunning = true;
 

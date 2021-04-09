@@ -1,3 +1,5 @@
+package Items;
+
 public class Bandage extends Item {
     int amount = 1;
     int maxAmount = 3;
