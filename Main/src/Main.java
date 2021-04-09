@@ -44,11 +44,6 @@ public class Main extends PApplet {
         m.generateMap();
         m.removeUselessNodes();
 
-        // m.initialNode.connected[Map.WEST].wallsAlongParentEdge(); //CHECK
-        // m.initialNode.connected[Map.EAST].wallsAlongParentEdge(); //CHECK
-        // m.initialNode.connected[Map.SOUTH].wallsAlongParentEdge(); //CHECK
-        // m.initialNode.connected[Map.NORTH].wallsAlongParentEdge(); //
-
         for (Node n : m.allNodes) {
             n.wallsAlongParentEdge();
         }*/
@@ -59,8 +54,6 @@ public class Main extends PApplet {
 
         if (onWindows)
             ShaderPreRenderWorkThread.thread.start();
-
-        // GroundItems.loadImages();
         if (onWindows)
             Sound.setupSound();
 
