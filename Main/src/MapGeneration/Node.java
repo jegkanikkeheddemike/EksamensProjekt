@@ -161,7 +161,7 @@ public class Node {
                 int y2East = parent2.y - roadWidth/2 * boolToInt(parent2.connected[Map.EAST] != null);
                 new Wall(x+roadWidth/2, y1East, parent2.x+roadWidth/2, y2East, wallWidth);
             }else if (parent2 == connected[Map.NORTH]){
-                System.out.println("NORD");
+                //System.out.println("NORD");
                 ////virker ikke helt endnu
                 int y1West = parent2.y + roadWidth/2 * boolToInt(parent2.connected[Map.WEST] != null);
                 int y2West = y - roadWidth/2 * boolToInt(connected[Map.WEST] != null);
