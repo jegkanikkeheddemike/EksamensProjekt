@@ -24,13 +24,14 @@ public class Main extends PApplet {
     public void settings() {
         if (usesShaders) {
             size(1920, 1080, P2D);
-            frameRate(60);
+            
         } else
             size(1920, 1080);
     }
 
     @Override
     public void setup() {
+        frameRate(60);
         if (usesShaders)
             Shaders.loadShaders();
         NearThread.thread.start();
