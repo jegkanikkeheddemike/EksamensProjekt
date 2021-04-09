@@ -349,12 +349,12 @@ public class Zombie extends Movables {
                 state = "Chase";
                 targetX = Main.player.middleX() - 5 * Main.player.xSpeed;
                 targetY = Main.player.middleY() - 5 * Main.player.ySpeed;
-                /*
+                
 
                 if (!hasScreeched && genes[GENE_CAN_SCREECH] == 1) {
                     new Sound(middleX(), middleY(), 100, Sound.screech);
                     hasScreeched = true;
-                }*/
+                }
             }
         }
     }

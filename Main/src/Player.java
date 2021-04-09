@@ -115,7 +115,7 @@ public class Player extends Movables {
             ySpeed *= friction;
 
         runStandardCollisions();
-        //makeSound();
+        makeSound();
 
         x += xSpeed;
         y += ySpeed;
@@ -141,7 +141,7 @@ public class Player extends Movables {
 
     int timeSinceLastWalkSound = 0;
     int timePerWalkSound = 10;
-/*
+
     void makeSound() {
         timeSinceLastWalkSound++;
         if (Math.floor(speed()) == 0)
@@ -157,7 +157,7 @@ public class Player extends Movables {
             new Sound(middleX(), middleY(), 7, Sound.footsteps);
         }
     }
-*/
+
     void updateShoot() {
         if (Main.mousePressed && getWeapon().cooldown > getWeapon().shotCooldown) {
             getWeapon().use();

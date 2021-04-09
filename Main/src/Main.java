@@ -37,42 +37,44 @@ public class Main extends PApplet {
         if (onWindows)
             Shaders.loadShaders();
         NearThread.thread.start();
-        //TESTMAP.createRandomMap();
-        //Sound.setupSound();
-        /*m = new Map(5);
+        if (onWindows)
+            Sound.setupSound();
+
+        m = new Map(5);
         m.generateMap();
         m.removeUselessNodes();
 
-        //m.initialNode.connected[Map.WEST].wallsAlongParentEdge(); //CHECK
-        //m.initialNode.connected[Map.EAST].wallsAlongParentEdge(); //CHECK
-        //m.initialNode.connected[Map.SOUTH].wallsAlongParentEdge(); //CHECK
-        //m.initialNode.connected[Map.NORTH].wallsAlongParentEdge(); //
+        // m.initialNode.connected[Map.WEST].wallsAlongParentEdge(); //CHECK
+        // m.initialNode.connected[Map.EAST].wallsAlongParentEdge(); //CHECK
+        // m.initialNode.connected[Map.SOUTH].wallsAlongParentEdge(); //CHECK
+        // m.initialNode.connected[Map.NORTH].wallsAlongParentEdge(); //
 
-
-        for(Node n : m.allNodes){
+        for (Node n : m.allNodes) {
             n.wallsAlongParentEdge();
         }
-        */
-        //m.generateNodesAtNode(m.endNodes.get(0));
-        //m.generateNodesAtNode(m.endNodes.get(1));
-        //m.updateEndNodes();
 
+        // m.generateNodesAtNode(m.endNodes.get(0));
+        // m.generateNodesAtNode(m.endNodes.get(1));
+        // m.updateEndNodes();
 
         if (onWindows)
             ShaderPreRenderWorkThread.thread.start();
 
         // GroundItems.loadImages();
-        if(onWindows)
+        if (onWindows)
             Sound.setupSound();
-        new Building(0, 0, 1900 - 100, 0, 0, 1100 - 100, 1900 - 100, 1100 - 100, new Random().nextInt(4));
+
+        // new Building(0, 0, 1900 - 100, 0, 0, 1100 - 100, 1900 - 100, 1100 - 100, new
+        // Random().nextInt(4));
+
         player = new Player();
         Random r = new Random();
-        while (player.getCollisions(0, 0, new String[] {"Wall","Zombie"}).length > 0) {
+        while (player.getCollisions(0, 0, new String[] { "Wall", "Zombie" }).length > 0) {
             player.x = r.nextInt(1920);
             player.y = r.nextInt(1080);
         }
 
-        new Bandage(400, 400);
+        // new Bandage(400, 400);
     }
 
     @Override
@@ -92,13 +94,13 @@ public class Main extends PApplet {
         float translateY = height / 2 - player.middleY();
 
         translate(translateX, translateY);
-        
+
         try {
             for (int i = 0; i < nearObjects.size(); i++) {
                 GameObject gameObject = nearObjects.get(i);
                 gameObject.draw();
             }
-            m.draw();
+            // m.draw();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -219,23 +221,17 @@ public class Main extends PApplet {
     public void mousePressed() {
         mousePressed = true;
     }
-    public static int getMouseX(){
-        return main.mouseX + (int) player.middleX() - main.width/2;
-    }
-    public static int getMouseY(){
-        return main.mouseY + (int) player.middleY() - main.height/2;
+
+    public static int getMouseX() {
+        return main.mouseX + (int) player.middleX() - main.width / 2;
     }
 
     public void mouseReleased() {
         mouseReleased = true;
     }
 
-    public static int getMouseX(){
-        return main.mouseX + (int) player.middleX() - main.width/2;
-    }
-    
-    public static int getMouseY(){
-        return main.mouseY + (int) player.middleY() - main.height/2;
+    public static int getMouseY() {
+        return main.mouseY + (int) player.middleY() - main.height / 2;
     }
 
     void cleanKeyboard() {

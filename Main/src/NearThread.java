@@ -14,7 +14,9 @@ public class NearThread extends Thread {
 
             for (int i = 0; i < Main.allObjects.size(); i++) {
                 GameObject gameObject = Main.allObjects.get(i);
-                if (GameMath.objectDistance(gameObject, Main.player) < 2000) {
+                if (GameMath.pointDistance(gameObject.x, gameObject.y, Main.player.x, Main.player.y) < 2000
+                        || GameMath.pointDistance(gameObject.x + gameObject.w, gameObject.y + gameObject.h,
+                                Main.player.x + Main.player.w, Main.player.y + Main.player.h) < 2000) {
                     nearObjectsUpdated.add(gameObject);
                 }
             }

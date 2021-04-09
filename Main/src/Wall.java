@@ -11,7 +11,7 @@ public class Wall extends GameObject {
         classID = "Wall";
     }
     public Wall(int x1, int y1, int x2, int y2, int w) {
-        super();
+        super(0,0,0,0);
         //Vertical
         if(x1 == x2){
             this.x = Math.min(x1, x2) - w/2;
