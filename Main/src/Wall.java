@@ -2,20 +2,12 @@ public class Wall extends GameObject {
     int color = Main.main.color(255, 100, 100);
 
     public Wall(int x, int y) {
-        super();
-        this.x = x;
-        this.y = y;
-        w = 100;
-        h = 100;
+        super(x, y, 100, 100);
         classID = "Wall";
     }
 
     public Wall(int x, int y, int w, int h) {
-        super();
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
+        super(x, y, w, h);
         classID = "Wall";
     }
     public Wall(int x1, int y1, int x2, int y2, int w) {

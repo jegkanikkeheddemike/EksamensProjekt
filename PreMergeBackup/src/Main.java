@@ -16,8 +16,6 @@ public class Main extends PApplet {
 
     public static int gameTime;
 
-    public Map m;
-
     public Main() {
         main = this;
     }
@@ -37,27 +35,6 @@ public class Main extends PApplet {
         if (onWindows)
             Shaders.loadShaders();
         NearThread.thread.start();
-        //TESTMAP.createRandomMap();
-        //Sound.setupSound();
-        /*m = new Map(5);
-        m.generateMap();
-        m.removeUselessNodes();
-
-        //m.initialNode.connected[Map.WEST].wallsAlongParentEdge(); //CHECK
-        //m.initialNode.connected[Map.EAST].wallsAlongParentEdge(); //CHECK
-        //m.initialNode.connected[Map.SOUTH].wallsAlongParentEdge(); //CHECK
-        //m.initialNode.connected[Map.NORTH].wallsAlongParentEdge(); //
-
-
-        for(Node n : m.allNodes){
-            n.wallsAlongParentEdge();
-        }
-        */
-        //m.generateNodesAtNode(m.endNodes.get(0));
-        //m.generateNodesAtNode(m.endNodes.get(1));
-        //m.updateEndNodes();
-
-
         if (onWindows)
             ShaderPreRenderWorkThread.thread.start();
 
@@ -80,6 +57,7 @@ public class Main extends PApplet {
         clear();
         step();
         render();
+
         // MUST BE LAST
         clearLists();
         updateObjectLists();
@@ -90,15 +68,13 @@ public class Main extends PApplet {
     void render() {
         float translateX = width / 2 - player.middleX();
         float translateY = height / 2 - player.middleY();
-
         translate(translateX, translateY);
-        
+
         try {
             for (int i = 0; i < nearObjects.size(); i++) {
                 GameObject gameObject = nearObjects.get(i);
                 gameObject.draw();
             }
-            m.draw();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -218,12 +194,6 @@ public class Main extends PApplet {
 
     public void mousePressed() {
         mousePressed = true;
-    }
-    public static int getMouseX(){
-        return main.mouseX + (int) player.middleX() - main.width/2;
-    }
-    public static int getMouseY(){
-        return main.mouseY + (int) player.middleY() - main.height/2;
     }
 
     public void mouseReleased() {
