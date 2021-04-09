@@ -15,10 +15,10 @@ public class Map {
     ArrayList<Wall> roads;
     private Random rand = new Random();
     private int maxLevel;
-    private final int maxRoadLength = 700;
-    private final int minRoadLength = 300;
-    private final float minPointDist = 200f;
-    private final float minRoadDist = 200;
+    private final int maxRoadLength = 1000;
+    private final int minRoadLength = 500;
+    private final float minPointDist = 400;
+    private final float minRoadDist = 400;
 
     Map(int maxLevel){
         initialNode = new Node(Main.main.width/2, Main.main.height/2);

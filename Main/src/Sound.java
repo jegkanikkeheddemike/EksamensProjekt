@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-/*import processing.sound.*;
+import processing.sound.*;
 
 public class Sound extends GameObject {
     float x, y, volume;
@@ -55,4 +55,3 @@ public class Sound extends GameObject {
     }
 
 }
-*/
