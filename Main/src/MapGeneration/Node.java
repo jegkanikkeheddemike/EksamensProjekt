@@ -1,5 +1,8 @@
 package MapGeneration;
 
+import GameObjects.Wall;
+import Setup.Main;
+
 public class Node {
     public int x, y;
     public Node parent;

@@ -2,9 +2,13 @@
 // lang tid gøres det imens der bliver kørt step!
 package Threads;
 
+import Framework.*;
+import GameObjects.*;
+import Setup.Main;
+
 public class ShaderPreRenderWorkThread extends Thread {
     private static volatile boolean beginWork = false;
-    static ShaderPreRenderWorkThread thread = new ShaderPreRenderWorkThread();
+    public static ShaderPreRenderWorkThread thread = new ShaderPreRenderWorkThread();
 
     @Override
     public void run() {

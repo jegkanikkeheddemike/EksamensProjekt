@@ -1,3 +1,8 @@
+package GameObjects;
+import Framework.*;
+import GameObjects.Items.Item;
+import GameObjects.Items.Weapons.*;
+import Setup.Main;
 public class Player extends Movables {
     float xAcc = 2;
     float yAcc = 2;
@@ -5,13 +10,13 @@ public class Player extends Movables {
     float sprintSpeed = 5;
     float walkSpeed = 2;
     float sneakSpeed = 1;
-    Weapon cWeapon0;
-    Weapon cWeapon1;
-    boolean cWNumber;
+    public Weapon cWeapon0;
+    public Weapon cWeapon1;
+    public boolean cWNumber;
 
-    Item[] inventory = new Item[10];
+    public Item[] inventory = new Item[10];
 
-    int getEmptyInventorySpace() {
+    public int getEmptyInventorySpace() {
         for (int i = 0; i < inventory.length; i++) {
             if (inventory[i] == null)
                 return i;
@@ -19,7 +24,7 @@ public class Player extends Movables {
         return -1;
     }
 
-    boolean containsSameItemType(String itemType){
+    public boolean containsSameItemType(String itemType){
         for(int i = 0; i < inventory.length; i++){
             if (inventory[i]== null)
                 break;
@@ -29,7 +34,7 @@ public class Player extends Movables {
         return false;
     }
 
-    Item getItemTypeFromInventory(String itemType) {
+    public Item getItemTypeFromInventory(String itemType) {
         for (int i = 0; i < inventory.length; i++) {
             if (inventory[i].itemType.equals(itemType))
                 return inventory[i];
@@ -37,7 +42,7 @@ public class Player extends Movables {
         return null;
     }
 
-    int getItemIndexFromInventory(Item item) {
+    public int getItemIndexFromInventory(Item item) {
         for (int i = 0; i < inventory.length; i++) {
             if (inventory[i] == item)
                 return i;

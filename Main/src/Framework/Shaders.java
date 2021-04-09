@@ -1,17 +1,20 @@
+package Framework;
 import java.util.ArrayList;
 
+import GameObjects.*;
+import Setup.Main;
 import processing.opengl.PShader;
 
 public class Shaders {
     static PShader zombieFOVConeShader;
-    static ArrayList<Zombie> zombies = new ArrayList<Zombie>();
-    static ArrayList<Wall> walls = new ArrayList<Wall>();
+    public static ArrayList<Zombie> zombies = new ArrayList<Zombie>();
+    public static ArrayList<Wall> walls = new ArrayList<Wall>();
 
-    static void loadShaders() {
+    public static void loadShaders() {
         zombieFOVConeShader = Main.main.loadShader("Shaders\\ZombieViewCone.frag");
     }
 
-    static void drawZombieFOVCone() {
+    public static void drawZombieFOVCone() {
 
         // MAX AMOUNT OF ZOMBIES ON SCREEN IS 30 FOR NOW
         float[] zombieX = new float[30];

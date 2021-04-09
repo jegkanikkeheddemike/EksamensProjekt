@@ -1,10 +1,12 @@
+package Framework;
 import java.util.ArrayList;
 import java.util.Random;
 
+import Setup.Main;
 import processing.sound.*;
 
 public class Sound extends GameObject {
-    float volume;
+    public float volume;
     int timeAlive;
 
     public Sound(float x, float y, float volume, ArrayList<SoundFile> sounds) {

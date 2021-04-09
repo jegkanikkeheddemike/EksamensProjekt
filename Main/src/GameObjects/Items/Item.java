@@ -1,14 +1,17 @@
-package Items;
+package GameObjects.Items;
+import Framework.GameMath;
+import Framework.GameObject;
+import Setup.Main;
 import processing.core.*;
 
 public class Item extends GameObject {
-    PImage sprite;
-    int amount;
-    int maxAmount;
-    Boolean held = false;
-    String itemType = null;
+    public PImage sprite;
+    public int amount;
+    protected int maxAmount;
+    protected Boolean held = false;
+    public String itemType = null;
 
-    Item(float x, float y) {
+    protected Item(float x, float y) {
         super(x, y, 50, 50);
         this.classID = "Item";
     }
@@ -70,72 +73,3 @@ public class Item extends GameObject {
 
 }
 
-class Weapon extends Item {
-    String wpnType;
-    float damage;
-    int shotCooldown;
-    int cooldown;
-    float range;
-    float spread;
-    int clipSize;
-    int cClip;
-    String ammoType;
-
-    Weapon(float x, float y, String wpnType) {
-        super(x, y);
-        this.wpnType = wpnType;
-        classID = "Weapon";
-        this.sprite = Main.main.loadImage("Data/Images/" + this.wpnType + ".png");
-        this.w = (float) sprite.width / 3;
-        this.h = (float) sprite.height / 3;
-    }
-
-    @Override
-    public void reactPickedUp() {
-        if (!Main.player.cWNumber) {
-            Main.player.cWeapon0 = this;
-        } else {
-            Main.player.cWeapon1 = this;
-        }
-
-        delete();
-    }
-}
-
-class Starter extends Weapon {
-    public Starter(float x, float y) {
-        super(x, y, "Starter");
-        this.wpnType = "Starter";
-        damage = 5;
-        shotCooldown = 30;
-        range = 300;
-        spread = 0.05f;
-        held = true;
-        clipSize = 5;
-        cClip = clipSize;
-        ammoType = ".45 ACP";
-    }
-
-    public void use() {
-        new Bullet(Main.player.rotation);
-    }
-}
-
-class Pistol extends Weapon {
-    public Pistol(float x, float y) {
-        super(x, y, "Pistol");
-        this.wpnType = "Pistol";
-        damage = 5;
-        shotCooldown = 20;
-        range = 700;
-        spread = 0.02f;
-        clipSize = 7;
-        cClip = clipSize;
-        ammoType = "9mm";
-    }
-
-    public void use() {
-        new Bullet(Main.player.rotation);
-
-    }
-}

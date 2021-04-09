@@ -1,3 +1,4 @@
+package Setup;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -5,6 +6,10 @@ import processing.core.PApplet;
 import processing.event.MouseEvent;
 
 import Threads.*;
+import Framework.*;
+import GameObjects.*;
+import GameObjects.Items.AmmoItems.*;
+import MapGeneration.*;
 
 public class Main extends PApplet {
     public static boolean isRunning = true;
@@ -42,24 +47,20 @@ public class Main extends PApplet {
         if (onWindows)
             Sound.setupSound();
 
-        /*m = new Map(5);
+        m = new Map(5);
         m.generateMap();
         m.removeUselessNodes();
 
         for (Node n : m.allNodes) {
             n.wallsAlongParentEdge();
-        }*/
-
-        // m.generateNodesAtNode(m.endNodes.get(0));
-        // m.generateNodesAtNode(m.endNodes.get(1));
-        // m.updateEndNodes();
+        }
 
         if (onWindows)
             ShaderPreRenderWorkThread.thread.start();
         if (onWindows)
             Sound.setupSound();
 
-        new Building(0, 0, 1900 - 100, 0, 0, 1100 - 100, 1900 - 100, 1100 - 100, Map.EAST);
+        //new Building(0, 0, 1900 - 100, 0, 0, 1100 - 100, 1900 - 100, 1100 - 100, Map.EAST);
 
         player = new Player();
         
@@ -247,13 +248,13 @@ public class Main extends PApplet {
         ignoredChar.add((Integer) d);
     }
 
-    static boolean onWindows = true;
+    public static boolean onWindows = true;
 
     public static void main(String[] args) {
 
         if (!System.getProperty("os.name").equals("Windows 10"))
             onWindows = false;
 
-        PApplet.main("Main");
+        PApplet.main("Setup.Main");
     }
 }

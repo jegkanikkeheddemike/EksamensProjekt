@@ -1,4 +1,6 @@
-package Items;
+package GameObjects.Items;
+
+import Setup.Main;
 
 public class Bandage extends Item {
     int amount = 1;

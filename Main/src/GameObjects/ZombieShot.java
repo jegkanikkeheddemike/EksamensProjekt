@@ -1,4 +1,8 @@
 package GameObjects;
+
+import Framework.*;
+import Setup.Main;
+
 public class ZombieShot extends Movables {
     float dmg;
     Zombie parent;

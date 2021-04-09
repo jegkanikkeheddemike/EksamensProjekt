@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import GameObjects.Wall;
+import Setup.Main;
+import Framework.*;
+
 public class Map {
     //                                        north,   south, east, west
     private static final int[][] directions = {{0,-1}, {0,1}, {1,0}, {-1,0}};
@@ -12,7 +16,7 @@ public class Map {
     public static final int EAST  = 2;
     public static final int WEST  = 3;
     Node initialNode;
-    ArrayList<Node> allNodes;
+    public ArrayList<Node> allNodes;
     ArrayList<Node> endNodes; // or maybe is should be called outer nodes?
     ArrayList<Wall> roads;
     private Random rand = new Random();
@@ -22,7 +26,7 @@ public class Map {
     private final float minPointDist = 400;
     private final float minRoadDist = 400;
 
-    Map(int maxLevel){
+    public Map(int maxLevel){
         initialNode = new Node(Main.main.width/2, Main.main.height/2);
         allNodes = new ArrayList<Node>();
         endNodes = new ArrayList<Node>();

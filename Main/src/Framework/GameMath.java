@@ -1,3 +1,7 @@
+package Framework;
+
+import Setup.*;
+
 public class GameMath {
     public static float pointDistance(float x1, float y1, float x2, float y2) {
         float dx = x2 - x1;
@@ -103,23 +107,3 @@ public class GameMath {
     }
 }
 
-class LineData {
-    boolean collision;
-    float x, y, length;
-    GameObject gameObject;
-
-    public LineData(float x, float y) {
-        collision = true;
-        this.x = x;
-        this.y = y;
-        ;
-    }
-
-    LineData() {
-        collision = false;
-        x = Float.NaN;
-        y = Float.NaN;
-    }
-
-    public static final LineData noCollision = new LineData();
-}

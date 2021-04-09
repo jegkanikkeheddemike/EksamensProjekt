@@ -1,3 +1,7 @@
+package Framework;
+
+import Setup.Main;
+
 public class UI {
     public static void drawUI() {
         // #region HEALTHBAR

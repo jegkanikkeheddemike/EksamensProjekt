@@ -1,4 +1,7 @@
+package Framework;
 import java.util.ArrayList;
+
+import Setup.Main;
 
 public abstract class Movables extends GameObject {
     public float xSpeed, ySpeed, rotation;
@@ -49,7 +52,7 @@ public abstract class Movables extends GameObject {
         }
     }
 
-    GameObject[] getCollisions(float offsetX, float offsetY, String[] hitList) {
+    public GameObject[] getCollisions(float offsetX, float offsetY, String[] hitList) {
         ArrayList<GameObject> collisions = new ArrayList<GameObject>();
 
         for (int i = 0; i < Main.nearObjects.size(); i++) {

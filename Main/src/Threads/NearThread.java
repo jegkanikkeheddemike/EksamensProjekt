@@ -1,6 +1,10 @@
 package Threads;
 import java.util.ArrayList;
 
+import Framework.GameMath;
+import Framework.GameObject;
+import Setup.Main;
+
 public class NearThread extends Thread {
     public static ArrayList<GameObject> nearObjectsUpdated = new ArrayList<GameObject>();
     public static volatile boolean isReady = false;

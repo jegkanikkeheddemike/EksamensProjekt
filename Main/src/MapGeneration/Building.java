@@ -1,6 +1,9 @@
 package MapGeneration;
 import java.util.Random;
 
+import GameObjects.Wall;
+import GameObjects.Zombie;
+
 public class Building {
     int topleftX, topleftY, toprightX, toprightY, botleftX, botleftY, botrightX, botrightY;
     int orientation;

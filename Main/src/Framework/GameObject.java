@@ -1,3 +1,7 @@
+package Framework;
+
+import Setup.Main;
+
 public abstract class GameObject {
     private static int idCounter = 0;
     public float x, y, w, h;

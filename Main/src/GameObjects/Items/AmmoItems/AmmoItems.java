@@ -1,4 +1,7 @@
-package Items;
+package GameObjects.Items.AmmoItems;
+
+import GameObjects.Items.Item;
+import Setup.Main;
 
 public class AmmoItems extends Item {
     
@@ -20,18 +23,5 @@ public class AmmoItems extends Item {
 
 }
 
-class AmmoBox45APC extends AmmoItems {
-    AmmoBox45APC(float x, float y) {
-        super(x, y);
-        itemType = ".45 ACP";
-        amount = 20;
-    }
-}
 
-class AmmoBox9mm extends AmmoItems {
-    AmmoBox9mm(float x, float y) {
-        super(x, y);
-        itemType = "9mm";
-        amount = 20;
-    }
-}
+

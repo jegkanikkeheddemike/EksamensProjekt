@@ -1,6 +1,9 @@
+package GameObjects;
 import java.util.ArrayList;
 import java.util.Random;
 
+import Framework.*;
+import Setup.Main;
 import processing.core.PVector;
 
 public class Zombie extends Movables {

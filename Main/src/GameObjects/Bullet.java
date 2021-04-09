@@ -1,4 +1,9 @@
+package GameObjects;
+
 import java.util.*;
+
+import Framework.*;
+import Setup.Main;
 
 public class Bullet extends GameObject {
     float damage = Main.player.getWeapon().damage;
@@ -10,7 +15,7 @@ public class Bullet extends GameObject {
     float yEnd;
     GameObject collidedWith;
 
-    Bullet(float rotation) {
+    public Bullet(float rotation) {
         super(Main.player.middleX(), Main.player.middleY(), 0, 0);
         classID = "Bullet";
         Random r = new Random();
