@@ -3,6 +3,8 @@ import processing.core.*;
 
 public class Item extends GameObject {
     PImage sprite;
+    int amount;
+    int maxAmount;
     Boolean held = false;
     String itemType = null;
 
@@ -21,9 +23,8 @@ public class Item extends GameObject {
 
     @Override
     public void step() {
-        if (GameMath.pointDistance(this.x, this.y, Main.player.x, Main.player.y) < this.h) {
+        if (GameMath.pointDistance(this.x, this.y, Main.player.x, Main.player.y) < this.h && held == false) {
             reactPickedUp();
-            held = true;
         }
         if (held) {
             x = Main.player.x;
@@ -47,7 +48,24 @@ public class Item extends GameObject {
         Main.main.rect(x, y, 80, 80);
     }
 
+    
     public void reactPickedUp() {
+        if (Main.player.containsSameItemType(this.itemType)){
+            Item oldItem = Main.player.getItemTypeFromInventory(this.itemType);
+            oldItem.amount += this.amount;
+            
+            if(oldItem.amount > oldItem.maxAmount)
+                oldItem.amount = oldItem.maxAmount;
+            held = true;
+            
+        }else{
+            int index = Main.player.getEmptyInventorySpace();
+            if (index != -1) {
+                Main.player.inventory[index] = this;
+                held = true;
+                
+            }
+        }
     }
 
 }
@@ -59,6 +77,8 @@ class Weapon extends Item {
     int cooldown;
     float range;
     float spread;
+    int clipSize;
+    int cClip;
     String ammoType;
 
     Weapon(float x, float y, String wpnType) {
@@ -70,6 +90,7 @@ class Weapon extends Item {
         this.h = (float) sprite.height / 3;
     }
 
+    @Override
     public void reactPickedUp() {
         if (!Main.player.cWNumber) {
             Main.player.cWeapon0 = this;
@@ -90,6 +111,8 @@ class Starter extends Weapon {
         range = 300;
         spread = 0.05f;
         held = true;
+        clipSize = 5;
+        cClip = clipSize;
         ammoType = ".45 ACP";
     }
 
@@ -106,10 +129,13 @@ class Pistol extends Weapon {
         shotCooldown = 20;
         range = 700;
         spread = 0.02f;
-        ammoType = "9 mm";
+        clipSize = 7;
+        cClip = clipSize;
+        ammoType = "9mm";
     }
 
     public void use() {
         new Bullet(Main.player.rotation);
+
     }
 }

@@ -10,15 +10,21 @@ public class UI {
         Main.main.rect(Main.main.width / 3f, Main.main.height - 100,
                 (Main.player.health / 100f) * (Main.main.width / 3f), 50);
         // #endregion
+        //#region KOORDINATES
+        Main.main.fill(255);
+        Main.main.text("x:"+ (int)Main.player.x + " y:" + (int)Main.player.y,Main.main.width/2f,Main.main.height - 105);
+        //#endregion
         // #region WEAPONS
         Main.main.fill(255);
         if (!Main.player.cWNumber)
             Main.main.fill(0, 255, 0);
         Main.main.text(Main.player.cWeapon0.wpnType, Main.main.width / 3f, Main.main.height - 105);
+        Main.main.text(Main.player.cWeapon0.cClip+"/"+Main.player.cWeapon0.clipSize, Main.main.width / 3f, Main.main.height - 115);
         Main.main.fill(255);
         if (Main.player.cWNumber)
             Main.main.fill(0, 255, 0);
-        Main.main.text(Main.player.cWeapon1.wpnType, Main.main.width / 3f + 400, Main.main.height - 105);
+        Main.main.text(Main.player.cWeapon1.wpnType, Main.main.width / 3f + 500, Main.main.height - 105);
+        Main.main.text(Main.player.cWeapon1.cClip+"/"+Main.player.cWeapon1.clipSize, Main.main.width / 3f + 500, Main.main.height - 115);
 
         // #endregion
         // #region INVENTORY
