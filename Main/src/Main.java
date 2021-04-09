@@ -200,6 +200,14 @@ public class Main extends PApplet {
         mouseReleased = true;
     }
 
+    public static int getMouseX(){
+        return main.mouseX + (int) player.middleX() - main.width/2;
+    }
+    
+    public static int getMouseY(){
+        return main.mouseY + (int) player.middleY() - main.height/2;
+    }
+
     void cleanKeyboard() {
         mousePressed = false;
         mouseReleased = false;

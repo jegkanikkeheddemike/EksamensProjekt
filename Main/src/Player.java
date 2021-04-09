@@ -73,7 +73,7 @@ public class Player extends Movables {
     }
 
     void updateAngle() {
-        rotation = GameMath.pointAngle(middleX(), middleY(), Main.main.mouseX, Main.main.mouseY);
+        rotation = GameMath.pointAngle(middleX(), middleY(), Main.main.getMouseX(), Main.main.getMouseY());
     }
 
     void updateMove() {
