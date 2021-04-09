@@ -22,10 +22,11 @@ public class Main extends PApplet {
 
     @Override
     public void settings() {
-        if (usesShaders)
+        if (usesShaders) {
             size(1920, 1080, P2D);
-        else
-            size(1920, 1080, P2D);
+            frameRate(60);
+        } else
+            size(1920, 1080);
     }
 
     @Override
@@ -214,8 +215,9 @@ public class Main extends PApplet {
     static boolean usesShaders = true;
 
     public static void main(String[] args) {
-        if (!System.getProperty("os.name").equals("Windows 10"))
-            usesShaders = false;
+        /*
+         * if (!System.getProperty("os.name").equals("Windows 10")) usesShaders = false;
+         */
 
         PApplet.main("Main");
     }
