@@ -13,7 +13,6 @@ public class Main extends PApplet {
 
     public static ArrayList<GameObject> toBeDelted = new ArrayList<GameObject>();
     public static Player player;
-    public static AmmoBox9mm ammoBox9mm;
 
     public static int gameTime;
 
@@ -41,7 +40,7 @@ public class Main extends PApplet {
         if (onWindows)
             Sound.setupSound();
 
-        m = new Map(5);
+        /*m = new Map(5);
         m.generateMap();
         m.removeUselessNodes();
 
@@ -52,7 +51,7 @@ public class Main extends PApplet {
 
         for (Node n : m.allNodes) {
             n.wallsAlongParentEdge();
-        }
+        }*/
 
         // m.generateNodesAtNode(m.endNodes.get(0));
         // m.generateNodesAtNode(m.endNodes.get(1));
@@ -65,8 +64,7 @@ public class Main extends PApplet {
         if (onWindows)
             Sound.setupSound();
 
-        // new Building(0, 0, 1900 - 100, 0, 0, 1100 - 100, 1900 - 100, 1100 - 100, new
-        // Random().nextInt(4));
+        new Building(0, 0, 1900 - 100, 0, 0, 1100 - 100, 1900 - 100, 1100 - 100, Map.EAST);
 
         player = new Player();
         
@@ -75,10 +73,10 @@ public class Main extends PApplet {
             player.x = r.nextInt(1920);
             player.y = r.nextInt(1080);
         }
-        ammoBox9mm = new AmmoBox9mm(player.x+50,player.y+50);
-        ammoBox9mm = new AmmoBox9mm(player.x-50,player.y+50);
-        ammoBox9mm = new AmmoBox9mm(player.x+50,player.y-50);
-        ammoBox9mm = new AmmoBox9mm(player.x-50,player.y-50);
+        new AmmoBox9mm(player.x+50,player.y+50);
+        new AmmoBox9mm(player.x-50,player.y+50);
+        new AmmoBox9mm(player.x+50,player.y-50);
+        new AmmoBox9mm(player.x-50,player.y-50);
 
         // new Bandage(400, 400);
     }
@@ -106,7 +104,7 @@ public class Main extends PApplet {
                 GameObject gameObject = nearObjects.get(i);
                 gameObject.draw();
             }
-            // m.draw();
+            //m.draw();
         } catch (Exception e) {
             e.printStackTrace();
         }

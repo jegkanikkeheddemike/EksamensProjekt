@@ -11,7 +11,7 @@ public class Sound extends GameObject {
         super(x, y, 1, 1);
         this.volume = volume;
         int r = new Random().nextInt(sounds.size());
-        if(Main.onWindows){
+        if(Main.onWindows){ 
             sounds.get(r).amp(volume / 100);
             sounds.get(r).play();
         }

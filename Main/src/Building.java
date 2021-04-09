@@ -106,8 +106,8 @@ public class Building {
         }
     }
 
-    public static final int EAST = 0;
-    public static final int SOUTH = 1;
-    public static final int WEST = 2;
-    public static final int NORTH = 3;
+    public static final int EAST = Map.EAST;
+    public static final int SOUTH = Map.SOUTH;
+    public static final int WEST = Map.WEST;
+    public static final int NORTH = Map.NORTH;
 }
