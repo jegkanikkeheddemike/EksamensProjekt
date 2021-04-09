@@ -120,7 +120,7 @@ public class Map {
                     Boolean xOut = ((n2.x > n1.x && n2.x < n1.parent.x) || (n2.x < n1.x && n2.x > n1.parent.x));
                    
                     if(dx == 0 && dx2 != 0 && xWithin && yOut){
-                        System.out.println("INTERSECTIONNODE YYYYYYY");
+                        //System.out.println("INTERSECTIONNODE YYYYYYY");
                         //Handle this intersection
                         //the new node should n1.x and n2.y
                         Node intersectionNode = new Node(n1.x, n2.y, n1.parent);
@@ -142,7 +142,7 @@ public class Map {
                         //}
 
                     }else if(dy == 0 && dy2 != 0 && yWithin && xOut){
-                        System.out.println("INTERSECTIONNODE XXXXXXXX");
+                        //System.out.println("INTERSECTIONNODE XXXXXXXX");
                         //Handle this intersection
                         //the new node should n1.y and n2.x
                         Node intersectionNode = new Node(n2.x, n1.y, n1.parent);
@@ -177,7 +177,7 @@ public class Map {
             float pointDist = GameMath.pointDistance(n0.x, n0.y, generatedNode.x, generatedNode.y);
             //Check first for the distance between each node
             if(pointDist <= minPointDist){
-                System.out.println("POINT DISTANCE --- NODE NOT CREATED");
+                //System.out.println("POINT DISTANCE --- NODE NOT CREATED");
                 createNode = false;
                 break; // The node shouldn't be created
             //Secondly check the distance between each node.
@@ -209,7 +209,7 @@ public class Map {
                     Boolean yWithin = (generatedNode.parent.y < n0.y && n0.y < generatedNode.y ||generatedNode.parent.y > n0.y & n0.y > generatedNode.y || generatedNode.parent.y < n0.parent.y && n0.parent.y < generatedNode.y || generatedNode.parent.y > n0.parent.y && n0.parent.y > generatedNode.y);
                     int dx = Math.abs(n0.x - generatedNode.x);
                     if(yWithin && dx < minRoadDist){
-                        System.out.println("ROAD DISTANCE VERTICAL --- NODE NOT CREATED");
+                        //System.out.println("ROAD DISTANCE VERTICAL --- NODE NOT CREATED");
                         createNode = false;
                         break;
                     }

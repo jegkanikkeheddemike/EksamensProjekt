@@ -83,7 +83,7 @@ public class Node {
     public void wallsAlongParentEdge(){ // THE WALLS ARE AUTOMATICALLY ADDED
         //Parent is to the EAST
         if (parent == connected[Map.EAST]){
-            System.out.println("OEST");
+            //System.out.println("OEST");
             //virker ikke helt endnu
             int x1North = x + roadWidth/2 * boolToInt(connected[Map.NORTH] != null);
             int x2North = parent.x - roadWidth/2 * boolToInt(parent.connected[Map.NORTH] != null);
@@ -94,7 +94,7 @@ public class Node {
             new Wall(x1South, y+roadWidth/2, x2South, parent.y+roadWidth/2, wallWidth);
         
         }else if (parent == connected[Map.WEST]){
-            System.out.println("VEST");
+            //System.out.println("VEST");
             int x1North = parent.x + roadWidth/2 * boolToInt(parent.connected[Map.NORTH] != null);
             int x2North = x - roadWidth/2 * boolToInt(connected[Map.NORTH] != null);
             new Wall(x1North, y-roadWidth/2, x2North, parent.y-roadWidth/2, wallWidth);
@@ -105,7 +105,7 @@ public class Node {
         }
         //Parent is to the SOUTH
         else if (parent == connected[Map.SOUTH]){
-            System.out.println("SYD");
+            //System.out.println("SYD");
             //virker ikke helt endnu
             int y1West = y + roadWidth/2 * boolToInt(connected[Map.WEST] != null);
             int y2West = parent.y - roadWidth/2 * boolToInt(parent.connected[Map.WEST] != null);
@@ -115,7 +115,7 @@ public class Node {
             int y2East = parent.y - roadWidth/2 * boolToInt(parent.connected[Map.EAST] != null);
             new Wall(x+roadWidth/2, y1East, parent.x+roadWidth/2, y2East, wallWidth);
         }else if (parent == connected[Map.NORTH]){
-            System.out.println("NORD");
+           // System.out.println("NORD");
             //virker ikke helt endnu
             int y1West = parent.y + roadWidth/2 * boolToInt(parent.connected[Map.WEST] != null);
             int y2West = y - roadWidth/2 * boolToInt(connected[Map.WEST] != null);
@@ -129,7 +129,7 @@ public class Node {
         if(parent2 != null){
                 //parent2 is to the EAST
             if (parent2 == connected[Map.EAST]){
-                System.out.println("OEST");
+                //System.out.println("OEST");
                 //virker ikke helt endnu
                 int x1North = x + roadWidth/2 * boolToInt(connected[Map.NORTH] != null);
                 int x2North = parent2.x - roadWidth/2 * boolToInt(parent2.connected[Map.NORTH] != null);
@@ -140,7 +140,7 @@ public class Node {
                 new Wall(x1South, y+roadWidth/2, x2South, parent2.y+roadWidth/2, wallWidth);
 
             }else if (parent2 == connected[Map.WEST]){
-                System.out.println("VEST");
+                //System.out.println("VEST");
                 int x1North = parent2.x + roadWidth/2 * boolToInt(parent2.connected[Map.NORTH] != null);
                 int x2North = x - roadWidth/2 * boolToInt(connected[Map.NORTH] != null);
                 new Wall(x1North, y-roadWidth/2, x2North, parent2.y-roadWidth/2, wallWidth);
@@ -151,7 +151,7 @@ public class Node {
             }
             //parent2 is to the SOUTH
             else if (parent2 == connected[Map.SOUTH]){
-                System.out.println("SYD");
+                //System.out.println("SYD");
                 //virker ikke helt endnu
                 int y1West = y + roadWidth/2 * boolToInt(connected[Map.WEST] != null);
                 int y2West = parent2.y - roadWidth/2 * boolToInt(parent2.connected[Map.WEST] != null);
@@ -162,7 +162,7 @@ public class Node {
                 new Wall(x+roadWidth/2, y1East, parent2.x+roadWidth/2, y2East, wallWidth);
             }else if (parent2 == connected[Map.NORTH]){
                 System.out.println("NORD");
-                //virker ikke helt endnu
+                ////virker ikke helt endnu
                 int y1West = parent2.y + roadWidth/2 * boolToInt(parent2.connected[Map.WEST] != null);
                 int y2West = y - roadWidth/2 * boolToInt(connected[Map.WEST] != null);
                 new Wall(x-roadWidth/2, y1West, parent2.x-roadWidth/2, y2West, wallWidth);
