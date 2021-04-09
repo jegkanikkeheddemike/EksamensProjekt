@@ -12,7 +12,7 @@ public abstract class Movables extends GameObject {
     }
 
     protected void runStandardCollisions() {
-        GameObject[] horiColl = getCollisions(xSpeed, 0, new String[] { "Wall", "Zombie" });
+        GameObject[] horiColl = getCollisions(xSpeed, 0, new String[] { "Wall", "Zombie","Player" });
         // DEN SIGER i++ IKKE GØR NOGET WTF DET ER IKKE SANDT??????
         for (int i = 0; i < horiColl.length; i++) {
             float preX = x;
@@ -31,7 +31,7 @@ public abstract class Movables extends GameObject {
             break;
         }
 
-        GameObject[] vertColl = getCollisions(0, ySpeed, new String[] { "Wall", "Zombie" });
+        GameObject[] vertColl = getCollisions(0, ySpeed, new String[] { "Wall", "Zombie","Player" });
         for (int i = 0; i < vertColl.length; i++) {
             float preY = y;
             int attempts = 0;

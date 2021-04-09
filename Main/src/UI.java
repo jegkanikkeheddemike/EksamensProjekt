@@ -43,7 +43,7 @@ public class UI {
         // #endregion
         // #region SHADER INFO
         
-        if (!Main.usesShaders) {
+        if (!Main.onWindows) {
             Main.main.strokeWeight(3);
             Main.main.stroke(0);
             Main.main.fill(255,0,0);

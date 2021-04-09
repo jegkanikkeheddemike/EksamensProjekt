@@ -60,7 +60,7 @@ public class Zombie extends Movables {
         }
         Main.main.text(geneDescription, x + w + 10, y);
         drawAwarenessbar();
-        if (!Main.usesShaders)
+        if (!Main.onWindows)
             drawFOVCone();
     }
 
@@ -215,8 +215,7 @@ public class Zombie extends Movables {
                 float length = new Random().nextFloat() * 1000;
 
                 LineData newLine = GameMath.lineCollision(x, y, x + length * (float) Math.sin(randomDir),
-                        y + length * (float) Math.cos(randomDir),
-                        new String[] { "Wall" });
+                        y + length * (float) Math.cos(randomDir), new String[] { "Wall" });
                 if (newLine.collision) {
                     targetX = newLine.x;
                     targetY = newLine.y;
@@ -253,7 +252,7 @@ public class Zombie extends Movables {
         ySpeed = (float) Math.cos(walkdir) * cSpeed;
 
         if (speed() < cSpeed && (state == "Chase" || state == "Find")) {
-            GameObject[] collisions = getCollisions(xSpeed, ySpeed, new String[] {"Wall","Player"});
+            GameObject[] collisions = getCollisions(xSpeed, ySpeed, new String[] { "Wall", "Player" });
             GameObject nearest = null;
             for (int i = 0; i < collisions.length; i++) {
                 if (nearest == null
@@ -297,14 +296,12 @@ public class Zombie extends Movables {
     void lookForPlayer() {
         awareness *= awarenessMulitplier;
         // INCREASE AWARENESS BASED ON SOUND
-        for (int i = 0; i < Main.nearObjects.size(); i++) {
-            GameObject g = Main.nearObjects.get(i);
-            if (g.classID == "Sound") {
-                awareness += ((Sound) g).volume * (soundSense * genes[GENE_HEAR_SKILL])
-                        / GameMath.objectDistance(this, g);
-            }
-        }
-
+        /*
+         * for (int i = 0; i < Main.nearObjects.size(); i++) { GameObject g =
+         * Main.nearObjects.get(i); if (g.classID == "Sound") { awareness += ((Sound)
+         * g).volume * (soundSense * genes[GENE_HEAR_SKILL]) /
+         * GameMath.objectDistance(this, g); } }
+         */
         LineData lineToPlayer = GameMath.lineCollision(middleX(), middleY(), Main.player.middleX(),
                 Main.player.middleY(), new String[] { "Wall" });
 
@@ -314,10 +311,10 @@ public class Zombie extends Movables {
                 float angToPlayer = GameMath.objectAngle(this, Main.player);
                 float relAngle = rotation - angToPlayer;
 
-                relAngle = (float) (relAngle % Math.PI * 2);
+                relAngle = (float) Math.abs(relAngle % (Math.PI * 2));
                 float fovReal = (float) ((fov / 360f) * Math.PI);
 
-                if (relAngle < fovReal || relAngle > 2. * Math.PI - fovReal) {
+                if (relAngle < fovReal / 2) {
                     awareness += (genes[GENE_SEE_SKILL] * seeSense)
                             / Math.sqrt(GameMath.objectDistance(this, Main.player));
                     if (awareness > 100f / 3f)

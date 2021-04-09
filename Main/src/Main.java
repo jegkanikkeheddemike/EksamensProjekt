@@ -23,7 +23,7 @@ public class Main extends PApplet {
     @Override
     public void settings() {
 
-        if (usesShaders) {
+        if (onWindows) {
             size(1800, 900, P2D);
         } else
             size(1800, 900);
@@ -32,14 +32,15 @@ public class Main extends PApplet {
     @Override
     public void setup() {
         frameRate(60);
-        if (usesShaders)
+        if (onWindows)
             Shaders.loadShaders();
         NearThread.thread.start();
-        if (usesShaders)
+        if (onWindows)
             ShaderPreRenderWorkThread.thread.start();
 
         // GroundItems.loadImages();
-        Sound.setupSound();
+        if(onWindows)
+            Sound.setupSound();
         new Building(0, 0, 1900 - 100, 0, 0, 1100 - 100, 1900 - 100, 1100 - 100, new Random().nextInt(4));
         player = new Player();
         Random r = new Random();
@@ -77,7 +78,7 @@ public class Main extends PApplet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (usesShaders)
+        if (onWindows)
             Shaders.drawZombieFOVCone();
 
         translate(-translateX, -translateY);
@@ -86,7 +87,7 @@ public class Main extends PApplet {
 
     void step() {
         // BEGYNDER FORBEREDELSERNE TIL SHADERS, PIL IKKE VED!!!!
-        if (usesShaders)
+        if (onWindows)
             ShaderPreRenderWorkThread.beginWork();
         try {
             for (int i = 0; i < nearObjects.size(); i++) {
@@ -213,12 +214,12 @@ public class Main extends PApplet {
         ignoredChar.add((Integer) d);
     }
 
-    static boolean usesShaders = true;
+    static boolean onWindows = true;
 
     public static void main(String[] args) {
 
         if (!System.getProperty("os.name").equals("Windows 10"))
-            usesShaders = false;
+            onWindows = false;
 
         PApplet.main("Main");
     }
