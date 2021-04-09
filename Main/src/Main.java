@@ -40,32 +40,19 @@ public class Main extends PApplet {
         if (onWindows)
             Sound.setupSound();
 
-        m = new Map(5);
-        m.generateMap();
-        m.removeUselessNodes();
+       // m = new Map(5);
+        //m.generateMap();
+        //m.removeUselessNodes();
+        new Building(0, 0, 2000, 0, 0, 800, 2000, 800, 1);
 
-        // m.initialNode.connected[Map.WEST].wallsAlongParentEdge(); //CHECK
-        // m.initialNode.connected[Map.EAST].wallsAlongParentEdge(); //CHECK
-        // m.initialNode.connected[Map.SOUTH].wallsAlongParentEdge(); //CHECK
-        // m.initialNode.connected[Map.NORTH].wallsAlongParentEdge(); //
-
-        for (Node n : m.allNodes) {
+        /*for (Node n : m.allNodes) {
             n.wallsAlongParentEdge();
-        }
-
-        // m.generateNodesAtNode(m.endNodes.get(0));
-        // m.generateNodesAtNode(m.endNodes.get(1));
-        // m.updateEndNodes();
+        }*/
 
         if (onWindows)
             ShaderPreRenderWorkThread.thread.start();
-
-        // GroundItems.loadImages();
         if (onWindows)
             Sound.setupSound();
-
-        // new Building(0, 0, 1900 - 100, 0, 0, 1100 - 100, 1900 - 100, 1100 - 100, new
-        // Random().nextInt(4));
 
         player = new Player();
         Random r = new Random();
