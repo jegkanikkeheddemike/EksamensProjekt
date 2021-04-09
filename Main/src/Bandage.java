@@ -1,18 +1,12 @@
 public class Bandage extends Item {
+    int amount = 1;
+    int maxAmount = 3;
     public Bandage(float x, float y) {
         super(x, y);
         itemType = "Bandage";
     }
 
-    @Override
-    public void reactPickedUp() {
-        int index = Main.player.getEmptyInventorySpace();
-        if (index != -1) {
-            Main.player.inventory[index] = this;
-            held = true;
-            delete();
-        }
-    }
+    
 
     @Override
     public void use() {

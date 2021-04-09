@@ -13,6 +13,7 @@ public class Main extends PApplet {
 
     public static ArrayList<GameObject> toBeDelted = new ArrayList<GameObject>();
     public static Player player;
+    public static AmmoBox9mm ammoBox9mm;
 
     public static int gameTime;
 
@@ -55,11 +56,16 @@ public class Main extends PApplet {
             Sound.setupSound();
 
         player = new Player();
+        
         Random r = new Random();
         while (player.getCollisions(0, 0, new String[] { "Wall", "Zombie" }).length > 0) {
             player.x = r.nextInt(1920);
             player.y = r.nextInt(1080);
         }
+        ammoBox9mm = new AmmoBox9mm(player.x+50,player.y+50);
+        ammoBox9mm = new AmmoBox9mm(player.x-50,player.y+50);
+        ammoBox9mm = new AmmoBox9mm(player.x+50,player.y-50);
+        ammoBox9mm = new AmmoBox9mm(player.x-50,player.y-50);
 
         // new Bandage(400, 400);
     }
