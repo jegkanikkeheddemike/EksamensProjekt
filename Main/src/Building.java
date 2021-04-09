@@ -99,7 +99,7 @@ public class Building {
         int amount = 2+r.nextInt(5);
         for (int i = 0; i < amount; i++) {
             Zombie zombie = new Zombie(topleftX + r.nextInt(width), topleftY + r.nextInt(height), Zombie.randomGenes());
-            while (zombie.getCollisions(0, 0, new String[] {}).length > 0) {
+            while (zombie.getCollisions(0, 0, new String[] {"Wall","Player","Item"}).length > 0) {
                 zombie.x = topleftX + r.nextInt(width);
                 zombie.y = topleftY + r.nextInt(height);
             }

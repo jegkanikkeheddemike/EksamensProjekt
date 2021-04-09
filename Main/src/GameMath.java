@@ -10,7 +10,6 @@ public class GameMath {
         float y1 = o1.middleY();
         float x2 = o2.middleX();
         float y2 = o2.middleY();
-        
 
         float dx = x2 - x1;
         float dy = y2 - y1;
@@ -34,18 +33,18 @@ public class GameMath {
         return (float) (Math.atan2(dy, dx));
     }
 
-    public static LineData lineCollision(float x1, float y1, float x2, float y2, String[] ignoreList) {
+    public static LineData lineCollision(float x1, float y1, float x2, float y2, String[] seeList) {
         LineData data = LineData.noCollision;
         for (int i = 0; i < Main.nearObjects.size(); i++) {
             GameObject g = Main.nearObjects.get(i);
-            boolean doContinue = false;
-            for (int j = 0; j < ignoreList.length; j++) {
-                if (ignoreList[j] == g.classID) {
-                    doContinue = true;
+            boolean onSeeList = false;
+            for (int j = 0; j < seeList.length; j++) {
+                if (seeList[j].equals(g.classID)) {
+                    onSeeList = true;
                     break;
                 }
             }
-            if (doContinue)
+            if (!onSeeList)
                 continue;
 
             LineData newData = GameMath.lineRect(x1, y1, x2, y2, g.x, g.y, g.w, g.h);

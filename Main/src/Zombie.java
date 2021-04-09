@@ -84,8 +84,7 @@ public class Zombie extends Movables {
                     + (fov / 360f) * Math.PI / 2f;
             PVector v = new PVector(middleX() + seeRange * (float) Math.sin(angle),
                     middleY() + seeRange * (float) Math.cos(angle));
-            LineData vData = GameMath.lineCollision(middleX(), middleY(), v.x, v.y,
-                    new String[] { "Player", "Zombie", "Weapon", "Item" });
+            LineData vData = GameMath.lineCollision(middleX(), middleY(), v.x, v.y, new String[] { "Wall" });
             if (vData.collision) {
                 v.x = vData.x;
                 v.y = vData.y;
@@ -217,7 +216,7 @@ public class Zombie extends Movables {
 
                 LineData newLine = GameMath.lineCollision(x, y, x + length * (float) Math.sin(randomDir),
                         y + length * (float) Math.cos(randomDir),
-                        new String[] { "Player", "Zombie", "Weapon", "Item" });
+                        new String[] { "Wall" });
                 if (newLine.collision) {
                     targetX = newLine.x;
                     targetY = newLine.y;
@@ -254,7 +253,7 @@ public class Zombie extends Movables {
         ySpeed = (float) Math.cos(walkdir) * cSpeed;
 
         if (speed() < cSpeed && (state == "Chase" || state == "Find")) {
-            GameObject[] collisions = getCollisions(xSpeed, ySpeed, new String[] {});
+            GameObject[] collisions = getCollisions(xSpeed, ySpeed, new String[] {"Wall","Player"});
             GameObject nearest = null;
             for (int i = 0; i < collisions.length; i++) {
                 if (nearest == null
@@ -307,7 +306,7 @@ public class Zombie extends Movables {
         }
 
         LineData lineToPlayer = GameMath.lineCollision(middleX(), middleY(), Main.player.middleX(),
-                Main.player.middleY(), new String[] { "Zombie", "Player", "Item", "Weapon" });
+                Main.player.middleY(), new String[] { "Wall" });
 
         if (!lineToPlayer.collision) {
             float dist = GameMath.objectDistance(this, Main.player);

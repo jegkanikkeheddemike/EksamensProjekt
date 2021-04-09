@@ -12,7 +12,7 @@ public abstract class Movables extends GameObject {
     }
 
     protected void runStandardCollisions() {
-        GameObject[] horiColl = getCollisions(xSpeed, 0, new String[] { "Weapon", "Item" });
+        GameObject[] horiColl = getCollisions(xSpeed, 0, new String[] { "Wall", "Zombie" });
         // DEN SIGER i++ IKKE GØR NOGET WTF DET ER IKKE SANDT??????
         for (int i = 0; i < horiColl.length; i++) {
             float preX = x;
@@ -31,7 +31,7 @@ public abstract class Movables extends GameObject {
             break;
         }
 
-        GameObject[] vertColl = getCollisions(0, ySpeed, new String[] { "Weapon", "Item" });
+        GameObject[] vertColl = getCollisions(0, ySpeed, new String[] { "Wall", "Zombie" });
         for (int i = 0; i < vertColl.length; i++) {
             float preY = y;
             int attempts = 0;
@@ -49,7 +49,7 @@ public abstract class Movables extends GameObject {
         }
     }
 
-    GameObject[] getCollisions(float offsetX, float offsetY, String[] ingnoreList) {
+    GameObject[] getCollisions(float offsetX, float offsetY, String[] hitList) {
         ArrayList<GameObject> collisions = new ArrayList<GameObject>();
 
         for (int i = 0; i < Main.nearObjects.size(); i++) {
@@ -61,12 +61,12 @@ public abstract class Movables extends GameObject {
             if (g == this)
                 continue;
 
-            boolean doBreak = false;
-            for (int j = 0; j < ingnoreList.length; j++) {
-                if (g.classID == ingnoreList[j])
-                    doBreak = true;
+            boolean isOnHitList = false;
+            for (int j = 0; j < hitList.length; j++) {
+                if (g.classID == hitList[j])
+                    isOnHitList = true;
             }
-            if (doBreak)
+            if (!isOnHitList)
                 continue;
 
             // TOPLEFT
