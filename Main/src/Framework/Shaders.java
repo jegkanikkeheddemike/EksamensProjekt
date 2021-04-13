@@ -1,8 +1,10 @@
 package Framework;
+
 import java.util.ArrayList;
 
 import GameObjects.*;
 import Setup.Main;
+import Threads.ShaderPreRenderWorkThread;
 import processing.opengl.PShader;
 
 public class Shaders {
@@ -39,6 +41,7 @@ public class Shaders {
             wallWidth[i] = w.w;
             wallHeight[i] = w.h;
         }
+        ShaderPreRenderWorkThread.beginWork();
 
         zombieFOVConeShader.set("zombies", zombies.size());
         zombieFOVConeShader.set("walls", walls.size());
@@ -67,4 +70,3 @@ public class Shaders {
         Main.main.resetShader();
     }
 }
-

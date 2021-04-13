@@ -3,7 +3,7 @@ package GameObjects.Items.AmmoItems;
 import GameObjects.Items.Item;
 import Setup.Main;
 
-public class AmmoItem extends Item {
+public abstract class AmmoItem extends Item {
     public int amount;
     protected int maxAmount;
 
@@ -17,35 +17,32 @@ public class AmmoItem extends Item {
         Main.main.fill(255);
         Main.main.rect(x, y, 80, 80);
         Main.main.fill(0);
-        Main.main.text(this.itemType,x+40,y+40);
-        Main.main.text(this.amount,x+60,y+60);
+        Main.main.text(this.itemType, x + 40, y + 40);
+        Main.main.text(this.amount, x + 60, y + 60);
     }
 
     @Override
-    public void reactPickedUp(){
+    public void reactPickedUp() {
 
         Item[] ammoList = Main.player.getItemListOfTypeFromInventory(itemType);
-        
-        for (Item item:ammoList){
+
+        for (Item item : ammoList) {
             AmmoItem ammoItem = (AmmoItem) item;
             if (ammoItem.amount == ammoItem.maxAmount)
                 continue;
-            if(ammoItem.amount + amount > ammoItem.maxAmount){
+            if (ammoItem.amount + amount > ammoItem.maxAmount) {
                 int diff = ammoItem.maxAmount - ammoItem.amount;
                 ammoItem.amount = ammoItem.maxAmount;
                 amount -= diff;
-            }else{
+            } else {
                 ammoItem.amount += amount;
                 amount = 0;
                 delete();
                 break;
             }
         }
-        if (amount > 0){
+        if (amount > 0) {
             super.reactPickedUp();
         }
     }
 }
-
-
-

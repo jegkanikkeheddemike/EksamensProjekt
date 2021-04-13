@@ -5,7 +5,7 @@ import Setup.Main;
 
 public class Starter extends Weapon {
     public Starter(float x, float y) {
-        super(x, y, "Starter");
+        super(x, y, "Starter", 60);
         this.wpnType = "Starter";
         damage = 5;
         shotCooldown = 30;
