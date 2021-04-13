@@ -1,14 +1,14 @@
 package GameObjects.Items;
 import Framework.GameMath;
 import Framework.GameObject;
+import GameObjects.Items.AmmoItems.AmmoItem;
 import Setup.Main;
 import processing.core.*;
 
 public class Item extends GameObject {
     public PImage sprite;
-    public int amount;
-    protected int maxAmount;
-    protected Boolean held = false;
+    
+    public Boolean held = false;
     public String itemType = null;
 
     protected Item(float x, float y) {
@@ -19,27 +19,34 @@ public class Item extends GameObject {
     public void use() {
     }
 
-    protected void deleteFromInventory() {
+    public void deleteFromInventory() {
         int index = Main.player.getItemIndexFromInventory(this);
         Main.player.inventory[index] = null;
     }
 
     @Override
     public void step() {
-        if (GameMath.pointDistance(this.x, this.y, Main.player.x, Main.player.y) < this.h && held == false) {
+        if (!held) {
+
+        if (GameMath.pointDistance(this.middleX(), this.middleY(), Main.player.middleX(), Main.player.middleY()) < this.h/2f+Main.player.w/2f && held == false) {
             reactPickedUp();
         }
-        if (held) {
+        
+            
+        }else{
             x = Main.player.x;
             y = Main.player.y;
+
         }
 
     }
 
     public void draw() {
         if (!held) {
-            if (sprite != null)
+            if (sprite != null){
                 Main.main.image(sprite, x, y, w, h);
+                Main.main.text(ID,x+50,y);
+            }
             else
                 super.draw();
         }
@@ -53,22 +60,15 @@ public class Item extends GameObject {
 
     
     public void reactPickedUp() {
-        if (Main.player.containsSameItemType(this.itemType)){
-            Item oldItem = Main.player.getItemTypeFromInventory(this.itemType);
-            oldItem.amount += this.amount;
-            
-            if(oldItem.amount > oldItem.maxAmount)
-                oldItem.amount = oldItem.maxAmount;
+        
+        int index = Main.player.getEmptyInventorySpace();
+        if (index != -1) {
+            Main.player.inventory[index] = this;
             held = true;
             
-        }else{
-            int index = Main.player.getEmptyInventorySpace();
-            if (index != -1) {
-                Main.player.inventory[index] = this;
-                held = true;
-                
-            }
+            
         }
+        
     }
 
 }

@@ -8,7 +8,7 @@ public class Pistol extends Weapon {
         super(x, y, "Pistol");
         this.wpnType = "Pistol";
         damage = 5;
-        shotCooldown = 20;
+        shotCooldown = 1;
         range = 700;
         spread = 0.02f;
         clipSize = 7;

@@ -14,6 +14,7 @@ public class Weapon extends Item {
     public int clipSize;
     public int cClip;
     public String ammoType;
+    
 
     Weapon(float x, float y, String wpnType) {
         super(x, y);

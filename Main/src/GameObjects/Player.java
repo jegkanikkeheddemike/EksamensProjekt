@@ -1,6 +1,9 @@
 package GameObjects;
+import java.util.ArrayList;
+
 import Framework.*;
 import GameObjects.Items.Item;
+import GameObjects.Items.AmmoItems.AmmoItem;
 import GameObjects.Items.Weapons.*;
 import Setup.Main;
 public class Player extends Movables {
@@ -27,11 +30,25 @@ public class Player extends Movables {
     public boolean containsSameItemType(String itemType){
         for(int i = 0; i < inventory.length; i++){
             if (inventory[i]== null)
-                break;
+                continue;
             if (inventory[i].itemType.equals(itemType))
                 return true;
         }
         return false;
+    }
+
+    public Item[] getItemListOfTypeFromInventory(String itemType){
+        ArrayList<Item> itemList = new ArrayList<Item>();
+        for (int i = 0; i < inventory.length; i++) {
+            if (inventory[i] == null)
+                continue;
+            if (inventory[i].itemType.equals(itemType))
+                itemList.add(inventory[i]);
+        }
+        Item[] array = new Item[itemList.size()];
+
+        return itemList.toArray(array);
+
     }
 
     public Item getItemTypeFromInventory(String itemType) {
@@ -59,7 +76,9 @@ public class Player extends Movables {
         maxHealth = 100;
         health = maxHealth;
         cWeapon0 = new Pistol(x, y);
+        cWeapon0.held = true;
         cWeapon1 = new Starter(x, y);
+        cWeapon1.held = true;
         cWNumber = true;
     }
 
@@ -158,20 +177,20 @@ public class Player extends Movables {
             getWeapon().cooldown += 1;
         }
         if (Main.keyTapped('r') && getWeapon().cClip != getWeapon().clipSize) {
-            if(Main.player.containsSameItemType(getWeapon().ammoType)){
-                Item oldItem = Main.player.getItemTypeFromInventory(getWeapon().ammoType);
-
-                if (oldItem.amount > (getWeapon().clipSize-getWeapon().cClip)){
-                    oldItem.amount -= (getWeapon().clipSize-getWeapon().cClip);
+            Item[] ammoList = Main.player.getItemListOfTypeFromInventory(getWeapon().ammoType);
+            for (Item item:ammoList){
+                AmmoItem ammoItem = (AmmoItem) item;
+                if (ammoItem.amount > (getWeapon().clipSize-getWeapon().cClip)){
+                    ammoItem.amount -= (getWeapon().clipSize-getWeapon().cClip);
                     getWeapon().cClip = getWeapon().clipSize;
-                }else if (oldItem.amount != 0){
-                    getWeapon().cClip += oldItem.amount;
-                    oldItem.amount = 0;
+                }else if (ammoItem.amount != 0){
+                    getWeapon().cClip += ammoItem.amount;
+                    ammoItem.amount = 0;
                 }
-                
-                
+                if (ammoItem.amount == 0){
+                    ammoItem.deleteFromInventory();
+                }
             }
-            
 
         }
 

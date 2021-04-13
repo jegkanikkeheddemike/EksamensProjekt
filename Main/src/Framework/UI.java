@@ -24,11 +24,13 @@ public class UI {
             Main.main.fill(0, 255, 0);
         Main.main.text(Main.player.cWeapon0.wpnType, Main.main.width / 3f, Main.main.height - 105);
         Main.main.text(Main.player.cWeapon0.cClip+"/"+Main.player.cWeapon0.clipSize, Main.main.width / 3f, Main.main.height - 115);
+        Main.main.text(Main.player.cWeapon0.ID, Main.main.width / 3f, Main.main.height - 125);
         Main.main.fill(255);
         if (Main.player.cWNumber)
             Main.main.fill(0, 255, 0);
         Main.main.text(Main.player.cWeapon1.wpnType, Main.main.width / 3f + 500, Main.main.height - 105);
         Main.main.text(Main.player.cWeapon1.cClip+"/"+Main.player.cWeapon1.clipSize, Main.main.width / 3f + 500, Main.main.height - 115);
+        Main.main.text(Main.player.cWeapon1.ID, Main.main.width / 3f + 500, Main.main.height - 125);
 
         // #endregion
         // #region INVENTORY

@@ -9,6 +9,7 @@ import Threads.*;
 import Framework.*;
 import GameObjects.*;
 import GameObjects.Items.AmmoItems.*;
+import GameObjects.Items.Weapons.Pistol;
 import MapGeneration.*;
 
 public class Main extends PApplet {
@@ -69,10 +70,15 @@ public class Main extends PApplet {
             player.x = r.nextInt(1920);
             player.y = r.nextInt(1080);
         }
+
+        //#region TestObjects
         new AmmoBox9mm(player.x+50,player.y+50);
         new AmmoBox9mm(player.x-50,player.y+50);
         new AmmoBox9mm(player.x+50,player.y-50);
         new AmmoBox9mm(player.x-50,player.y-50);
+        new Pistol(player.x,player.y+100);
+
+        //#endregion
 
         // new Bandage(400, 400);
     }
