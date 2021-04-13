@@ -1,11 +1,11 @@
 package GameObjects;
 import java.util.ArrayList;
-
 import Framework.*;
 import GameObjects.Items.Item;
 import GameObjects.Items.AmmoItems.AmmoItem;
 import GameObjects.Items.Weapons.*;
 import Setup.Main;
+
 public class Player extends Movables {
     float xAcc = 2;
     float yAcc = 2;
@@ -155,12 +155,7 @@ public class Player extends Movables {
     }
 
     public Weapon getWeapon() {
-        if (!cWNumber) {
-            return cWeapon0;
-        } else {
-            return cWeapon1;
-        }
-
+        return cWNumber ? cWeapon1 : cWeapon0;
     }
 
     void updateWeapons() {
@@ -214,8 +209,6 @@ public class Player extends Movables {
             new Sound(middleX(), middleY(), 7, Sound.footsteps);
         }
     }
-
- 
 
     public void reactGetHit(float dmg, String vpnType) {
         health -= dmg;
