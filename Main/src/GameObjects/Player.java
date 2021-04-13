@@ -1,8 +1,10 @@
 package GameObjects;
+
 import Framework.*;
 import GameObjects.Items.Item;
 import GameObjects.Items.Weapons.*;
 import Setup.Main;
+
 public class Player extends Movables {
     float xAcc = 2;
     float yAcc = 2;
@@ -24,9 +26,9 @@ public class Player extends Movables {
         return -1;
     }
 
-    public boolean containsSameItemType(String itemType){
-        for(int i = 0; i < inventory.length; i++){
-            if (inventory[i]== null)
+    public boolean containsSameItemType(String itemType) {
+        for (int i = 0; i < inventory.length; i++) {
+            if (inventory[i] == null)
                 break;
             if (inventory[i].itemType.equals(itemType))
                 return true;
@@ -136,12 +138,7 @@ public class Player extends Movables {
     }
 
     public Weapon getWeapon() {
-        if (!cWNumber) {
-            return cWeapon0;
-        } else {
-            return cWeapon1;
-        }
-
+        return cWNumber ? cWeapon1 : cWeapon0;
     }
 
     void updateWeapons() {
@@ -158,20 +155,18 @@ public class Player extends Movables {
             getWeapon().cooldown += 1;
         }
         if (Main.keyTapped('r') && getWeapon().cClip != getWeapon().clipSize) {
-            if(Main.player.containsSameItemType(getWeapon().ammoType)){
+            if (Main.player.containsSameItemType(getWeapon().ammoType)) {
                 Item oldItem = Main.player.getItemTypeFromInventory(getWeapon().ammoType);
 
-                if (oldItem.amount > (getWeapon().clipSize-getWeapon().cClip)){
-                    oldItem.amount -= (getWeapon().clipSize-getWeapon().cClip);
+                if (oldItem.amount > (getWeapon().clipSize - getWeapon().cClip)) {
+                    oldItem.amount -= (getWeapon().clipSize - getWeapon().cClip);
                     getWeapon().cClip = getWeapon().clipSize;
-                }else if (oldItem.amount != 0){
+                } else if (oldItem.amount != 0) {
                     getWeapon().cClip += oldItem.amount;
                     oldItem.amount = 0;
                 }
-                
-                
+
             }
-            
 
         }
 
@@ -195,8 +190,6 @@ public class Player extends Movables {
             new Sound(middleX(), middleY(), 7, Sound.footsteps);
         }
     }
-
- 
 
     public void reactGetHit(float dmg, String vpnType) {
         health -= dmg;
