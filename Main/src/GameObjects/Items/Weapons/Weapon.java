@@ -21,8 +21,8 @@ public class Weapon extends Item {
         this.wpnType = wpnType;
         classID = "Weapon";
         this.sprite = Main.main.loadImage("Data/Images/" + this.wpnType + ".png");
-        this.w = (float) sprite.width / 3;
-        this.h = (float) sprite.height / 3;
+        w = (float) sprite.width / 3;
+        h = (float) sprite.height / 3;
     }
 
     @Override

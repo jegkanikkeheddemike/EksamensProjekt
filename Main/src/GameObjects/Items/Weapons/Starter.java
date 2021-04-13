@@ -6,12 +6,11 @@ import Setup.Main;
 public class Starter extends Weapon {
     public Starter(float x, float y) {
         super(x, y, "Starter");
-        this.wpnType = "Starter";
-        damage = 5;
+        wpnType = "Starter";
+        damage = 8;
         shotCooldown = 30;
         range = 300;
         spread = 0.05f;
-        held = true;
         clipSize = 5;
         cClip = clipSize;
         ammoType = ".45 ACP";
