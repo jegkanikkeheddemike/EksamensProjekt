@@ -7,6 +7,9 @@ import GameObjects.Zombie;
 public class Building {
     int topleftX, topleftY, toprightX, toprightY, botleftX, botleftY, botrightX, botrightY;
     int orientation;
+    private static final int wallWidth = 50;
+    private static final int doorWidth = 75;
+    
 
     public Building(int topleftX, int topleftY, int toprightX, int toprightY, int botleftX, int botleftY, int botrightX,
             int botrightY, int orientation) {
@@ -26,67 +29,64 @@ public class Building {
 
     private void build() {
         Random r = new Random();
-        int deltaX = botrightX - botleftX;
-        int deltaY = botrightY - toprightY;
+        int deltaX = Math.abs(botrightX - botleftX);
+        int deltaY = Math.abs(botrightY - toprightY);
         // #region outer walls
-        if (orientation == EAST) {
-            int doorLocation = 100 * r.nextInt(deltaY / 100);
+        if (orientation == EAST) { //CHANGED
+            int doorLocation = wallWidth + doorWidth * r.nextInt((deltaY-2*wallWidth) / doorWidth);
             // DOOR WALLS
-            new Wall(toprightX, toprightY, 100, doorLocation);
-            new Wall(toprightX, toprightY + doorLocation + 100, 100, deltaY - doorLocation);
+            new Wall(toprightX-wallWidth, toprightY, wallWidth, doorLocation);
+            new Wall(toprightX-wallWidth, toprightY + doorLocation + doorWidth, wallWidth, deltaY - doorLocation - doorWidth);
             // STANDARD WALLS
-            new Wall(topleftX, topleftY, deltaX, 100);
-            new Wall(topleftX, botleftY, deltaX, 100);
-            new Wall(topleftX, topleftY, 100, deltaY + 100);
-
-        } else if (orientation == WEST) {
-            int doorLocation = 100 * r.nextInt((deltaY) / 100);
+            new Wall(topleftX, topleftY, deltaX, wallWidth);
+            new Wall(topleftX, botleftY-wallWidth, deltaX, wallWidth);
+            new Wall(topleftX, topleftY, wallWidth, deltaY);
+        } else if (orientation == WEST) { //CHANGED
+            int doorLocation = wallWidth + doorWidth * r.nextInt((deltaY-2*wallWidth) / doorWidth);
             // DOOR WALLS
-            new Wall(topleftX, toprightY, 100, doorLocation);
-            new Wall(topleftX, toprightY + doorLocation + 100, 100, deltaY - doorLocation);
+            new Wall(topleftX, toprightY, wallWidth, doorLocation);
+            new Wall(topleftX, toprightY + doorLocation + doorWidth, wallWidth, deltaY - doorLocation - doorWidth);
             // STANDARD WALLS
-            new Wall(topleftX, topleftY, deltaX, 100);
-            new Wall(topleftX, botleftY, deltaX, 100);
-            new Wall(toprightX, topleftY, 100, deltaY + 100);
-
-        } else if (orientation == SOUTH) {
-            int doorLocation = 100 * r.nextInt(deltaX / 100);
+            new Wall(topleftX, topleftY, deltaX, wallWidth);
+            new Wall(topleftX, botleftY-wallWidth, deltaX, wallWidth);
+            new Wall(toprightX-wallWidth, topleftY, wallWidth, deltaY);
+        } else if (orientation == SOUTH) { //CHANGED
+            int doorLocation = wallWidth + doorWidth * r.nextInt((deltaX-2*wallWidth) / doorWidth);
             // DOORWALLS
-            new Wall(botleftX, botrightY, doorLocation, 100);
-            new Wall(botleftX + doorLocation + 100, botrightY, deltaX - doorLocation, 100);
+            new Wall(botleftX + wallWidth, botrightY - wallWidth, doorLocation, wallWidth);
+            new Wall(botleftX + wallWidth + doorLocation + doorWidth, botrightY - wallWidth, deltaX - (wallWidth + doorLocation + doorWidth), wallWidth);
             // STANDARD WALLS
-            new Wall(topleftX, topleftY, 100, deltaY);
-            new Wall(toprightX, topleftY, 100, deltaY);
-            new Wall(topleftX, topleftY, deltaX + 100, 100);
-        } else if (orientation == NORTH) {
-
-            int doorLocation = 100 * r.nextInt(deltaX / 100);
+            new Wall(topleftX, topleftY, wallWidth, deltaY);
+            new Wall(toprightX-wallWidth, topleftY, wallWidth, deltaY);
+            new Wall(topleftX, topleftY, deltaX, wallWidth);
+        } else if (orientation == NORTH) { //CHANGED
+            int doorLocation = wallWidth + doorWidth * r.nextInt((deltaX-2*wallWidth) / doorWidth);
             // DOOR WALLS
-            new Wall(botleftX, toprightY, doorLocation, 100);
-            new Wall(botleftX + doorLocation + 100, toprightY, deltaX - doorLocation, 100);
+            new Wall(botleftX + wallWidth, toprightY, doorLocation, wallWidth);
+            new Wall(botleftX + wallWidth + doorLocation + doorWidth, toprightY, deltaX - (wallWidth + doorLocation + doorWidth), wallWidth);
             // STANDARD WALLS
-            new Wall(topleftX, topleftY, 100, deltaY);
-            new Wall(toprightX, topleftY, 100, deltaY);
-            new Wall(topleftX, botleftY, deltaX + 100, 100);
+            new Wall(topleftX, topleftY, wallWidth, deltaY);
+            new Wall(toprightX-wallWidth, topleftY, wallWidth, deltaY);
+            new Wall(topleftX, botleftY-wallWidth, deltaX, wallWidth);
         }
 
         // #endregion
         // #region Inner Walls
-        int wallAmount = 5 + r.nextInt(((deltaX * deltaY) / 200000));
+        int wallAmount = 5 + r.nextInt((((deltaX-2*wallWidth) * (deltaY-2*wallWidth)) / 200000));
         for (int i = 0; i < wallAmount; i++) {
-            int x = 200 + topleftX + 100 * r.nextInt((deltaX - 300) / 100);
-            int y = 200 + topleftY + 100 * r.nextInt((deltaY - 300) / 100);
+            int x = 2*wallWidth+ topleftX + wallWidth * r.nextInt((deltaX - 3*wallWidth) / wallWidth);
+            int y = 2*wallWidth+ topleftY + wallWidth * r.nextInt((deltaY - 3*wallWidth) / wallWidth);
             boolean isVert = r.nextDouble() > 0.5;
             int w, h;
             if (isVert) {
-                w = 100 + 100 * r.nextInt((deltaX / 2) / 100);
-                h = 100;
+                w = wallWidth + wallWidth * r.nextInt((deltaX / 2) / wallWidth);
+                h = wallWidth;
 
                 if (x + w > toprightX)
                     w = toprightX - x;
             } else {
-                w = 100;
-                h = 100 + 100 * r.nextInt((deltaY / 2) / 100);
+                w = wallWidth;
+                h = wallWidth + wallWidth * r.nextInt((deltaY / 2) / wallWidth);
 
                 if (y + h > botleftY)
                     h = botleftY - y;

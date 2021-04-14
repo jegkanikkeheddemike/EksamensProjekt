@@ -1,5 +1,7 @@
 package MapGeneration;
 
+import javax.sql.rowset.RowSetFactory;
+
 import GameObjects.Wall;
 import Setup.Main;
 
@@ -10,8 +12,9 @@ public class Node {
     //   North/Up, South/Down, East/Right, West/Left
     public Node[] connected  = {null, null, null, null};
     public Boolean isEndPoint;
-    private static final int roadWidth = 150;//BASED ON THE PLAYER WIDTH AND HEIGHT IS TO BE REPLACED ANYWAYS
-    private static final int wallWidth = 50;
+    public static final int roadWidth = 150;//BASED ON THE PLAYER WIDTH AND HEIGHT IS TO BE REPLACED ANYWAYS
+    public static final int wallWidth = 50;
+    public static final int houseDepth = 500;
     public Boolean isINTERSECTIONPOINT = false;
     //INITIAL
     Node(int x, int y){
@@ -80,11 +83,56 @@ public class Node {
     private static int boolToInt(Boolean b) { //WHY DOES THIS NOT EXIST IN THE STD LIB????
         return b ? 1 : 0;
     }
+    //To start with we'll just have one long house along each side of the edge.
+    //AND NOT CHECK WHETHER THE HOUSE WILL OVERLAP
+    public void housesAlongParentEdge(){
+        //Parent is to the EAST
+        if (parent == connected[Map.EAST]){
+            //THEN A HOUSE SHOULD BE TO THE NORTH OF THE ROAD
+            int x1North = x + roadWidth/2 * boolToInt(connected[Map.NORTH] != null);
+            int x2North = parent.x - roadWidth/2 * boolToInt(parent.connected[Map.NORTH] != null);
+            //IT DOESN'T Actually matter whether we use the parent.y here as they are THE same?
+            new Building(x1North, parent.y-roadWidth/2-houseDepth, x2North, parent.y-roadWidth/2-houseDepth, x1North, parent.y-roadWidth/2, x2North, parent.y-roadWidth/2, Map.SOUTH);
+            //AND ONE TO THE SOUTH OF THE ROAD
+            int x1South = x + roadWidth/2 * boolToInt(connected[Map.SOUTH] != null);
+            int x2South = parent.x - roadWidth/2 * boolToInt(parent.connected[Map.SOUTH] != null);
+            new Building(x1South, parent.y+roadWidth/2, x2South, parent.y+roadWidth/2, x1South, parent.y+roadWidth/2+houseDepth, x2South, parent.y+roadWidth/2+houseDepth, Map.NORTH);
+        }else if (parent == connected[Map.WEST]){
+            //THEN A HOUSE SHOULD BE TO THE NORTH OF THE ROAD
+            int x1North = parent.x + roadWidth/2 * boolToInt(parent.connected[Map.NORTH] != null);
+            int x2North = x - roadWidth/2 * boolToInt(connected[Map.NORTH] != null);
+            //IT DOESN'T Actually matter whether we use the parent.y here as they are THE same?
+            new Building(x1North, parent.y-roadWidth/2-houseDepth, x2North, parent.y-roadWidth/2-houseDepth, x1North, parent.y-roadWidth/2, x2North, parent.y-roadWidth/2, Map.SOUTH);
+            //AND ONE TO THE SOUTH OF THE ROAD
+            int x1South = parent.x + roadWidth/2 * boolToInt(parent.connected[Map.SOUTH] != null);
+            int x2South = x - roadWidth/2 * boolToInt(connected[Map.SOUTH] != null);
+            new Building(x1South, parent.y+roadWidth/2, x2South, parent.y+roadWidth/2, x1South, parent.y+roadWidth/2+houseDepth, x2South, parent.y+roadWidth/2+houseDepth, Map.NORTH);
+        }else if(parent == connected[Map.SOUTH]){
+            int y1West = y + roadWidth/2 * boolToInt(connected[Map.WEST] != null);
+            int y2West = parent.y - roadWidth/2 * boolToInt(parent.connected[Map.WEST] != null);
+            new Building(parent.x-roadWidth/2-houseDepth, y1West, parent.x-roadWidth/2, y1West, parent.x-roadWidth/2-houseDepth, y2West, parent.x-roadWidth/2, y2West, Map.EAST);
+
+            int y1East = y + roadWidth/2 * boolToInt(connected[Map.EAST] != null);
+            int y2East = parent.y - roadWidth/2 * boolToInt(parent.connected[Map.EAST] != null);
+            new Building(parent.x+roadWidth/2, y1East, parent.x+roadWidth/2+houseDepth, y1East, parent.x+roadWidth/2, y2East, parent.x+roadWidth/2+houseDepth, y2East, Map.WEST);
+        }else if(parent == connected[Map.NORTH]){
+            int y1West = parent.y + roadWidth/2 * boolToInt(parent.connected[Map.WEST] != null);
+            int y2West = y - roadWidth/2 * boolToInt(connected[Map.WEST] != null);
+            new Building(parent.x-roadWidth/2-houseDepth, y1West, parent.x-roadWidth/2, y1West, parent.x-roadWidth/2-houseDepth, y2West, parent.x-roadWidth/2, y2West, Map.EAST);
+
+            int y1East = parent.y + roadWidth/2 * boolToInt(parent.connected[Map.EAST] != null);
+            int y2East = y - roadWidth/2 * boolToInt(connected[Map.EAST] != null);
+            new Building(parent.x+roadWidth/2, y1East, parent.x+roadWidth/2+houseDepth, y1East, parent.x+roadWidth/2, y2East, parent.x+roadWidth/2+houseDepth, y2East, Map.WEST);
+        }
+    }
+
     public void wallsAlongParentEdge(){ // THE WALLS ARE AUTOMATICALLY ADDED
         //Parent is to the EAST
         if (parent == connected[Map.EAST]){
             //System.out.println("OEST");
             //virker ikke helt endnu
+            //housesAlongParentEdge();
+            
             int x1North = x + roadWidth/2 * boolToInt(connected[Map.NORTH] != null);
             int x2North = parent.x - roadWidth/2 * boolToInt(parent.connected[Map.NORTH] != null);
             new Wall(x1North, y-roadWidth/2, x2North, parent.y-roadWidth/2, wallWidth);
@@ -92,7 +140,6 @@ public class Node {
             int x1South = x + roadWidth/2 * boolToInt(connected[Map.SOUTH] != null);
             int x2South = parent.x - roadWidth/2 * boolToInt(parent.connected[Map.SOUTH] != null);
             new Wall(x1South, y+roadWidth/2, x2South, parent.y+roadWidth/2, wallWidth);
-        
         }else if (parent == connected[Map.WEST]){
             //System.out.println("VEST");
             int x1North = parent.x + roadWidth/2 * boolToInt(parent.connected[Map.NORTH] != null);
