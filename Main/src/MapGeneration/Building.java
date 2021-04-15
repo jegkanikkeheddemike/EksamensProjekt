@@ -72,7 +72,7 @@ public class Building {
 
         // #endregion
         // #region Inner Walls
-        int wallAmount = 5 + r.nextInt((((deltaX-2*wallWidth) * (deltaY-2*wallWidth)) / 200000));
+        int wallAmount = 5 + r.nextInt(Math.abs(((deltaX-2*wallWidth) * (deltaY-2*wallWidth)) / 200000));
         for (int i = 0; i < wallAmount; i++) {
             int x = 2*wallWidth+ topleftX + wallWidth * r.nextInt((deltaX - 3*wallWidth) / wallWidth);
             int y = 2*wallWidth+ topleftY + wallWidth * r.nextInt((deltaY - 3*wallWidth) / wallWidth);
