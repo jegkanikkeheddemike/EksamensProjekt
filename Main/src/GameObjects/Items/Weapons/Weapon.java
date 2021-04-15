@@ -20,7 +20,6 @@ public abstract class Weapon extends Item {
         super(x, y);
         this.wpnType = wpnType;
         classID = "Weapon";
-        this.sprite = Main.main.loadImage("Data/Images/" + this.wpnType + ".png");
         w = (float) sprite.width / 3;
         h = (float) sprite.height / 3;
         itemType = "Weapon";
