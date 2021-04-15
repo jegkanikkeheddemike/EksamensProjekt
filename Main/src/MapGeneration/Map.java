@@ -15,9 +15,9 @@ public class Map {
     public static final int SOUTH = 1;
     public static final int EAST  = 2;
     public static final int WEST  = 3;
-    Node initialNode;
+    public Node initialNode;
     public ArrayList<Node> allNodes;
-    ArrayList<Node> endNodes; // or maybe is should be called outer nodes?
+    public ArrayList<Node> endNodes; // or maybe is should be called outer nodes?
     ArrayList<Wall> roads;
     private Random rand = new Random();
     private int maxLevel;

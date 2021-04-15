@@ -56,7 +56,7 @@ public class Main extends PApplet {
             //n.wallsAlongParentEdge();w
             //NOW IT ONLY MAKES A HOUSE On THE EDGE TO THE PARENTS THAT ARE TO THE EAST OF NODES.
             //if(n.parent == n.connected[Map.EAST]){
-                n.housesAlongParentEdge();
+            n.housesAlongParentEdge();
             //}
         }
 

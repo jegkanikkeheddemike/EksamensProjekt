@@ -12,8 +12,9 @@ public class Sound extends GameObject {
     public Sound(float x, float y, float volume, ArrayList<SoundFile> sounds) {
         super(x, y, 1, 1);
         this.volume = volume;
-        int r = new Random().nextInt(sounds.size());
+        int r;
         if(Main.onWindows){ 
+            r = new Random().nextInt(sounds.size());
             sounds.get(r).amp(volume / 100);
             sounds.get(r).play();
         }
