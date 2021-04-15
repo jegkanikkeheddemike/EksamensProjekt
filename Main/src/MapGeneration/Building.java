@@ -24,7 +24,6 @@ public class Building {
         this.botrightY = botrightY;
 
         build();
-
     }
 
     private void build() {
@@ -72,10 +71,14 @@ public class Building {
 
         // #endregion
         // #region Inner Walls
-        int wallAmount = 5 + r.nextInt(Math.abs(((deltaX-2*wallWidth) * (deltaY-2*wallWidth)) / 200000));
+
+        //First mission:
+        //  Free area before door :)
+        int wallAmount = 5 + r.nextInt(1+Math.abs(((deltaX-2*wallWidth) * (deltaY-2*wallWidth)) / 200000));
         for (int i = 0; i < wallAmount; i++) {
-            int x = 2*wallWidth+ topleftX + wallWidth * r.nextInt((deltaX - 3*wallWidth) / wallWidth);
-            int y = 2*wallWidth+ topleftY + wallWidth * r.nextInt((deltaY - 3*wallWidth) / wallWidth);
+            //MAKE SURE THE PLAYER CAN GET BY?
+            int x = wallWidth + doorWidth + topleftX + doorWidth * r.nextInt((deltaX - 3*doorWidth) / doorWidth);
+            int y = wallWidth + doorWidth + topleftY + doorWidth * r.nextInt((deltaY - 3*doorWidth) / doorWidth);
             boolean isVert = r.nextDouble() > 0.5;
             int w, h;
             if (isVert) {

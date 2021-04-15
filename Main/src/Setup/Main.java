@@ -113,9 +113,9 @@ public class Main extends PApplet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (onWindows)
-            Shaders.drawZombieFOVCone();
-
+        if (onWindows) {
+            // Shaders.drawZombieFOVCone();
+        }
         translate(-translateX, -translateY);
         UI.drawUI();
     }

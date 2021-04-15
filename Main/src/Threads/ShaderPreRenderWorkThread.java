@@ -20,14 +20,22 @@ public class ShaderPreRenderWorkThread extends Thread {
                 // LOAD WALLS AND ZOMBIES
                 for (int i = 0; i < Main.nearObjects.size(); i++) {
                     if (Main.nearObjects.get(i).classID == "Wall") {
-                        Shaders.walls.add((Wall) Main.nearObjects.get(i));
-                    } else if (Main.nearObjects.get(i).classID == "Zombie") {
-                        if (Shaders.zombies.size() >= 30) {
-                            System.out.println(
-                                    "Failed to push zombies to shader because there were too many zombies (max 30)");
+                        if (Shaders.walls.size() < Shaders.wallShaderAmount) {
+                            Shaders.walls.add((Wall) Main.nearObjects.get(i));
+                        } else {
+                            System.out.println("Failed to push walls to shader because there were too many walls (max: "
+                                    + Shaders.wallShaderAmount + ")");
                             continue;
                         }
-                        Shaders.zombies.add((Zombie) Main.nearObjects.get(i));
+                    } else if (Main.nearObjects.get(i).classID == "Zombie") {
+                        if (Shaders.zombies.size() < Shaders.zombieShaderAmount) {
+                            Shaders.zombies.add((Zombie) Main.nearObjects.get(i));
+                        } else {
+                            System.out.println(
+                                    "Failed to push zombies to shader because there were too many zombies (max: "
+                                            + Shaders.zombieShaderAmount + ")");
+                            continue;
+                        }
                     }
                 }
                 // ONLY RUNS ONCE EVERYTIME BEGINWORK IS MADE TRUE!

@@ -10,6 +10,7 @@ public class NearThread extends Thread {
     public static ArrayList<GameObject> nearObjectsUpdated = new ArrayList<GameObject>();
     public static volatile boolean isReady = false;
     public static NearThread thread = new NearThread();
+    public static final int nearDist = 1500;
 
     @Override
     public void run() {
@@ -19,13 +20,13 @@ public class NearThread extends Thread {
 
             for (int i = 0; i < Main.allObjects.size(); i++) {
                 GameObject gameObject = Main.allObjects.get(i);
-                if (GameMath.pointDistance(gameObject.x, gameObject.y, Main.player.x, Main.player.y) < 2000
+                if (GameMath.pointDistance(gameObject.x, gameObject.y, Main.player.x, Main.player.y) < nearDist
                         || GameMath.pointDistance(gameObject.x + gameObject.w, gameObject.y + gameObject.h,
-                                Main.player.x + Main.player.w, Main.player.y + Main.player.h) < 2000
+                                Main.player.x + Main.player.w, Main.player.y + Main.player.h) < nearDist
                         || (gameObject.x > Main.player.middleX() && gameObject.x + gameObject.w < Main.player.middleX()
-                                && Math.abs(gameObject.y - Main.player.y) < 2000)
+                                && Math.abs(gameObject.y - Main.player.y) < nearDist)
                         || (gameObject.y < Main.player.middleY() && gameObject.y + gameObject.h > Main.player.middleY()
-                                && Math.abs(gameObject.y - Main.player.y) < 2000)) {
+                                && Math.abs(gameObject.y - Main.player.y) < nearDist)) {
                     nearObjectsUpdated.add(gameObject);
                 }
             }
