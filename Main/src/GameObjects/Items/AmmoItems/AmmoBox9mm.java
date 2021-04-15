@@ -6,4 +6,10 @@ public class AmmoBox9mm extends AmmoItem {
         itemType = "9mm";
         amount = 20;
     }
+
+    @Override
+    protected void loadSprite() {
+        // TODO Auto-generated method stub
+        
+    }
 }

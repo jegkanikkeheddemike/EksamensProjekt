@@ -14,7 +14,10 @@ public abstract class Item extends GameObject {
     protected Item(float x, float y) {
         super(x, y, 50, 50);
         this.classID = "Item";
+        loadSprite();
     }
+
+    protected abstract void loadSprite();
 
     public void use() {
     }
@@ -65,7 +68,6 @@ public abstract class Item extends GameObject {
             held = true;
 
         }
-
     }
 
 }
