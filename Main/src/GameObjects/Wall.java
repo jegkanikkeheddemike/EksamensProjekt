@@ -43,4 +43,9 @@ public class Wall extends GameObject {
     @Override
     public void step() {
     }
+
+    public int shortestDistanceBetweenWalls(){
+        return 0;
+
+    }
 }
