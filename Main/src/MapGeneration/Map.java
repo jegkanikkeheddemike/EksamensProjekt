@@ -15,16 +15,16 @@ public class Map {
     public static final int SOUTH = 1;
     public static final int EAST  = 2;
     public static final int WEST  = 3;
-    Node initialNode;
+    public Node initialNode;
     public ArrayList<Node> allNodes;
-    ArrayList<Node> endNodes; // or maybe is should be called outer nodes?
+    public ArrayList<Node> endNodes; // or maybe is should be called outer nodes?
     ArrayList<Wall> roads;
     private Random rand = new Random();
     private int maxLevel;
-    private final int maxRoadLength = 1000;
-    private final int minRoadLength = 500;
-    private final float minPointDist = 400;
-    private final float minRoadDist = 400;
+    private final int maxRoadLength = Node.houseDepth*5+Node.roadWidth;//1000;
+    private final int minRoadLength = Node.houseDepth*3+Node.roadWidth;//500;
+    private final float minPointDist = Node.houseDepth;
+    private final float minRoadDist = Node.houseDepth;
 
     public Map(int maxLevel){
         initialNode = new Node(Main.main.width/2, Main.main.height/2);

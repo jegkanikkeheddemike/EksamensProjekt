@@ -51,13 +51,19 @@ public class Main extends PApplet {
         if (onWindows)
             Sound.setupSound();
 
-        m = new Map(5);
+        m = new Map(3);
         m.generateMap();
         m.removeUselessNodes();
 
         for (Node n : m.allNodes) {
-            n.wallsAlongParentEdge();
+            //n.wallsAlongParentEdge();w
+            //NOW IT ONLY MAKES A HOUSE On THE EDGE TO THE PARENTS THAT ARE TO THE EAST OF NODES.
+            //if(n.parent == n.connected[Map.EAST]){
+            n.housesAlongParentEdge();
+            //}
         }
+
+        //new Building(-100, -100, width+100, -100, -100, height+100, width+100, height+100,Map.EAST);
 
         if (onWindows)
             ShaderPreRenderWorkThread.thread.start();
@@ -111,7 +117,8 @@ public class Main extends PApplet {
                 GameObject gameObject = nearObjects.get(i);
                 gameObject.draw();
             }
-            // m.draw();
+
+            m.draw();
         } catch (Exception e) {
             e.printStackTrace();
         }
