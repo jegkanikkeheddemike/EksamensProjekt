@@ -1,4 +1,5 @@
 package Threads;
+
 import java.util.ArrayList;
 
 import Framework.GameMath;
@@ -20,7 +21,11 @@ public class NearThread extends Thread {
                 GameObject gameObject = Main.allObjects.get(i);
                 if (GameMath.pointDistance(gameObject.x, gameObject.y, Main.player.x, Main.player.y) < 2000
                         || GameMath.pointDistance(gameObject.x + gameObject.w, gameObject.y + gameObject.h,
-                                Main.player.x + Main.player.w, Main.player.y + Main.player.h) < 2000) {
+                                Main.player.x + Main.player.w, Main.player.y + Main.player.h) < 2000
+                        || (gameObject.x > Main.player.middleX() && gameObject.x + gameObject.w < Main.player.middleX()
+                                && Math.abs(gameObject.y - Main.player.y) < 2000)
+                        || (gameObject.y < Main.player.middleY() && gameObject.y + gameObject.h > Main.player.middleY()
+                                && Math.abs(gameObject.y - Main.player.y) < 2000)) {
                     nearObjectsUpdated.add(gameObject);
                 }
             }

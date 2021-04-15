@@ -10,6 +10,9 @@ import Threads.*;
 import Framework.*;
 import GameObjects.*;
 import GameObjects.Items.AmmoItems.*;
+import GameObjects.Items.HealthItems.Bandage;
+import GameObjects.Items.HealthItems.HealthPack;
+import GameObjects.Items.Weapons.Pistol;
 import MapGeneration.*;
 
 public class Main extends PApplet {
@@ -67,21 +70,28 @@ public class Main extends PApplet {
         if (onWindows)
             Sound.setupSound();
 
-        //new Building(0, 0, 1900 - 100, 0, 0, 1100 - 100, 1900 - 100, 1100 - 100, Map.EAST);
+        // new Building(0, 0, 1900 - 100, 0, 0, 1100 - 100, 1900 - 100, 1100 - 100,
+        // Map.EAST);
 
         player = new Player();
-        
+
         Random r = new Random();
         while (player.getCollisions(0, 0, new String[] { "Wall", "Zombie" }).length > 0) {
             player.x = r.nextInt(1920);
             player.y = r.nextInt(1080);
         }
-        new AmmoBox9mm(player.x+50,player.y+50);
-        new AmmoBox9mm(player.x-50,player.y+50);
-        new AmmoBox9mm(player.x+50,player.y-50);
-        new AmmoBox9mm(player.x-50,player.y-50);
 
-        // new Bandage(400, 400);
+        // #region TestObjects
+        new AmmoBox9mm(player.x + 50, player.y + 50);
+        new AmmoBox9mm(player.x - 50, player.y + 50);
+        new AmmoBox9mm(player.x + 50, player.y - 50);
+        new AmmoBox9mm(player.x - 50, player.y - 50);
+        new Pistol(player.x, player.y + 100);
+        new HealthPack(player.x, player.y);
+        new Bandage(player.x, player.y);
+
+        // #endregion
+
     }
 
     @Override
@@ -107,6 +117,7 @@ public class Main extends PApplet {
                 GameObject gameObject = nearObjects.get(i);
                 gameObject.draw();
             }
+
             m.draw();
         } catch (Exception e) {
             e.printStackTrace();
@@ -119,9 +130,7 @@ public class Main extends PApplet {
     }
 
     void step() {
-        // BEGYNDER FORBEREDELSERNE TIL SHADERS, PIL IKKE VED!!!!
-        if (onWindows)
-            ShaderPreRenderWorkThread.beginWork();
+
         try {
             for (int i = 0; i < nearObjects.size(); i++) {
                 GameObject gameObject = nearObjects.get(i);
@@ -166,6 +175,18 @@ public class Main extends PApplet {
             }
         } else {
             k = (int) Character.toLowerCase(key);
+
+            switch (key) {
+            case '!':
+                k = '1';
+                break;
+            case '\"':
+                k = '2';
+                break;
+            default:
+                break;
+            }
+
         }
         if (!downKeys.contains(k) && !ignoredChar.contains(k)) {
             downKeys.add(k);
@@ -187,6 +208,17 @@ public class Main extends PApplet {
             }
         } else {
             k = (int) Character.toLowerCase(key);
+            switch (key) {
+            case '!':
+                k = '1';
+                break;
+            case '\"':
+                k = '2';
+                break;
+            default:
+                break;
+            }
+
         }
         while (downKeys.contains(k)) {
             downKeys.remove(downKeys.indexOf(k));

@@ -1,8 +1,13 @@
 package GameObjects;
+
+import java.util.ArrayList;
 import Framework.*;
+import Framework.PlayerEffects.*;
 import GameObjects.Items.Item;
+import GameObjects.Items.AmmoItems.AmmoItem;
 import GameObjects.Items.Weapons.*;
 import Setup.Main;
+
 public class Player extends Movables {
     float xAcc = 2;
     float yAcc = 2;
@@ -15,6 +20,7 @@ public class Player extends Movables {
     public boolean cWNumber;
 
     public Item[] inventory = new Item[10];
+    public ArrayList<PlayerEffect> playerEffects = new ArrayList<PlayerEffect>();
 
     public int getEmptyInventorySpace() {
         for (int i = 0; i < inventory.length; i++) {
@@ -24,14 +30,28 @@ public class Player extends Movables {
         return -1;
     }
 
-    public boolean containsSameItemType(String itemType){
-        for(int i = 0; i < inventory.length; i++){
-            if (inventory[i]== null)
-                break;
+    public boolean containsSameItemType(String itemType) {
+        for (int i = 0; i < inventory.length; i++) {
+            if (inventory[i] == null)
+                continue;
             if (inventory[i].itemType.equals(itemType))
                 return true;
         }
         return false;
+    }
+
+    public Item[] getItemListOfTypeFromInventory(String itemType) {
+        ArrayList<Item> itemList = new ArrayList<Item>();
+        for (int i = 0; i < inventory.length; i++) {
+            if (inventory[i] == null)
+                continue;
+            if (inventory[i].itemType.equals(itemType))
+                itemList.add(inventory[i]);
+        }
+        Item[] array = new Item[itemList.size()];
+
+        return itemList.toArray(array);
+
     }
 
     public Item getItemTypeFromInventory(String itemType) {
@@ -50,6 +70,15 @@ public class Player extends Movables {
         return -1;
     }
 
+    public void deleteFromInventory(Item item) {
+        for (int i = 0; i < inventory.length; i++) {
+            if (inventory[i] == item) {
+                item.delete(); // BARE FOR AT VÆRE SIKKER PÅ AT DEN IKKE EKSISTERE LÆNGERE
+                inventory[i] = null;
+            }
+        }
+    }
+
     public Player() {
         super(1920 / 2, 1080 / 2, 50, 50);
         ySpeed = 0;
@@ -59,7 +88,9 @@ public class Player extends Movables {
         maxHealth = 100;
         health = maxHealth;
         cWeapon0 = new Pistol(x, y);
+        cWeapon0.held = true;
         cWeapon1 = new Starter(x, y);
+        cWeapon1.held = true;
         cWNumber = true;
     }
 
@@ -80,10 +111,37 @@ public class Player extends Movables {
 
     @Override
     public void step() {
+        updatePlayerEffects();
         updateAngle();
         updateMove();
         updateWeapons();
         updateUseItems();
+    }
+
+    public boolean canWalk = true;
+    public boolean canRun = true;
+    public boolean occupied = false;
+
+    private void nomalizeEffects() {
+        canWalk = true;
+        canRun = true;
+        occupied = false;
+    }
+
+    public void addPlayerEffect(PlayerEffect playerEffect) {
+        playerEffects.add(playerEffect);
+    }
+
+    public void removePlayerEffect(PlayerEffect playerEffect) {
+        playerEffects.remove(playerEffect);
+    }
+
+    void updatePlayerEffects() {
+        nomalizeEffects();
+
+        for (int i = 0; i < playerEffects.size(); i++) {
+            playerEffects.get(i).apply();
+        }
     }
 
     void updateAngle() {
@@ -92,12 +150,14 @@ public class Player extends Movables {
 
     void updateMove() {
         float cMaxSpeed;
-        if (Main.keyDown(-1/* SHIFT */)) {
+        if (Main.keyDown(-1/* SHIFT */) && canRun && canWalk) {
             cMaxSpeed = sprintSpeed;
-        } else if (Main.keyDown('c'/* CONTROL */)) {
+        } else if (Main.keyDown('c'/* CONTROL */) && canWalk) {
             cMaxSpeed = sneakSpeed;
-        } else {
+        } else if (canWalk) {
             cMaxSpeed = walkSpeed;
+        } else {
+            cMaxSpeed = 0;
         }
 
         boolean acceleratingX = false, acceleratingY = false;
@@ -136,45 +196,43 @@ public class Player extends Movables {
     }
 
     public Weapon getWeapon() {
-        if (!cWNumber) {
-            return cWeapon0;
-        } else {
-            return cWeapon1;
-        }
-
+        return cWNumber ? cWeapon1 : cWeapon0;
     }
 
     void updateWeapons() {
-        if (Main.keyTapped('1') && cWeapon0 != null) {
+        if (Main.keyTapped('1') && cWeapon0 != null && !occupied) {
             cWNumber = false;
-        } else if (Main.keyTapped('2') && cWeapon1 != null) {
+        } else if (Main.keyTapped('2') && cWeapon1 != null && !occupied) {
             cWNumber = true;
         }
-        if (Main.mousePressed && getWeapon().cooldown > getWeapon().shotCooldown && getWeapon().cClip > 0) {
+        if (Main.mousePressed && getWeapon().cooldown > getWeapon().shotCooldown && getWeapon().cClip > 0
+                && !occupied) {
             getWeapon().use();
             getWeapon().cClip -= 1;
             getWeapon().cooldown = 0;
         } else {
             getWeapon().cooldown += 1;
         }
-        if (Main.keyTapped('r') && getWeapon().cClip != getWeapon().clipSize) {
-            if(Main.player.containsSameItemType(getWeapon().ammoType)){
-                Item oldItem = Main.player.getItemTypeFromInventory(getWeapon().ammoType);
-
-                if (oldItem.amount > (getWeapon().clipSize-getWeapon().cClip)){
-                    oldItem.amount -= (getWeapon().clipSize-getWeapon().cClip);
-                    getWeapon().cClip = getWeapon().clipSize;
-                }else if (oldItem.amount != 0){
-                    getWeapon().cClip += oldItem.amount;
-                    oldItem.amount = 0;
-                }
-                
-                
-            }
-            
-
+        if (Main.keyTapped('r') && getWeapon().cClip != getWeapon().clipSize && !occupied) {
+            addPlayerEffect(new ReloadEffect(getWeapon()));
         }
+    }
 
+    public void reload() {
+        Item[] ammoList = Main.player.getItemListOfTypeFromInventory(getWeapon().ammoType);
+        for (Item item : ammoList) {
+            AmmoItem ammoItem = (AmmoItem) item;
+            if (ammoItem.amount > (getWeapon().clipSize - getWeapon().cClip)) {
+                ammoItem.amount -= (getWeapon().clipSize - getWeapon().cClip);
+                getWeapon().cClip = getWeapon().clipSize;
+            } else if (ammoItem.amount != 0) {
+                getWeapon().cClip += ammoItem.amount;
+                ammoItem.amount = 0;
+            }
+            if (ammoItem.amount == 0) {
+                ammoItem.deleteFromInventory();
+            }
+        }
     }
 
     int timeSinceLastWalkSound = 0;
@@ -184,7 +242,7 @@ public class Player extends Movables {
         timeSinceLastWalkSound++;
         if (Math.floor(speed()) == 0)
             return;
-        if (Main.keyDown(-1) && timeSinceLastWalkSound > timePerWalkSound) {
+        if (Main.keyDown(-1) && timeSinceLastWalkSound > timePerWalkSound && canRun) {
             timeSinceLastWalkSound = 0;
             new Sound(middleX(), middleY(), 20, Sound.footsteps);
         } else if (Main.keyDown('c') && timeSinceLastWalkSound > timePerWalkSound) {
@@ -195,8 +253,6 @@ public class Player extends Movables {
             new Sound(middleX(), middleY(), 7, Sound.footsteps);
         }
     }
-
- 
 
     public void reactGetHit(float dmg, String vpnType) {
         health -= dmg;

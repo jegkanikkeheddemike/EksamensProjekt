@@ -5,9 +5,9 @@ import Setup.Main;
 
 public class Pistol extends Weapon {
     public Pistol(float x, float y) {
-        super(x, y, "Pistol");
-        this.wpnType = "Pistol";
-        damage = 5;
+        super(x, y, "Pistol", 120);
+        wpnType = "Pistol";
+        damage = 10;
         shotCooldown = 20;
         range = 700;
         spread = 0.02f;
@@ -21,4 +21,3 @@ public class Pistol extends Weapon {
 
     }
 }
-

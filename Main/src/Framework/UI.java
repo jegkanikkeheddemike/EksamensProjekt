@@ -1,5 +1,6 @@
 package Framework;
 
+import Framework.PlayerEffects.PlayerEffect;
 import Setup.Main;
 
 public class UI {
@@ -14,21 +15,27 @@ public class UI {
         Main.main.rect(Main.main.width / 3f, Main.main.height - 100,
                 (Main.player.health / 100f) * (Main.main.width / 3f), 50);
         // #endregion
-        //#region KOORDINATES
+        // #region KOORDINATES
+        Main.main.textSize(12);
         Main.main.fill(255);
-        Main.main.text("x:"+ (int)Main.player.x + " y:" + (int)Main.player.y,Main.main.width/2f,Main.main.height - 105);
-        //#endregion
+        Main.main.text("x:" + (int) Main.player.x + " y:" + (int) Main.player.y, Main.main.width / 2f,
+                Main.main.height - 105);
+        // #endregion
         // #region WEAPONS
         Main.main.fill(255);
         if (!Main.player.cWNumber)
             Main.main.fill(0, 255, 0);
         Main.main.text(Main.player.cWeapon0.wpnType, Main.main.width / 3f, Main.main.height - 105);
-        Main.main.text(Main.player.cWeapon0.cClip+"/"+Main.player.cWeapon0.clipSize, Main.main.width / 3f, Main.main.height - 115);
+        Main.main.text(Main.player.cWeapon0.cClip + "/" + Main.player.cWeapon0.clipSize, Main.main.width / 3f,
+                Main.main.height - 115);
+        Main.main.text(Main.player.cWeapon0.ID, Main.main.width / 3f, Main.main.height - 125);
         Main.main.fill(255);
         if (Main.player.cWNumber)
             Main.main.fill(0, 255, 0);
         Main.main.text(Main.player.cWeapon1.wpnType, Main.main.width / 3f + 500, Main.main.height - 105);
-        Main.main.text(Main.player.cWeapon1.cClip+"/"+Main.player.cWeapon1.clipSize, Main.main.width / 3f + 500, Main.main.height - 115);
+        Main.main.text(Main.player.cWeapon1.cClip + "/" + Main.player.cWeapon1.clipSize, Main.main.width / 3f + 500,
+                Main.main.height - 115);
+        Main.main.text(Main.player.cWeapon1.ID, Main.main.width / 3f + 500, Main.main.height - 125);
 
         // #endregion
         // #region INVENTORY
@@ -51,12 +58,25 @@ public class UI {
             }
         }
         // #endregion
+        // #region PLAYER EFFECTS
+
+        int x = 10;
+        int y = 10;
+        for (PlayerEffect playerEffect : Main.player.playerEffects) {
+
+            playerEffect.drawOnUI(x, y);
+
+            y += 80;
+        }
+
+        // #endregion
+
         // #region SHADER INFO
-        
+
         if (!Main.onWindows) {
             Main.main.strokeWeight(3);
             Main.main.stroke(0);
-            Main.main.fill(255,0,0);
+            Main.main.fill(255, 0, 0);
             Main.main.textSize(30);
             Main.main.text("SHADERS ARE DISABLED, USE WINDOWS 10 TO ENABLE SHADERS", 850, 40);
         }
