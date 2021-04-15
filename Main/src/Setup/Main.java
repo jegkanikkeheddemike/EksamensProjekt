@@ -82,7 +82,7 @@ public class Main extends PApplet {
         }
 
         // #region TestObjects
-        new AmmoBox9mm(player.x + 50, player.y + 50);
+        new AmmoBox9mm(player.x, player.y);
         new AmmoBox9mm(player.x - 50, player.y + 50);
         new AmmoBox9mm(player.x + 50, player.y - 50);
         new AmmoBox9mm(player.x - 50, player.y - 50);
