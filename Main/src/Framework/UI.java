@@ -83,7 +83,12 @@ public class UI {
 
         // #endregion
         // #region GAME INFO
-        Main.main.text("Near objects "+Main.nearObjects.size(), 10, 100);
+        Main.main.fill(255);
+        Main.main.textSize(12);
+        Main.main.text("Near Objects " + Main.nearObjects.size(), 10, 20);
+        Main.main.text("All Objects " + Main.allObjects.size(), 10, 40);
+        Main.main.text("Near Zombies " + Shaders.zombies.size(), 10, 60);
+        Main.main.text("Near Walls " + Shaders.walls.size(), 10, 80);
         // #endregion
     }
 }
