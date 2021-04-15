@@ -82,5 +82,8 @@ public class UI {
         }
 
         // #endregion
+        // #region GAME INFO
+        Main.main.text("Near objects "+Main.nearObjects.size(), 10, 100);
+        // #endregion
     }
 }

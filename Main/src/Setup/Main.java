@@ -56,14 +56,16 @@ public class Main extends PApplet {
         m.removeUselessNodes();
 
         for (Node n : m.allNodes) {
-            //n.wallsAlongParentEdge();w
-            //NOW IT ONLY MAKES A HOUSE On THE EDGE TO THE PARENTS THAT ARE TO THE EAST OF NODES.
-            //if(n.parent == n.connected[Map.EAST]){
+            // n.wallsAlongParentEdge();w
+            // NOW IT ONLY MAKES A HOUSE On THE EDGE TO THE PARENTS THAT ARE TO THE EAST OF
+            // NODES.
+            // if(n.parent == n.connected[Map.EAST]){
             n.housesAlongParentEdge();
-            //}
+            // }
         }
 
-        //new Building(-100, -100, width+100, -100, -100, height+100, width+100, height+100,Map.EAST);
+        // new Building(-100, -100, width+100, -100, -100, height+100, width+100,
+        // height+100,Map.EAST);
 
         if (onWindows)
             ShaderPreRenderWorkThread.thread.start();
@@ -122,9 +124,9 @@ public class Main extends PApplet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (onWindows)
-            Shaders.drawZombieFOVCone();
-
+        if (onWindows) {
+            // Shaders.drawZombieFOVCone();
+        }
         translate(-translateX, -translateY);
         UI.drawUI();
     }

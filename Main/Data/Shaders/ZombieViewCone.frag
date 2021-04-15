@@ -4,13 +4,13 @@ precision mediump float;
 
 uniform int zombies;
 uniform int walls;
-uniform float zombieX[30];
-uniform float zombieY[30];
-uniform float zombieRotation[30];
-uniform float wallX[100];
-uniform float wallY[100];
-uniform float wallWidth[100];
-uniform float wallHeight[100];
+uniform float zombieX[50];
+uniform float zombieY[50];
+uniform float zombieRotation[50];
+uniform float wallX[200];
+uniform float wallY[200];
+uniform float wallWidth[200];
+uniform float wallHeight[200];
 uniform float camX;
 uniform float camY;
 
