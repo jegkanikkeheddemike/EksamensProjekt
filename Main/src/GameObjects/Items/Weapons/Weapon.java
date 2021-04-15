@@ -24,6 +24,7 @@ public abstract class Weapon extends Item {
         w = (float) sprite.width / 3;
         h = (float) sprite.height / 3;
         itemType = "Weapon";
+        this.reloadTime = reloadTime;
     }
 
     @Override

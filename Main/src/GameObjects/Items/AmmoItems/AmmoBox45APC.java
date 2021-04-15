@@ -6,4 +6,10 @@ public class AmmoBox45APC extends AmmoItem {
         itemType = ".45 ACP";
         amount = 20;
     }
+
+    @Override
+    protected void loadSprite() {
+        // TODO Auto-generated method stub
+        
+    }
 }

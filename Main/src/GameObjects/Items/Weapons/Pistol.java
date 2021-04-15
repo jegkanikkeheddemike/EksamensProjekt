@@ -1,5 +1,6 @@
 package GameObjects.Items.Weapons;
 
+import Framework.Images;
 import GameObjects.Bullet;
 import Setup.Main;
 
@@ -18,6 +19,11 @@ public class Pistol extends Weapon {
 
     public void use() {
         new Bullet(Main.player.rotation);
+    }
+
+    @Override
+    protected void loadSprite() {
+        sprite = Images.SPRITE_PISTOL;
 
     }
 }
