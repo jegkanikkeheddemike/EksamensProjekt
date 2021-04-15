@@ -73,7 +73,7 @@ public class Main extends PApplet {
         }
 
         // #region TestObjects
-        new AmmoBox9mm(player.x + 50, player.y + 50);
+        new AmmoBox9mm(player.x, player.y);
         new AmmoBox9mm(player.x - 50, player.y + 50);
         new AmmoBox9mm(player.x + 50, player.y - 50);
         new AmmoBox9mm(player.x - 50, player.y - 50);
@@ -113,9 +113,9 @@ public class Main extends PApplet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (onWindows)
-            Shaders.drawZombieFOVCone();
-
+        if (onWindows) {
+            // Shaders.drawZombieFOVCone();
+        }
         translate(-translateX, -translateY);
         UI.drawUI();
     }

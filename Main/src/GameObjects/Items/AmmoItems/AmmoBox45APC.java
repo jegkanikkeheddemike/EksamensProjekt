@@ -1,5 +1,7 @@
 package GameObjects.Items.AmmoItems;
- 
+
+import Framework.Images;
+
 public class AmmoBox45APC extends AmmoItem {
     AmmoBox45APC(float x, float y) {
         super(x, y);
@@ -9,7 +11,6 @@ public class AmmoBox45APC extends AmmoItem {
 
     @Override
     protected void loadSprite() {
-        // TODO Auto-generated method stub
-        
+        sprite = Images.SPRITE_AMMOBOX45ACP;
     }
 }

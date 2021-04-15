@@ -10,10 +10,14 @@ public abstract class Images {
         SPRITE_STARTER = Main.main.loadImage("Images\\Starter.png");
         SPRITE_HEALTHPACK = Main.main.loadImage("Images\\Healthpack.png");
         SPRITE_BANDAGE = Main.main.loadImage("Images\\Bandage.png");
+        SPRITE_AMMOBOX9MM = Main.main.loadImage("Images\\AmmoBox9mm.png");
+        SPRITE_AMMOBOX45ACP = Main.main.loadImage("Images\\AmmoBox45ACP.png");
     }
 
     public static PImage SPRITE_PISTOL;
     public static PImage SPRITE_STARTER;
     public static PImage SPRITE_HEALTHPACK;
     public static PImage SPRITE_BANDAGE;
+    public static PImage SPRITE_AMMOBOX9MM;
+    public static PImage SPRITE_AMMOBOX45ACP;
 }

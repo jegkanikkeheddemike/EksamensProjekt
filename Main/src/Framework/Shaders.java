@@ -19,13 +19,13 @@ public class Shaders {
     public static void drawZombieFOVCone() {
 
         // MAX AMOUNT OF ZOMBIES ON SCREEN IS 30 FOR NOW
-        float[] zombieX = new float[30];
-        float[] zombieY = new float[30];
-        float[] zombieRotation = new float[30];
-        float[] wallX = new float[100];
-        float[] wallY = new float[100];
-        float[] wallWidth = new float[100];
-        float[] wallHeight = new float[100];
+        float[] zombieX = new float[zombieShaderAmount];
+        float[] zombieY = new float[zombieShaderAmount];
+        float[] zombieRotation = new float[zombieShaderAmount];
+        float[] wallX = new float[wallShaderAmount];
+        float[] wallY = new float[wallShaderAmount];
+        float[] wallWidth = new float[wallShaderAmount];
+        float[] wallHeight = new float[wallShaderAmount];
 
         for (int i = 0; i < zombies.size(); i++) {
             Zombie z = zombies.get(i);
@@ -69,4 +69,7 @@ public class Shaders {
         // HUST AT RESET SHADER BAGEFTER, ELLER FÅR ANDRE TEXTURES FORKERT SHADER :( !!
         Main.main.resetShader();
     }
+
+    public static final int zombieShaderAmount = 50;
+    public static final int wallShaderAmount = 200;
 }
