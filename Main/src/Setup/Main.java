@@ -56,24 +56,13 @@ public class Main extends PApplet {
         m.removeUselessNodes();
 
         for (Node n : m.allNodes) {
-            // n.wallsAlongParentEdge();w
-            // NOW IT ONLY MAKES A HOUSE On THE EDGE TO THE PARENTS THAT ARE TO THE EAST OF
-            // NODES.
-            // if(n.parent == n.connected[Map.EAST]){
             n.housesAlongParentEdge();
-            // }
         }
-
-        // new Building(-100, -100, width+100, -100, -100, height+100, width+100,
-        // height+100,Map.EAST);
-
+        
         if (onWindows)
             ShaderPreRenderWorkThread.thread.start();
         if (onWindows)
             Sound.setupSound();
-
-        // new Building(0, 0, 1900 - 100, 0, 0, 1100 - 100, 1900 - 100, 1100 - 100,
-        // Map.EAST);
 
         player = new Player();
 
@@ -84,7 +73,7 @@ public class Main extends PApplet {
         }
 
         // #region TestObjects
-        new AmmoBox9mm(player.x + 50, player.y + 50);
+        new AmmoBox9mm(player.x, player.y);
         new AmmoBox9mm(player.x - 50, player.y + 50);
         new AmmoBox9mm(player.x + 50, player.y - 50);
         new AmmoBox9mm(player.x - 50, player.y - 50);
