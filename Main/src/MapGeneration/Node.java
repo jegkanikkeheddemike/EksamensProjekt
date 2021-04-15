@@ -1,7 +1,5 @@
 package MapGeneration;
 
-import javax.sql.rowset.RowSetFactory;
-
 import GameObjects.Wall;
 import Setup.Main;
 
@@ -12,6 +10,7 @@ public class Node {
     //   North/Up, South/Down, East/Right, West/Left
     public Node[] connected  = {null, null, null, null};
     public Boolean isEndPoint;
+    public Boolean hasHouse = false;
     public static final int roadWidth = 150;//BASED ON THE PLAYER WIDTH AND HEIGHT IS TO BE REPLACED ANYWAYS
     public static final int wallWidth = 50;
     public static final int houseDepth = 500;
@@ -85,43 +84,139 @@ public class Node {
     }
     //To start with we'll just have one long house along each side of the edge.
     //AND NOT CHECK WHETHER THE HOUSE WILL OVERLAP
+
+    //So we need to check for two things:
+    //1: Is it an endnode, because then we have to leave space for the possible future nodes.
+    //2: Is there a building on the "adjacent" parent (to some other node) connection?
+    //      If there is, push it the nescessary amount up.
+
+
+    //So to implement 2, what do we do?
+    //Let's make a bool that says whether there has been generated nodes for this one yet. (this will also include the Second parent, eventhough it seems that the secondary parent may not be needed in the end)
+
     public void housesAlongParentEdge(){
+        hasHouse = true; // IDK IF IT SAFE TO PUT IT HERE BUT I THINK IT IS
         //Parent is to the EAST
         if (parent == connected[Map.EAST]){
             //THEN A HOUSE SHOULD BE TO THE NORTH OF THE ROAD
             int x1North = x + roadWidth/2 * boolToInt(connected[Map.NORTH] != null);
             int x2North = parent.x - roadWidth/2 * boolToInt(parent.connected[Map.NORTH] != null);
+            //FIRST FOR THE PARENT ON THE SAME SIDE
+            if(parent.connected[Map.NORTH] != null){
+                if(parent.connected[Map.NORTH].hasHouse){
+                    x2North -= houseDepth; //Move it a house depth back
+                }
+            }// THEN FOR THE NODES OWN :)
+            if(connected[Map.NORTH] != null){
+                if(connected[Map.NORTH].hasHouse){
+                    x1North += houseDepth; //Move it a house depth back
+                }
+            }
+            //CHECK WHETHER PARENT NORTH CONNECTED (IF EXISTS) HAS A BUILDING
             //IT DOESN'T Actually matter whether we use the parent.y here as they are THE same?
             new Building(x1North, parent.y-roadWidth/2-houseDepth, x2North, parent.y-roadWidth/2-houseDepth, x1North, parent.y-roadWidth/2, x2North, parent.y-roadWidth/2, Map.SOUTH);
+            
             //AND ONE TO THE SOUTH OF THE ROAD
             int x1South = x + roadWidth/2 * boolToInt(connected[Map.SOUTH] != null);
             int x2South = parent.x - roadWidth/2 * boolToInt(parent.connected[Map.SOUTH] != null);
+            if(parent.connected[Map.SOUTH] != null){
+                if(parent.connected[Map.SOUTH].hasHouse){
+                    x2South -= houseDepth; //Move it a house depth back
+                }
+            }
+            // THEN FOR THE NODES OWN :)
+            if(connected[Map.SOUTH] != null){
+                if(connected[Map.SOUTH].hasHouse){
+                    x1South += houseDepth; //Move it a house depth back
+                }
+            }
             new Building(x1South, parent.y+roadWidth/2, x2South, parent.y+roadWidth/2, x1South, parent.y+roadWidth/2+houseDepth, x2South, parent.y+roadWidth/2+houseDepth, Map.NORTH);
         }else if (parent == connected[Map.WEST]){
             //THEN A HOUSE SHOULD BE TO THE NORTH OF THE ROAD
             int x1North = parent.x + roadWidth/2 * boolToInt(parent.connected[Map.NORTH] != null);
             int x2North = x - roadWidth/2 * boolToInt(connected[Map.NORTH] != null);
+            if(parent.connected[Map.NORTH] != null){
+                if(parent.connected[Map.NORTH].hasHouse){
+                    x1North += houseDepth; //Move it a house depth and half a road back.
+                }
+            }
+            // THEN FOR THE NODES OWN :)
+            if(connected[Map.NORTH] != null){
+                if(connected[Map.NORTH].hasHouse){
+                    x2North -= houseDepth; //Move it a house depth back
+                }
+            }
             //IT DOESN'T Actually matter whether we use the parent.y here as they are THE same?
             new Building(x1North, parent.y-roadWidth/2-houseDepth, x2North, parent.y-roadWidth/2-houseDepth, x1North, parent.y-roadWidth/2, x2North, parent.y-roadWidth/2, Map.SOUTH);
             //AND ONE TO THE SOUTH OF THE ROAD
             int x1South = parent.x + roadWidth/2 * boolToInt(parent.connected[Map.SOUTH] != null);
             int x2South = x - roadWidth/2 * boolToInt(connected[Map.SOUTH] != null);
+            if(parent.connected[Map.SOUTH] != null){
+                if(parent.connected[Map.SOUTH].hasHouse){
+                    x1South += houseDepth; //Move it a house depth and half a road back.
+                }
+            }
+            if(connected[Map.SOUTH] != null){
+                if(connected[Map.SOUTH].hasHouse){
+                    x2South -= houseDepth; //Move it a house depth back
+                }
+            }
             new Building(x1South, parent.y+roadWidth/2, x2South, parent.y+roadWidth/2, x1South, parent.y+roadWidth/2+houseDepth, x2South, parent.y+roadWidth/2+houseDepth, Map.NORTH);
         }else if(parent == connected[Map.SOUTH]){
             int y1West = y + roadWidth/2 * boolToInt(connected[Map.WEST] != null);
             int y2West = parent.y - roadWidth/2 * boolToInt(parent.connected[Map.WEST] != null);
+            if(parent.connected[Map.WEST] != null){
+                if(parent.connected[Map.WEST].hasHouse){
+                    y2West -= houseDepth; //Move it a house depth and half a road back.
+                }
+            }
+            if(connected[Map.WEST] != null){
+                if(connected[Map.WEST].hasHouse){
+                    y1West += houseDepth; //Move it a house depth and half a road back.
+                }
+            }
             new Building(parent.x-roadWidth/2-houseDepth, y1West, parent.x-roadWidth/2, y1West, parent.x-roadWidth/2-houseDepth, y2West, parent.x-roadWidth/2, y2West, Map.EAST);
 
             int y1East = y + roadWidth/2 * boolToInt(connected[Map.EAST] != null);
             int y2East = parent.y - roadWidth/2 * boolToInt(parent.connected[Map.EAST] != null);
+            if(parent.connected[Map.EAST] != null){
+                if(parent.connected[Map.EAST].hasHouse){
+                    y2East -= houseDepth; //Move it a house depth and half a road back.
+                }
+            }
+            if(connected[Map.EAST] != null){
+                if(connected[Map.EAST].hasHouse){
+                    y1East += houseDepth; //Move it a house depth and half a road back.
+                }
+            }
             new Building(parent.x+roadWidth/2, y1East, parent.x+roadWidth/2+houseDepth, y1East, parent.x+roadWidth/2, y2East, parent.x+roadWidth/2+houseDepth, y2East, Map.WEST);
         }else if(parent == connected[Map.NORTH]){
             int y1West = parent.y + roadWidth/2 * boolToInt(parent.connected[Map.WEST] != null);
             int y2West = y - roadWidth/2 * boolToInt(connected[Map.WEST] != null);
+            if(parent.connected[Map.WEST] != null){
+                if(parent.connected[Map.WEST].hasHouse){
+                    y1West += houseDepth; //Move it a house depth and half a road back.
+                }
+            }
+            if(connected[Map.WEST] != null){
+                if(connected[Map.WEST].hasHouse){
+                    y2West -= houseDepth; //Move it a house depth and half a road back.
+                }
+            }
             new Building(parent.x-roadWidth/2-houseDepth, y1West, parent.x-roadWidth/2, y1West, parent.x-roadWidth/2-houseDepth, y2West, parent.x-roadWidth/2, y2West, Map.EAST);
 
             int y1East = parent.y + roadWidth/2 * boolToInt(parent.connected[Map.EAST] != null);
             int y2East = y - roadWidth/2 * boolToInt(connected[Map.EAST] != null);
+            if(parent.connected[Map.EAST] != null){
+                if(parent.connected[Map.EAST].hasHouse){
+                    y1East += houseDepth; //Move it a house depth and half a road back.
+                }
+            }
+            if(connected[Map.EAST] != null){
+                if(connected[Map.EAST].hasHouse){
+                    y2East -= houseDepth; //Move it a house depth and half a road back.
+                }
+            }
             new Building(parent.x+roadWidth/2, y1East, parent.x+roadWidth/2+houseDepth, y1East, parent.x+roadWidth/2, y2East, parent.x+roadWidth/2+houseDepth, y2East, Map.WEST);
         }
     }

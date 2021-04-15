@@ -21,8 +21,8 @@ public class Map {
     ArrayList<Wall> roads;
     private Random rand = new Random();
     private int maxLevel;
-    private final int maxRoadLength = Node.houseDepth*4+Node.roadWidth;//1000;
-    private final int minRoadLength = Node.houseDepth*2+Node.roadWidth;//500;
+    private final int maxRoadLength = Node.houseDepth*5+Node.roadWidth;//1000;
+    private final int minRoadLength = Node.houseDepth*3+Node.roadWidth;//500;
     private final float minPointDist = Node.houseDepth;
     private final float minRoadDist = Node.houseDepth;
 
