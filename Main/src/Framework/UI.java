@@ -89,6 +89,8 @@ public class UI {
         Main.main.text("All Objects " + Main.allObjects.size(), 10, 40);
         Main.main.text("Near Zombies " + Shaders.zombies.size(), 10, 60);
         Main.main.text("Near Walls " + Shaders.walls.size(), 10, 80);
+        Main.main.text("Shader RenderTime: " + (Shaders.renderTime + "       ").substring(0, 4), 10, 100);
+        Main.main.text("Framerate (60): " + (Main.main.frameRate + "       ").substring(0, 4), 10, 120);
         // #endregion
     }
 }

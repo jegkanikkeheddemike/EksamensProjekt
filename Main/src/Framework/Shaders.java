@@ -12,12 +12,14 @@ public class Shaders {
     public static volatile ArrayList<Zombie> zombies = new ArrayList<Zombie>();
     public static volatile ArrayList<Wall> walls = new ArrayList<Wall>();
 
+    static long renderTime = 0;
+
     public static void loadShaders() {
         zombieFOVConeShader = Main.main.loadShader("Shaders\\ZombieViewCone.frag");
     }
 
-    public static final int zombieShaderAmount = 50;
-    public static final int wallShaderAmount = 200;
+    public static final int zombieShaderAmount = 20;
+    public static final int wallShaderAmount = 70;
 
     // MAX AMOUNT OF ZOMBIES ON SCREEN IS 30 FOR NOW
     private static float[] zombieX = new float[zombieShaderAmount];
@@ -29,7 +31,7 @@ public class Shaders {
     private static float[] wallHeight = new float[wallShaderAmount];
 
     public static void drawZombieFOVCone() {
-        // long preTime = System.currentTimeMillis();
+        long preTime = System.currentTimeMillis();
 
         if (NearThread.isReady) {
             NearThread.beginWait();
@@ -76,8 +78,7 @@ public class Shaders {
         // HUST AT RESET SHADER BAGEFTER, ELLER FÅR ANDRE TEXTURES FORKERT SHADER :( !!
         Main.main.resetShader();
 
-        // System.out.println("Shader render time: " + (System.currentTimeMillis() -
-        // preTime));
+        renderTime = System.currentTimeMillis() - preTime;
     }
 
 }
