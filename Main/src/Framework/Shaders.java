@@ -81,4 +81,5 @@ public class Shaders {
         renderTime = System.currentTimeMillis() - preTime;
     }
 
+    public static final int minFrameRateForZombieShader = 30;
 }

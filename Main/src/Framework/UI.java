@@ -91,6 +91,8 @@ public class UI {
         Main.main.text("Near Walls " + Shaders.walls.size(), 10, 80);
         Main.main.text("Shader RenderTime: " + (Shaders.renderTime + "       ").substring(0, 4), 10, 100);
         Main.main.text("Framerate (60): " + (Main.main.frameRate + "       ").substring(0, 4), 10, 120);
+        Main.main.text("Shaders: " + ((Main.main.frameRate > Shaders.minFrameRateForZombieShader) ? "Enabled"
+                : "Disabled due to low framerate"), 10, 140);
         // #endregion
     }
 }

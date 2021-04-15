@@ -114,7 +114,7 @@ public class Main extends PApplet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (onWindows) {
+        if (onWindows && frameRate > Shaders.minFrameRateForZombieShader) {
             Shaders.drawZombieFOVCone();
         }
         translate(-translateX, -translateY);
