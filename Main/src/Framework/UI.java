@@ -83,7 +83,16 @@ public class UI {
 
         // #endregion
         // #region GAME INFO
-        Main.main.text("Near objects "+Main.nearObjects.size(), 10, 100);
+        Main.main.fill(255);
+        Main.main.textSize(12);
+        Main.main.text("Near Objects " + Main.nearObjects.size(), 10, 20);
+        Main.main.text("All Objects " + Main.allObjects.size(), 10, 40);
+        Main.main.text("Near Zombies " + Shaders.zombies.size(), 10, 60);
+        Main.main.text("Near Walls " + Shaders.walls.size(), 10, 80);
+        Main.main.text("Shader RenderTime: " + (Shaders.renderTime + "       ").substring(0, 4), 10, 100);
+        Main.main.text("Framerate (60): " + (Main.main.frameRate + "       ").substring(0, 4), 10, 120);
+        Main.main.text("Shaders: " + ((Main.main.frameRate > Shaders.minFrameRateForZombieShader) ? "Enabled"
+                : "Disabled due to low framerate"), 10, 140);
         // #endregion
     }
 }

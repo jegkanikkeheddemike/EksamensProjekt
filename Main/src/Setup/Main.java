@@ -44,7 +44,9 @@ public class Main extends PApplet {
 
     @Override
     public void setup() {
+        player = new Player();
         frameRate(60);
+
         if (onWindows)
             Shaders.loadShaders();
         NearThread.thread.start();
@@ -58,13 +60,12 @@ public class Main extends PApplet {
         for (Node n : m.allNodes) {
             n.housesAlongParentEdge();
         }
-        
-        if (onWindows)
-            ShaderPreRenderWorkThread.thread.start();
+
+        if (onWindows) {
+            // ShaderPreRenderWorkThread.thread.start();
+        }
         if (onWindows)
             Sound.setupSound();
-
-        player = new Player();
 
         Random r = new Random();
         while (player.getCollisions(0, 0, new String[] { "Wall", "Zombie" }).length > 0) {
@@ -113,8 +114,8 @@ public class Main extends PApplet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (onWindows) {
-            // Shaders.drawZombieFOVCone();
+        if (onWindows && frameRate > Shaders.minFrameRateForZombieShader) {
+            Shaders.drawZombieFOVCone();
         }
         translate(-translateX, -translateY);
         UI.drawUI();
