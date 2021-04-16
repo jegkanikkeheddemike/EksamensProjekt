@@ -44,9 +44,9 @@ public class Main extends PApplet {
 
     @Override
     public void setup() {
+        Images.loadImages();
         player = new Player();
         frameRate(60);
-        Images.loadImages();
 
         if (onWindows)
             Shaders.loadShaders();
