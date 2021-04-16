@@ -1,13 +1,14 @@
 package GameObjects.Items.Weapons;
 
 import Framework.Images;
-import GameObjects.Bullet;
+import GameObjects.Projectiles.Bullet;
 import Setup.Main;
 
-public class Shotgun extends Weapon{
+public class Shotgun extends Weapon {
     int shotsPrShot = 5;
+
     public Shotgun(float x, float y) {
-        super(x, y, "Shotgun", 120);
+        super(x, y, "Shotgun", 120, true);
         wpnType = "Shotgun";
         damage = 6;
         shotCooldown = 60;
@@ -19,7 +20,7 @@ public class Shotgun extends Weapon{
     }
 
     public void use() {
-        for(int i = 0; i < shotsPrShot;i++){
+        for (int i = 0; i < shotsPrShot; i++) {
             new Bullet(Main.player.rotation);
         }
     }
@@ -28,5 +29,5 @@ public class Shotgun extends Weapon{
     protected void loadSprite() {
         sprite = Images.SPRITE_SHOTGUN;
     }
-    
+
 }
