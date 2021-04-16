@@ -45,23 +45,24 @@ public abstract class Item extends GameObject {
     }
 
     public void draw() {
-        if (!held) {;
+        if (!held) {
+            ;
             if (sprite != null) {
                 Main.main.image(sprite, x, y, w, h);
                 Main.main.fill(255);
                 Main.main.text(ID, x + 50, y);
-            } else{
+            } else {
                 super.draw();
             }
-                
+
         }
 
     }
 
     public void drawInInventory(int x, int y) {
         if (sprite != null) {
-            Main.main.image(sprite, x, y, w, h);
-        } else{
+            Main.main.image(sprite, x, y, 80, 80);
+        } else {
             super.draw();
         }
     }
