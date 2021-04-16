@@ -31,11 +31,12 @@ public abstract class Weapon extends Item {
     @Override
     public void reactPickedUp() {
         if (!Main.player.cWNumber) {
+            Main.player.cWeapon0.held = false;
             Main.player.cWeapon0 = this;
         } else {
+            Main.player.cWeapon1.held = false;
             Main.player.cWeapon1 = this;
         }
-
-        delete();
+        held = true;
     }
 }

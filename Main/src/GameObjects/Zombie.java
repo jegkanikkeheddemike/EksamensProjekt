@@ -65,7 +65,7 @@ public class Zombie extends Movables {
         }
         Main.main.text(geneDescription, x + w + 10, y);
         drawAwarenessbar();
-        if (!Main.onWindows || Main.main.frameRate < Shaders.minFrameRateForZombieShader)
+        if (!Main.onWindows || !Shaders.shouldDrawShaders())
             drawFOVCone();
     }
 
