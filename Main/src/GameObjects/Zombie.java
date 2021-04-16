@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import Framework.*;
+import GameObjects.Projectiles.ZombieShot;
 import Setup.Main;
 import processing.core.PVector;
 

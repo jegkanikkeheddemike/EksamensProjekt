@@ -1,6 +1,7 @@
-package GameObjects;
+package GameObjects.Projectiles;
 
 import Framework.*;
+import GameObjects.Zombie;
 import Setup.Main;
 
 public class ZombieShot extends Movables {

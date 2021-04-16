@@ -1,12 +1,12 @@
 package GameObjects.Items.Weapons;
 
 import Framework.Images;
-import GameObjects.Bullet;
+import GameObjects.Projectiles.Bullet;
 import Setup.Main;
 
 public class Pistol extends Weapon {
     public Pistol(float x, float y) {
-        super(x, y, "Pistol", 120);
+        super(x, y, "Pistol", 120,true);
         wpnType = "Pistol";
         damage = 10;
         shotCooldown = 20;

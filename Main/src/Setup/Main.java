@@ -12,6 +12,7 @@ import GameObjects.*;
 import GameObjects.Items.AmmoItems.*;
 import GameObjects.Items.HealthItems.Bandage;
 import GameObjects.Items.HealthItems.HealthPack;
+import GameObjects.Items.Weapons.Machete;
 import GameObjects.Items.Weapons.Pistol;
 import MapGeneration.*;
 
@@ -82,7 +83,7 @@ public class Main extends PApplet {
         new Pistol(player.x, player.y + 100);
         new HealthPack(player.x, player.y);
         new Bandage(player.x, player.y);
-
+        new Machete(player.x, player.y);
         // #endregion
 
     }

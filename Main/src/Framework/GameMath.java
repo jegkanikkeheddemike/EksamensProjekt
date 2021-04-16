@@ -1,7 +1,5 @@
 package Framework;
 
-import com.jogamp.nativewindow.util.Point;
-
 import Setup.*;
 
 public class GameMath {

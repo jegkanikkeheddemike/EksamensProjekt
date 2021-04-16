@@ -13,10 +13,11 @@ public abstract class Weapon extends Item {
     public int clipSize;
     public int cClip;
     public String ammoType;
+    public boolean usesAmmo;
 
     public int reloadTime;
 
-    Weapon(float x, float y, String wpnType, int reloadTime) {
+    Weapon(float x, float y, String wpnType, int reloadTime, boolean usesAmmo) {
         super(x, y);
         this.wpnType = wpnType;
         classID = "Weapon";
@@ -24,6 +25,7 @@ public abstract class Weapon extends Item {
         h = (float) sprite.height / 3;
         itemType = "Weapon";
         this.reloadTime = reloadTime;
+        this.usesAmmo = usesAmmo;
     }
 
     @Override
