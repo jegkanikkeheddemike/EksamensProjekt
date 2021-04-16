@@ -56,6 +56,10 @@ public class Player extends Movables {
 
     public Item getItemTypeFromInventory(String itemType) {
         for (int i = 0; i < inventory.length; i++) {
+
+            if (inventory[i] == null)
+                continue;
+
             if (inventory[i].itemType.equals(itemType))
                 return inventory[i];
         }

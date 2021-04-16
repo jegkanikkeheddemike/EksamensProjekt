@@ -27,6 +27,7 @@ public abstract class Item extends GameObject {
         int index = Main.player.getItemIndexFromInventory(this);
         Main.player.inventory[index] = null;
     }
+
     static int pickUpMaxCooldown = 30;
     static int pickUpCooldown = pickUpMaxCooldown;
     boolean pickingUp = false;
@@ -35,12 +36,13 @@ public abstract class Item extends GameObject {
     public void step() {
         if (!held) {
             if (GameMath.pointDistance(this.middleX(), this.middleY(), Main.player.middleX(),
-                    Main.player.middleY()) < this.h / 2f + Main.player.w / 2f && held == false && Main.keyTapped('e') && !Main.player.occupied) {
+                    Main.player.middleY()) < this.h / 2f + Main.player.w / 2f && held == false && Main.keyTapped('e')
+                    && !Main.player.occupied) {
                 Main.player.addPlayerEffect(new PickupEffect(this));
             }
         } else {
-            x = Main.player.middleX()-w/2;
-            y = Main.player.middleY()-h/2;
+            x = Main.player.middleX() - w / 2;
+            y = Main.player.middleY() - h / 2;
 
         }
 
@@ -57,14 +59,15 @@ public abstract class Item extends GameObject {
                 super.draw();
             }
             if (GameMath.pointDistance(this.middleX(), this.middleY(), Main.player.middleX(),
-                    Main.player.middleY()) < this.h / 2f + Main.player.w / 2f && held == false){
-                        Main.main.textSize(22);
-                        Main.main.fill(255);
-                        Main.main.text("e", middleX(), middleY()-50);
-                        Main.main.textSize(12);
-                        Main.main.fill(155);;
-                        Main.main.text("to pick up", middleX()-20, middleY()-40);
-                    }
+                    Main.player.middleY()) < this.h / 2f + Main.player.w / 2f && held == false) {
+                Main.main.textSize(22);
+                Main.main.fill(255);
+                Main.main.text("E", middleX(), middleY() - 50);
+                Main.main.textSize(12);
+                Main.main.fill(155);
+                ;
+                Main.main.text("to pick up", middleX() - 20, middleY() - 40);
+            }
 
         }
 
