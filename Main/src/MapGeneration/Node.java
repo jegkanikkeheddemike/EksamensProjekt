@@ -11,7 +11,7 @@ public class Node {
     public Node[] connected  = {null, null, null, null};
     public Boolean isEndPoint;
     public Boolean hasHouse = false;
-    public static final int roadWidth = 150;//BASED ON THE PLAYER WIDTH AND HEIGHT IS TO BE REPLACED ANYWAYS
+    public static final int roadWidth = 300;//BASED ON THE PLAYER WIDTH AND HEIGHT IS TO BE REPLACED ANYWAYS
     public static final int wallWidth = 50;
     public static final int houseDepth = 500;
     public Boolean isINTERSECTIONPOINT = false;

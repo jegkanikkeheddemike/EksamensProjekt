@@ -6,12 +6,12 @@ import processing.core.PImage;
 public abstract class Images {
 
     public static void loadImages() {
-        SPRITE_PISTOL = Main.main.loadImage("Images\\Pistol.png");
-        SPRITE_STARTER = Main.main.loadImage("Images\\Starter.png");
-        SPRITE_HEALTHPACK = Main.main.loadImage("Images\\Healthpack.png");
-        SPRITE_BANDAGE = Main.main.loadImage("Images\\Bandage.png");
-        SPRITE_AMMOBOX9MM = Main.main.loadImage("Images\\AmmoBox9mm.png");
-        SPRITE_AMMOBOX45ACP = Main.main.loadImage("Images\\AmmoBox45ACP.png");
+        SPRITE_PISTOL = Main.main.loadImage("Images/Pistol.png");
+        SPRITE_STARTER = Main.main.loadImage("Images/Starter.png");
+        SPRITE_HEALTHPACK = Main.main.loadImage("Images/Healthpack.png");
+        SPRITE_BANDAGE = Main.main.loadImage("Images/Bandage.png");
+        SPRITE_AMMOBOX9MM = Main.main.loadImage("Images/AmmoBox9mm.png");
+        SPRITE_AMMOBOX45ACP = Main.main.loadImage("Images/AmmoBox45ACP.png");
     }
 
     public static PImage SPRITE_PISTOL;

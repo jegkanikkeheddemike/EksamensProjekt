@@ -11,7 +11,6 @@ public class GameMath {
         return (float) Math.sqrt(dx * dx + dy * dy);
     }
 
-
     public static float rectDistance(float x11, float y11, float x12, float y12, float x21, float y21, float x22, float y22){
         Boolean left = x22 < x11;
         Boolean right = x12 < x21;
@@ -38,6 +37,7 @@ public class GameMath {
             return 0;
         }
     }
+
     public static float objectDistance(GameObject o1, GameObject o2) {
         float x1 = o1.middleX();
         float y1 = o1.middleY();
@@ -135,4 +135,3 @@ public class GameMath {
         return LineData.noCollision;
     }
 }
-
