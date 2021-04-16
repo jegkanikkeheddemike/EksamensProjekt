@@ -23,8 +23,8 @@ public class Map {
     private int maxLevel;
     private final int maxRoadLength = Node.houseDepth*5+Node.roadWidth;//1000;
     private final int minRoadLength = Node.houseDepth*3+Node.roadWidth;//500;
-    private final float minPointDist = Node.houseDepth;
-    private final float minRoadDist = Node.houseDepth;
+    private final float minPointDist = Node.houseDepth*2;
+    private final float minRoadDist = Node.houseDepth*2+Node.roadWidth;
 
     public Map(int maxLevel){
         initialNode = new Node(Main.main.width/2, Main.main.height/2);

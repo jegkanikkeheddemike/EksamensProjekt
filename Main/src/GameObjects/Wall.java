@@ -1,5 +1,6 @@
 package GameObjects;
 
+import Framework.GameMath;
 import Framework.GameObject;
 import Setup.Main;
 
@@ -47,5 +48,8 @@ public class Wall extends GameObject {
     public int shortestDistanceBetweenWalls(){
         return 0;
 
+    }
+    public float distToRect(float x, float y, float w, float h){
+        return GameMath.rectDistance(this.x, this.y, this.x+this.w, this.y+this.h, x, y, x+w, y+h);
     }
 }
