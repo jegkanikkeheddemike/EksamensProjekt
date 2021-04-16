@@ -91,7 +91,7 @@ public class Player extends Movables {
         cWeapon0.held = true;
         cWeapon1 = new Starter(x, y);
         cWeapon1.held = true;
-        cWNumber = true;
+        cWNumber = false;
     }
 
     @Override
