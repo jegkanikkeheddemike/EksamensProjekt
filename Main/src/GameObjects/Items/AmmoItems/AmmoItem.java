@@ -14,11 +14,11 @@ public abstract class AmmoItem extends Item {
 
     @Override
     public void drawInInventory(int x, int y) {
+        super.drawInInventory(x, y);
+        Main.main.noStroke();
+        Main.main.textSize(20);
         Main.main.fill(255);
-        Main.main.rect(x, y, 80, 80);
-        Main.main.fill(0);
-        Main.main.text(this.itemType, x + 40, y + 40);
-        Main.main.text(this.amount, x + 60, y + 60);
+        Main.main.text(amount, x + 50, y + 50);
     }
 
     @Override

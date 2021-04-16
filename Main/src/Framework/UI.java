@@ -50,10 +50,10 @@ public class UI {
             Main.main.strokeWeight(3);
             Main.main.line(Main.main.width - 120, 20 + 100 * i, Main.main.width - 20, 20 + 100 * i);
             if (Main.player.inventory[i] != null) {
-                if (Main.player.inventory[i].sprite == null) {
+                if (Main.player.inventory[i].sprite != null) {
                     Main.player.inventory[i].drawInInventory(Main.main.width - 120 + 10, 20 + 100 * i + 10);
                 } else {
-                    Main.main.image(Main.player.inventory[i].sprite, Main.main.width - 120, 20 + 100 * i, 80, 80);
+                    Main.main.text("No sprite", Main.main.width - 120 + 20, 20 + 100 * i + 10);
                 }
             }
         }
