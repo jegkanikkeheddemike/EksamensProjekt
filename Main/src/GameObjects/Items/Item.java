@@ -58,8 +58,11 @@ public abstract class Item extends GameObject {
     }
 
     public void drawInInventory(int x, int y) {
-        Main.main.fill(255, 0, 0);
-        Main.main.rect(x, y, 80, 80);
+        if (sprite != null) {
+            Main.main.image(sprite, x, y, w, h);
+        } else{
+            super.draw();
+        }
     }
 
     public void reactPickedUp() {
