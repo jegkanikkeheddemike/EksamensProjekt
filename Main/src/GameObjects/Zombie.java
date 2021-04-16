@@ -1,4 +1,5 @@
 package GameObjects;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -94,17 +95,17 @@ public class Zombie extends Movables {
             }
             points.add(v);
         }
-
+        Main.main.fill(0, 0, 255, (int) (255 * 0.3));
+        Main.main.noStroke();
         Main.main.beginShape();
         Main.main.vertex(middleX(), middleY());
-        Main.main.fill(100, 100, 255, 50);
-        Main.main.noStroke();
+
         for (int i = 0; i < points.size(); i++) {
             Main.main.vertex(points.get(i).x, points.get(i).y);
         }
         Main.main.vertex(middleX(), middleY());
 
-        Main.main.endShape();
+        Main.main.endShape(Main.CLOSE);
 
         Main.main.fill(255, 0, 0);
         Main.main.circle(targetX, targetY, 20);
@@ -307,7 +308,7 @@ public class Zombie extends Movables {
                         / GameMath.objectDistance(this, g);
             }
         }
-        
+
         LineData lineToPlayer = GameMath.lineCollision(middleX(), middleY(), Main.player.middleX(),
                 Main.player.middleY(), new String[] { "Wall" });
 
@@ -352,7 +353,6 @@ public class Zombie extends Movables {
                 state = "Chase";
                 targetX = Main.player.middleX() - 5 * Main.player.xSpeed;
                 targetY = Main.player.middleY() - 5 * Main.player.ySpeed;
-                
 
                 if (!hasScreeched && genes[GENE_CAN_SCREECH] == 1) {
                     new Sound(middleX(), middleY(), 100, Sound.screech);
