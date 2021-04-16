@@ -114,6 +114,5 @@ void main(){
         bool noColl=nColl==0;
         seen+=float(inRange&&inAngle&&noColl);
     }
-    seen=sign(seen);    
     gl_FragColor=vec4(0.,0.,1.,.3*seen);
 }
