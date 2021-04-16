@@ -18,7 +18,8 @@ public abstract class AmmoItem extends Item {
         Main.main.noStroke();
         Main.main.textSize(20);
         Main.main.fill(255);
-        Main.main.text(amount, x + 50, y + 50);
+        Main.main.text(itemType + ": "+ amount, x, y + 85);
+        
     }
 
     @Override

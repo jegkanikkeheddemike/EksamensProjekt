@@ -111,11 +111,12 @@ public class Player extends Movables {
 
     @Override
     public void step() {
-        updatePlayerEffects();
+        
         updateAngle();
         updateMove();
-        updateWeapons();
         updateUseItems();
+        updatePlayerEffects();
+        updateWeapons();
     }
 
     public boolean canWalk = true;
@@ -206,14 +207,14 @@ public class Player extends Movables {
             cWNumber = true;
         }
         if (Main.mousePressed && getWeapon().cooldown > getWeapon().shotCooldown && getWeapon().cClip > 0
-                && !occupied) {
+                && !occupied && !overInventory) {
             getWeapon().use();
             getWeapon().cClip -= 1;
             getWeapon().cooldown = 0;
         } else {
             getWeapon().cooldown += 1;
         }
-        if (Main.keyTapped('r') && getWeapon().cClip != getWeapon().clipSize && !occupied) {
+        if (Main.keyTapped('r') && getWeapon().cClip != getWeapon().clipSize && !occupied && Main.player.getItemTypeFromInventory(getWeapon().ammoType) != null) {
             addPlayerEffect(new ReloadEffect(getWeapon()));
         }
     }
@@ -257,17 +258,21 @@ public class Player extends Movables {
     public void reactGetHit(float dmg, String vpnType) {
         health -= dmg;
     }
-
+    boolean overInventory = false;
     void updateUseItems() {
-        if (!Main.mouseReleased)
-            return;
-
+        
         if (Main.main.mouseX > Main.main.width - 120 && Main.main.mouseX < Main.main.width - 20) {
+            overInventory = true;
+            if (!Main.mouseReleased)
+                return;
             if (Main.main.mouseY > 20 && Main.main.mouseY < 1020) {
                 int itemIndex = (int) Math.floor((Main.main.mouseY - 20) / 100);
                 if (inventory[itemIndex] != null)
-                    inventory[itemIndex].use();
+                    inventory[itemIndex].use(); 
             }
+        }else{
+            overInventory = false;
         }
+        
     }
 }
