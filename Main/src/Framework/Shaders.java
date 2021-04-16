@@ -80,6 +80,21 @@ public class Shaders {
 
         renderTime = System.currentTimeMillis() - preTime;
     }
+    static int shaderMaxTime = 3600;
+    static int shaderTimer = 0;
+    static boolean drawShaders = true;
+    public static boolean shouldDrawShaders(){
+        if (shaderTimer <= 0 || Main.main.frameRate <= minFrameRateForZombieShader){
+            shaderTimer = shaderMaxTime;
+            if (Main.main.frameRate >= minFrameRateForZombieShader){
+                drawShaders = true;
+            }else{
+                drawShaders = false;
+            }
+        }
+        shaderTimer--;
+        return drawShaders;
+    }
 
-    public static final int minFrameRateForZombieShader = 40;
+    public static final int minFrameRateForZombieShader = 50;
 }
