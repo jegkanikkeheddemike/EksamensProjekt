@@ -121,21 +121,17 @@ public class Building {
             //Firstly we make sure the area before the door is free
             //Secondly we make sure that none of the other walls are too close
             if(GameMath.rectDistance(doorSquare[0], doorSquare[1], doorSquare[0]+doorSquare[2], doorSquare[1]+doorSquare[3], newSquare[0], newSquare[1], newSquare[0]+newSquare[2], newSquare[1]+newSquare[3]) > doorWidth){
-                System.out.println("WE FAR ENOUGH AWAY FROM THE DOOR");
                 for(Wall wall : interiorWalls){
                     //The wall should be made if none of the walls are too close, if one wall is too close it shouldn't be made.
                     if(wall.distToRect(newSquare[0], newSquare[1], newSquare[2], newSquare[3]) < doorWidth){
-                        System.out.println("WE ARE TO CLOSE TO ONE OF THE OTHER WALLS");
                         makeWall = false;
                         break;
                     }
                 }
             }else{
-                System.out.println("WE WERE TOO CLOSE TO THE DOOR");
                 makeWall = false;
             }
             if(makeWall){
-                System.out.println("WE MADE IT!!!");
                 interiorWalls.add(new Wall(x, y, w, h));
             }
         }
