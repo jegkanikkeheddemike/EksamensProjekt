@@ -107,8 +107,9 @@ public class Zombie extends Movables {
 
         Main.main.endShape(Main.CLOSE);
 
-        Main.main.fill(255, 0, 0);
-        Main.main.circle(targetX, targetY, 20);
+        //Viser hvor zombierne er på vej hen. Bruges ikke.
+        //Main.main.fill(255, 0, 0);
+        //Main.main.circle(targetX, targetY, 20);
     }
 
     float timeSinceLastPatrolChange = 0;

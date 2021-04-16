@@ -48,6 +48,7 @@ public abstract class Item extends GameObject {
         if (!held) {;
             if (sprite != null) {
                 Main.main.image(sprite, x, y, w, h);
+                Main.main.fill(255);
                 Main.main.text(ID, x + 50, y);
             } else{
                 super.draw();
