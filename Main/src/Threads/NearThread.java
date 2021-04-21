@@ -41,11 +41,13 @@ public class NearThread extends Thread {
 
             for (int i = 0; i < Main.allObjects.size(); i++) {
                 GameObject gameObject = Main.allObjects.get(i);
-                if (
-                    GameMath.pointDistance(gameObject.x, gameObject.y, Main.player.x, Main.player.y) < nearDist || 
-                    GameMath.pointDistance(gameObject.x + gameObject.w, gameObject.y + gameObject.h, Main.player.x + Main.player.w, Main.player.y + Main.player.h) < nearDist ||
-                     (gameObject.x < Main.player.x && gameObject.x+gameObject.w > Main.player.x && Math.abs(Main.player.y - gameObject.y) < nearDist) ||
-                     (gameObject.y < Main.player.y && gameObject.y + gameObject.h > Main.player.y && Math.abs(Main.player.x - gameObject.x) < nearDist)) {
+                if (GameMath.pointDistance(gameObject.x, gameObject.y, Main.player.x, Main.player.y) < nearDist
+                        || GameMath.pointDistance(gameObject.x + gameObject.w, gameObject.y + gameObject.h,
+                                Main.player.x + Main.player.w, Main.player.y + Main.player.h) < nearDist
+                        || (gameObject.x < Main.player.x && gameObject.x + gameObject.w > Main.player.x
+                                && Math.abs(Main.player.y - gameObject.y) < nearDist)
+                        || (gameObject.y < Main.player.y && gameObject.y + gameObject.h > Main.player.y
+                                && Math.abs(Main.player.x - gameObject.x) < nearDist)) {
 
                     nearObjectsUpdated.add(gameObject);
 
@@ -74,11 +76,11 @@ public class NearThread extends Thread {
         }
     }
 
-    public static void beginWait() {
+    public static void pauseThread() {
         wait = true;
     }
 
-    public static void endWait() {
+    public static void resumeThread() {
         wait = false;
     }
 

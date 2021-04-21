@@ -1,6 +1,7 @@
 package Framework;
 
 import Setup.*;
+import Threads.NearThread;
 
 public class GameMath {
     public static float pointDistance(float x1, float y1, float x2, float y2) {
@@ -9,29 +10,30 @@ public class GameMath {
         return (float) Math.sqrt(dx * dx + dy * dy);
     }
 
-    public static float rectDistance(float x11, float y11, float x12, float y12, float x21, float y21, float x22, float y22){
+    public static float rectDistance(float x11, float y11, float x12, float y12, float x21, float y21, float x22,
+            float y22) {
         Boolean left = x22 < x11;
         Boolean right = x12 < x21;
         Boolean bottom = y22 < y11;
         Boolean top = y12 < y21;
 
-        if(left && top){
+        if (left && top) {
             return pointDistance(x11, y12, x22, y21);
-        }else if (left && bottom){
+        } else if (left && bottom) {
             return pointDistance(x11, y11, x22, y22);
-        }else if (right && top){
+        } else if (right && top) {
             return pointDistance(x12, y12, x21, y21);
-        }else if (right && bottom){
+        } else if (right && bottom) {
             return pointDistance(x12, y11, x21, y22);
-        }else if (left){
+        } else if (left) {
             return x11 - x22;
-        }else if (right){
+        } else if (right) {
             return x21 - x12;
-        }else if (top){
+        } else if (top) {
             return y21 - y12;
-        }else if (bottom){
+        } else if (bottom) {
             return y11 - y22;
-        }else{
+        } else {
             return 0;
         }
     }
@@ -66,6 +68,7 @@ public class GameMath {
 
     public static LineData lineCollision(float x1, float y1, float x2, float y2, String[] seeList) {
         LineData data = LineData.noCollision;
+        NearThread.pauseThread();
         for (int i = 0; i < Main.nearObjects.size(); i++) {
             GameObject g = Main.nearObjects.get(i);
             boolean onSeeList = false;
@@ -86,6 +89,7 @@ public class GameMath {
                 }
             }
         }
+        NearThread.resumeThread();
         return data;
     }
 

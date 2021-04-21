@@ -34,7 +34,7 @@ public class Shaders {
         long preTime = System.currentTimeMillis();
 
         if (NearThread.isReady) {
-            NearThread.beginWait();
+            NearThread.pauseThread();
             for (int i = 0; i < zombies.size(); i++) {
                 Zombie z = zombies.get(i);
                 zombieX[i] = z.middleX();
@@ -49,7 +49,7 @@ public class Shaders {
                 wallWidth[i] = w.w;
                 wallHeight[i] = w.h;
             }
-            NearThread.endWait();
+            NearThread.resumeThread();
         }
 
         zombieFOVConeShader.set("zombies", zombies.size());
