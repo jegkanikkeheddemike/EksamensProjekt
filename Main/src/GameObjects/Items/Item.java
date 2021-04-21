@@ -2,6 +2,7 @@ package GameObjects.Items;
 
 import Framework.GameMath;
 import Framework.GameObject;
+import Framework.PlayerEffects.*;
 import Setup.Main;
 import processing.core.*;
 
@@ -27,18 +28,21 @@ public abstract class Item extends GameObject {
         Main.player.inventory[index] = null;
     }
 
+    static int pickUpMaxCooldown = 30;
+    static int pickUpCooldown = pickUpMaxCooldown;
+    boolean pickingUp = false;
+
     @Override
     public void step() {
         if (!held) {
-
             if (GameMath.pointDistance(this.middleX(), this.middleY(), Main.player.middleX(),
-                    Main.player.middleY()) < this.h / 2f + Main.player.w / 2f && held == false) {
-                reactPickedUp();
+                    Main.player.middleY()) < this.h / 2f + Main.player.w / 2f && held == false && Main.keyTapped('e')
+                    && !Main.player.occupied) {
+                Main.player.addPlayerEffect(new PickupEffect(this));
             }
-
         } else {
-            x = Main.player.x;
-            y = Main.player.y;
+            x = Main.player.middleX() - w / 2;
+            y = Main.player.middleY() - h / 2;
 
         }
 
@@ -46,13 +50,23 @@ public abstract class Item extends GameObject {
 
     public void draw() {
         if (!held) {
-            ;
             if (sprite != null) {
                 Main.main.image(sprite, x, y, w, h);
                 Main.main.fill(255);
+                Main.main.textSize(12);
                 Main.main.text(ID, x + 50, y);
             } else {
                 super.draw();
+            }
+            if (GameMath.pointDistance(this.middleX(), this.middleY(), Main.player.middleX(),
+                    Main.player.middleY()) < this.h / 2f + Main.player.w / 2f && held == false) {
+                Main.main.textSize(22);
+                Main.main.fill(255);
+                Main.main.text("E", middleX(), middleY() - 50);
+                Main.main.textSize(12);
+                Main.main.fill(155);
+                ;
+                Main.main.text("to pick up", middleX() - 20, middleY() - 40);
             }
 
         }

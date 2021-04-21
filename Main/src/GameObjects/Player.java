@@ -60,6 +60,10 @@ public class Player extends Movables {
 
     public Item getItemTypeFromInventory(String itemType) {
         for (int i = 0; i < inventory.length; i++) {
+
+            if (inventory[i] == null)
+                continue;
+
             if (inventory[i].itemType.equals(itemType))
                 return inventory[i];
         }
@@ -116,7 +120,7 @@ public class Player extends Movables {
 
     @Override
     public void step() {
-        
+
         updateAngle();
         updateMove();
         updateUseItems();
@@ -268,15 +272,17 @@ public class Player extends Movables {
         } else if (Main.keyTapped('2') && cWeapon1 != null && !occupied) {
             cWNumber = true;
         }
-        if (Main.mousePressed && getWeapon().cooldown > getWeapon().shotCooldown && getWeapon().cClip > 0
-                && !occupied && !overInventory) {
+        if (Main.mousePressed && getWeapon().cooldown > getWeapon().shotCooldown
+                && (!getWeapon().usesAmmo || getWeapon().cClip > 0) && !occupied && !overInventory) {
             getWeapon().use();
-            getWeapon().cClip -= 1;
+            if (getWeapon().usesAmmo)
+                getWeapon().cClip -= 1;
             getWeapon().cooldown = 0;
         } else {
             getWeapon().cooldown += 1;
         }
-        if (Main.keyTapped('r') && getWeapon().cClip != getWeapon().clipSize && !occupied && Main.player.getItemTypeFromInventory(getWeapon().ammoType) != null) {
+        if (Main.keyTapped('r') && getWeapon().cClip != getWeapon().clipSize && !occupied
+                && Main.player.getItemTypeFromInventory(getWeapon().ammoType) != null) {
             addPlayerEffect(new ReloadEffect(getWeapon()));
         }
     }
@@ -320,9 +326,11 @@ public class Player extends Movables {
     public void reactGetHit(float dmg, String vpnType) {
         health -= dmg;
     }
+
     boolean overInventory = false;
+
     void updateUseItems() {
-        
+
         if (Main.main.mouseX > Main.main.width - 120 && Main.main.mouseX < Main.main.width - 20) {
             overInventory = true;
             if (!Main.mouseReleased)
@@ -330,11 +338,11 @@ public class Player extends Movables {
             if (Main.main.mouseY > 20 && Main.main.mouseY < 1020) {
                 int itemIndex = (int) Math.floor((Main.main.mouseY - 20) / 100);
                 if (inventory[itemIndex] != null)
-                    inventory[itemIndex].use(); 
+                    inventory[itemIndex].use();
             }
-        }else{
+        } else {
             overInventory = false;
         }
-        
+
     }
 }

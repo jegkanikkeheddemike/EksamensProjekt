@@ -108,7 +108,7 @@ public abstract class Movables extends GameObject {
         return collArray;
     }
 
-    boolean collisionWith(GameObject g, float offsetX, float offsetY) {
+    protected boolean collisionWith(GameObject g, float offsetX, float offsetY) {
 
         // TOPLEFT
         if (x + offsetX > g.x && g.x + g.w > x + offsetX) {

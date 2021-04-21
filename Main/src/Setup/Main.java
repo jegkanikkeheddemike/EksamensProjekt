@@ -12,7 +12,9 @@ import GameObjects.*;
 import GameObjects.Items.AmmoItems.*;
 import GameObjects.Items.HealthItems.Bandage;
 import GameObjects.Items.HealthItems.HealthPack;
+import GameObjects.Items.Weapons.Machete;
 import GameObjects.Items.Weapons.Pistol;
+import GameObjects.Items.Weapons.*;
 import MapGeneration.*;
 
 public class Main extends PApplet {
@@ -82,14 +84,14 @@ public class Main extends PApplet {
         }
 
         // #region TestObjects
-        new AmmoBox9mm(player.x, player.y);
-        new AmmoBox9mm(player.x - 50, player.y + 50);
         new AmmoBox9mm(player.x + 50, player.y - 50);
-        new AmmoBox9mm(player.x - 50, player.y - 50);
+        new AmmoBox45ACP(player.x - 50, player.y + 50);
+        new AmmoBoxShells(player.x + 50, player.y - 50);
         new Pistol(player.x, player.y + 100);
+        new Shotgun(player.x+100, player.y);
         new HealthPack(player.x, player.y);
         new Bandage(player.x, player.y);
-
+        new Machete(player.x, player.y);
         // #endregion
 
     }
@@ -122,7 +124,7 @@ public class Main extends PApplet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (onWindows && frameRate > Shaders.minFrameRateForZombieShader) {
+        if (onWindows && Shaders.shouldDrawShaders()) {
             Shaders.drawZombieFOVCone();
         }
         //DRAWING A YELLOW SQUARE AT THE PLAYERS CURRENT NODE
