@@ -120,17 +120,13 @@ public class Main extends PApplet {
                 gameObject.draw();
             }
 
-            m.draw();
+            //m.draw();
         } catch (Exception e) {
             e.printStackTrace();
         }
         if (onWindows && Shaders.shouldDrawShaders()) {
             Shaders.drawZombieFOVCone();
         }
-        //DRAWING A YELLOW SQUARE AT THE PLAYERS CURRENT NODE
-        fill(255, 255, 0);
-        rect(player.currentNode.x-40, player.currentNode.y-40, 80, 80);
-
         translate(-translateX, -translateY);
         UI.drawUI();
     }

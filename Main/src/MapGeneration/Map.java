@@ -340,5 +340,9 @@ public class Map {
         for(Node n : allNodes){
             n.draw();
         }
+        //DRAWING A YELLOW SQUARE AT THE PLAYERS CURRENT NODE
+        Main.main.fill(255, 255, 0);
+        Main.main.rect(Main.player.currentNode.x-40, Main.player.currentNode.y-40, 80, 80);
+        
     }
 }

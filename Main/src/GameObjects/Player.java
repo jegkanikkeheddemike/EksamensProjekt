@@ -7,7 +7,6 @@ import GameObjects.Items.Item;
 import GameObjects.Items.AmmoItems.AmmoItem;
 import GameObjects.Items.Weapons.*;
 import Setup.Main;
-import MapGeneration.Map;
 import MapGeneration.Node;
 
 public class Player extends Movables {
@@ -222,7 +221,6 @@ public class Player extends Movables {
         if(currentNode != newCurrentNode){
             currentNode = newCurrentNode;
             if(currentNode.isEndPoint){
-                System.out.println("OPTION THREEEEEE");
                 Main.m.generateNodesAtNode(currentNode);
                 //Main.m.removeUselessNodes();
                 for(Node n : currentNode.connected){
@@ -239,24 +237,7 @@ public class Player extends Movables {
                         }
                     }
                 }
-            }else if(!currentNode.allConnectedHasHouse() && !currentNode.allConnectedNull()){
-                System.out.println("OPTION TWWWOOOOOOO");
-                for(Node n : currentNode.connected){
-                    if(n != null && n != currentNode.parent){
-                        if(!n.hasHouse){
-                            n.housesAlongParentEdge();
-                            for(Node nn : n.connected){
-                                if(nn != null && nn != nn.parent){
-                                    if(!nn.hasHouse){
-                                        nn.housesAlongParentEdge();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
             }else if(!currentNode.hasHouse){
-                System.out.println("OPTION ONNEEEEEEEE");
                 currentNode.housesAlongParentEdge();
             }
         }
