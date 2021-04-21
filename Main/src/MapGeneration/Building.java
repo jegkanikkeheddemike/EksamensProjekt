@@ -4,7 +4,6 @@ import java.util.Random;
 
 import GameObjects.Wall;
 import GameObjects.Zombie;
-import jogamp.newt.driver.macosx.MacKeyUtil;
 import Framework.GameMath;
 
 public class Building {

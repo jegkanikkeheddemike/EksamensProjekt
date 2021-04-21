@@ -7,6 +7,8 @@ import GameObjects.Items.Item;
 import GameObjects.Items.AmmoItems.AmmoItem;
 import GameObjects.Items.Weapons.*;
 import Setup.Main;
+import MapGeneration.Map;
+import MapGeneration.Node;
 
 public class Player extends Movables {
     float xAcc = 2;
@@ -21,6 +23,8 @@ public class Player extends Movables {
 
     public Item[] inventory = new Item[10];
     public ArrayList<PlayerEffect> playerEffects = new ArrayList<PlayerEffect>();
+
+    public Node currentNode;
 
     public int getEmptyInventorySpace() {
         for (int i = 0; i < inventory.length; i++) {
@@ -79,8 +83,8 @@ public class Player extends Movables {
         }
     }
 
-    public Player() {
-        super(1920 / 2, 1080 / 2, 50, 50);
+    public Player(Node n) {
+        super(n.x, n.y, 50, 50);
         ySpeed = 0;
         xSpeed = 0;
         classID = "Player";
@@ -92,6 +96,7 @@ public class Player extends Movables {
         cWeapon1 = new Starter(x, y);
         cWeapon1.held = true;
         cWNumber = false;
+        currentNode = n;
     }
 
     @Override
@@ -117,6 +122,7 @@ public class Player extends Movables {
         updateUseItems();
         updatePlayerEffects();
         updateWeapons();
+        updateCurrentNode();
     }
 
     public boolean canWalk = true;
@@ -194,6 +200,62 @@ public class Player extends Movables {
 
         x += xSpeed;
         y += ySpeed;
+    }
+
+    void updateCurrentNode(){
+        Node newCurrentNode = currentNode;
+        float newNodeToPlayer = GameMath.pointDistance(x, y, currentNode.x, currentNode.y);
+        for(Node n : currentNode.connected){
+            if(n != null){
+                float nToPlayer = GameMath.pointDistance(x, y, n.x, n.y);
+                if(newNodeToPlayer > nToPlayer){
+                    newCurrentNode = n;
+                    newNodeToPlayer = nToPlayer;
+                }
+            }
+        }
+
+        if(currentNode != newCurrentNode){
+            currentNode = newCurrentNode;
+            if(currentNode.isEndPoint){
+                System.out.println("OPTION THREEEEEE");
+                Main.m.generateNodesAtNode(currentNode);
+                //Main.m.removeUselessNodes();
+                for(Node n : currentNode.connected){
+                    if(n != null && n != currentNode.parent){
+                        if(!n.hasHouse){
+                            n.housesAlongParentEdge();
+                            for(Node nn : n.connected){
+                                if(nn != null && nn != nn.parent){
+                                    if(!nn.hasHouse){
+                                        nn.housesAlongParentEdge();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }else if(!currentNode.allConnectedHasHouse() && !currentNode.allConnectedNull()){
+                System.out.println("OPTION TWWWOOOOOOO");
+                for(Node n : currentNode.connected){
+                    if(n != null && n != currentNode.parent){
+                        if(!n.hasHouse){
+                            n.housesAlongParentEdge();
+                            for(Node nn : n.connected){
+                                if(nn != null && nn != nn.parent){
+                                    if(!nn.hasHouse){
+                                        nn.housesAlongParentEdge();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }else if(!currentNode.hasHouse){
+                System.out.println("OPTION ONNEEEEEEEE");
+                currentNode.housesAlongParentEdge();
+            }
+        }
     }
 
     public Weapon getWeapon() {

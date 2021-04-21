@@ -27,7 +27,7 @@ public class Main extends PApplet {
 
     public static int gameTime;
 
-    public Map m;
+    public static Map m;
 
     public Main() {
         main = this;
@@ -45,7 +45,22 @@ public class Main extends PApplet {
     @Override
     public void setup() {
         Images.loadImages();
-        player = new Player();
+        m = new Map(2);
+        player = new Player(m.initialNode);
+
+        //MAKING THE REST OF THE MAP
+        m.generateMap();
+        m.removeUselessNodes();
+
+        for (Node n : m.initialNode.connected) {
+            n.housesAlongParentEdge();
+            for (Node nn : n.connected) {
+                if(nn != n && nn != null){
+                    nn.housesAlongParentEdge();
+                }
+            }
+        }
+
         frameRate(60);
 
         if (onWindows)
@@ -53,15 +68,7 @@ public class Main extends PApplet {
         NearThread.thread.start();
         if (onWindows)
             Sound.setupSound();
-
-        m = new Map(3);
-        m.generateMap();
-        m.removeUselessNodes();
-
-        for (Node n : m.allNodes) {
-            n.housesAlongParentEdge();
-        }
-
+        
         if (onWindows) {
             // ShaderPreRenderWorkThread.thread.start();
         }
@@ -118,6 +125,10 @@ public class Main extends PApplet {
         if (onWindows && frameRate > Shaders.minFrameRateForZombieShader) {
             Shaders.drawZombieFOVCone();
         }
+        //DRAWING A YELLOW SQUARE AT THE PLAYERS CURRENT NODE
+        fill(255, 255, 0);
+        rect(player.currentNode.x-40, player.currentNode.y-40, 80, 80);
+
         translate(-translateX, -translateY);
         UI.drawUI();
     }
