@@ -19,16 +19,18 @@ public class Zombie extends Movables {
         targetX = x;
         targetY = y;
         hasHealth = true;
-        maxHealth = 50;
-        health = maxHealth;
+        
         this.genes = genes;
 
         if (genes[GENE_IS_RANGED] == 1)
-            range = 500;
+            range = genes[GENE_RANGED_RANGE];
         else
             range = 100;
         if (genes[GENE_IS_SPRINTER] == 1)
             sprintSpeed = 2 * sprintSpeed;
+
+        maxHealth = genes[GENE_HEALTH];
+        health = maxHealth;
     }
 
     @Override
@@ -380,24 +382,27 @@ public class Zombie extends Movables {
         float seeSkill = 0.5f + r.nextFloat();
         float isRanged = r.nextInt(2); // IS 0 OR 1
         float canScreech = r.nextInt(2); // IS 0 OR 1;
-
+        float rangedRange = 0;
+        float health = 30 + r.nextFloat()*30;
         float damage;
 
         if (isRanged == 0)
             damage = 30 + r.nextFloat() * 20;
-        else
+        else {
             damage = 20 + r.nextFloat() * 20;
+            rangedRange = 200+r.nextFloat()*500;
+        }
 
         float isSprinter = 0;
         if (isRanged == 0)
             isSprinter = r.nextInt(2);
 
-        return new float[] { hearSkill, seeSkill, isRanged, canScreech, damage, isSprinter };
+        return new float[] { hearSkill, seeSkill, isRanged, canScreech, damage, isSprinter,rangedRange, health};
 
     }
 
     public static final String[] geneDescriptions = { "Hearing: ", "Seeing: ", "Is Ranged: ", "Can Screech: ",
-            "Damage: ", "Is Sprinter: " };
+            "Damage: ", "Is Sprinter: ", "Ranged Range: ", "Health: "};
 
     public static final int GENE_HEAR_SKILL = 0;
     public static final int GENE_SEE_SKILL = 1;
@@ -405,4 +410,6 @@ public class Zombie extends Movables {
     public static final int GENE_CAN_SCREECH = 3;
     public static final int GENE_DAMAGE = 4;
     public static final int GENE_IS_SPRINTER = 5;
+    public static final int GENE_RANGED_RANGE = 6;
+    public static final int GENE_HEALTH = 7;
 }
