@@ -3,10 +3,10 @@ package Framework.GeneticAlgorithm;
 import java.util.LinkedList;
 
 public abstract class ZombieGenerator {
-    private static LinkedList<Group> generations;
+    private static LinkedList<Group> generations = new LinkedList<Group>();
 
-    static Group generateGeneration(int budget) {
-        Group generation = new Group();
+    public static Group generateGeneration(int budget) {
+        Group generation = new Group(Group::generateRandomGroup, budget);
 
         generations.add(generation);
         return generation;

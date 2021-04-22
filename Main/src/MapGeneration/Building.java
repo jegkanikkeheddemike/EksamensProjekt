@@ -5,6 +5,8 @@ import java.util.Random;
 import GameObjects.Wall;
 import GameObjects.Zombie;
 import Framework.GameMath;
+import Framework.GeneticAlgorithm.Group;
+import Framework.GeneticAlgorithm.ZombieGenerator;
 
 public class Building {
     int topleftX, topleftY, toprightX, toprightY, botleftX, botleftY, botrightX, botrightY;
@@ -136,7 +138,9 @@ public class Building {
         }
 
         // #endregion
-        makeRandomZombies(topleftX, topleftY, deltaX, deltaY);
+        //makeRandomZombies(topleftX, topleftY, deltaX, deltaY);
+        Group myZombies = ZombieGenerator.generateGeneration(deltaX*deltaY);
+        myZombies.setCoordinates(topleftX, topleftY, deltaX, deltaY);
     }
 
     void makeRandomZombies(int topleftX, int topleftY, int width, int height) {
