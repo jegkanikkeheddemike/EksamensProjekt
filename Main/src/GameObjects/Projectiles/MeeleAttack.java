@@ -46,7 +46,6 @@ public class MeeleAttack extends Movables {
             
 
             float relAngle = (float) Math.abs(Math.abs(angleToZombie) - Math.abs(direction));
-            Main.println("!" +Math.abs(angleToZombie) + " - " + direction +" = "+ relAngle);
             if (relAngle > Math.toRadians(45))
                 continue;
 
