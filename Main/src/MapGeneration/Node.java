@@ -13,7 +13,8 @@ public class Node {
     public Boolean hasHouse = false;
     public static final int roadWidth = 300;//BASED ON THE PLAYER WIDTH AND HEIGHT IS TO BE REPLACED ANYWAYS
     public static final int wallWidth = 50;
-    public static final int houseDepth = 500;
+    public static final int houseDepth = 700;
+    public static final int minHouseWidth = (int) (houseDepth);
     public Boolean isINTERSECTIONPOINT = false;
     //INITIAL
     Node(int x, int y){
@@ -90,38 +91,88 @@ public class Node {
             //THEN A HOUSE SHOULD BE TO THE NORTH OF THE ROAD
             int x1North = x + roadWidth/2 * boolToInt(connected[Map.NORTH] != null || isEndPoint);
             int x2North = parent.x - roadWidth/2 * boolToInt(parent.connected[Map.NORTH] != null);
-            new Building(x1North, parent.y-roadWidth/2-houseDepth, x2North, parent.y-roadWidth/2-houseDepth, x1North, parent.y-roadWidth/2, x2North, parent.y-roadWidth/2, Map.SOUTH);
+            int numberOfHouses = Math.abs((x2North-x1North) / minHouseWidth);
+            float houseWidth = Math.abs((x2North-x1North) / (float) numberOfHouses);
+            for(int houseNum = 0; houseNum < numberOfHouses; houseNum++){
+                int x1 = (int) (x1North + houseNum*houseWidth);
+                int x2 = (int) (x1North + (1+houseNum)*houseWidth);
+                new Building(x1, parent.y-roadWidth/2-houseDepth, x2, parent.y-roadWidth/2-houseDepth, x1, parent.y-roadWidth/2, x2, parent.y-roadWidth/2, Map.SOUTH);
+            }
             
             //AND ONE TO THE SOUTH OF THE ROAD
             int x1South = x + roadWidth/2 * boolToInt(connected[Map.SOUTH] != null || isEndPoint);
             int x2South = parent.x - roadWidth/2 * boolToInt(parent.connected[Map.SOUTH] != null);
-            new Building(x1South, parent.y+roadWidth/2, x2South, parent.y+roadWidth/2, x1South, parent.y+roadWidth/2+houseDepth, x2South, parent.y+roadWidth/2+houseDepth, Map.NORTH);
+            numberOfHouses = Math.abs((x2South-x1South) / minHouseWidth);
+            houseWidth = Math.abs((x2South-x1South) / (float) numberOfHouses);
+            for(int houseNum = 0; houseNum < numberOfHouses; houseNum++){
+                int x1 = (int) (x1South + houseNum*houseWidth);
+                int x2 = (int) (x1South + (1+houseNum)*houseWidth);
+                new Building(x1, parent.y+roadWidth/2, x2, parent.y+roadWidth/2, x1, parent.y+roadWidth/2+houseDepth, x2, parent.y+roadWidth/2+houseDepth, Map.NORTH);
+            }
         }else if (parent == connected[Map.WEST]){
             //THEN A HOUSE SHOULD BE TO THE NORTH OF THE ROAD
             int x1North = parent.x + roadWidth/2 * boolToInt(parent.connected[Map.NORTH] != null);
             int x2North = x - roadWidth/2 * boolToInt(connected[Map.NORTH] != null || isEndPoint);
-            new Building(x1North, parent.y-roadWidth/2-houseDepth, x2North, parent.y-roadWidth/2-houseDepth, x1North, parent.y-roadWidth/2, x2North, parent.y-roadWidth/2, Map.SOUTH);
+            int numberOfHouses = Math.abs((x2North-x1North) / minHouseWidth);
+            float houseWidth = Math.abs((x2North-x1North) / (float) numberOfHouses);
+            for(int houseNum = 0; houseNum < numberOfHouses; houseNum++){
+                int x1 = (int) (x1North + houseNum*houseWidth);
+                int x2 = (int) (x1North + (1+houseNum)*houseWidth);
+                new Building(x1, parent.y-roadWidth/2-houseDepth, x2, parent.y-roadWidth/2-houseDepth, x1, parent.y-roadWidth/2, x2, parent.y-roadWidth/2, Map.SOUTH);
+            }
             //AND ONE TO THE SOUTH OF THE ROAD
             int x1South = parent.x + roadWidth/2 * boolToInt(parent.connected[Map.SOUTH] != null);
             int x2South = x - roadWidth/2 * boolToInt(connected[Map.SOUTH] != null || isEndPoint);
-            new Building(x1South, parent.y+roadWidth/2, x2South, parent.y+roadWidth/2, x1South, parent.y+roadWidth/2+houseDepth, x2South, parent.y+roadWidth/2+houseDepth, Map.NORTH);
+            numberOfHouses = Math.abs((x2South-x1South) / minHouseWidth);
+            houseWidth = Math.abs((x2South-x1South) / (float) numberOfHouses);
+            for(int houseNum = 0; houseNum < numberOfHouses; houseNum++){
+                int x1 = (int) (x1South + houseNum*houseWidth);
+                int x2 = (int) (x1South + (1+houseNum)*houseWidth);
+                new Building(x1, parent.y+roadWidth/2, x2, parent.y+roadWidth/2, x1, parent.y+roadWidth/2+houseDepth, x2, parent.y+roadWidth/2+houseDepth, Map.NORTH);
+            }
         }else if(parent == connected[Map.SOUTH]){
             //FOR THE VERTICAL MOTHERFUCKERS WE WILL AUTOMATICALLY REMOVE 1 HOUSE DEPTH
             int y1West = y + (roadWidth/2 + houseDepth) * boolToInt(connected[Map.WEST] != null || isEndPoint);
             int y2West = parent.y - (roadWidth/2 + houseDepth) * boolToInt(parent.connected[Map.WEST] != null);
-            new Building(parent.x-roadWidth/2-houseDepth, y1West, parent.x-roadWidth/2, y1West, parent.x-roadWidth/2-houseDepth, y2West, parent.x-roadWidth/2, y2West, Map.EAST);
+            int numberOfHouses = Math.abs((y2West-y1West) / minHouseWidth);
+            int houseWidth = (int) Math.abs((y2West-y1West) / (float) numberOfHouses);
+            for(int houseNum = 0; houseNum < numberOfHouses; houseNum++){
+                int y1 = (int) (y1West + houseNum*houseWidth);
+                int y2 = (int) (y1West + houseNum*houseWidth + houseWidth);
+                new Building(parent.x-roadWidth/2-houseDepth, y1, parent.x-roadWidth/2, y1, parent.x-roadWidth/2-houseDepth, y2, parent.x-roadWidth/2, y2, Map.EAST);
+            }
 
             int y1East = y + (roadWidth/2 + houseDepth) * boolToInt(connected[Map.EAST] != null || isEndPoint);
             int y2East = parent.y - (roadWidth/2 + houseDepth) * boolToInt(parent.connected[Map.EAST] != null);
-            new Building(parent.x+roadWidth/2, y1East, parent.x+roadWidth/2+houseDepth, y1East, parent.x+roadWidth/2, y2East, parent.x+roadWidth/2+houseDepth, y2East, Map.WEST);
+            numberOfHouses = Math.abs((y2East-y1East) / minHouseWidth);
+            houseWidth = (int) Math.abs((y2East-y1East) / (float) numberOfHouses);
+            for(int houseNum = 0; houseNum < numberOfHouses; houseNum++){
+                int y1 = (int) (y1East + houseNum*houseWidth);
+                int y2 = (int) (y1East + houseNum*houseWidth + houseWidth);
+                new Building(parent.x+roadWidth/2, y1, parent.x+roadWidth/2+houseDepth, y1, parent.x+roadWidth/2, y2, parent.x+roadWidth/2+houseDepth, y2, Map.WEST);
+            }
         }else if(parent == connected[Map.NORTH]){
             int y1West = parent.y + (roadWidth/2 + houseDepth) * boolToInt(parent.connected[Map.WEST] != null);
             int y2West = y - (roadWidth/2 + houseDepth) * boolToInt(connected[Map.WEST] != null || isEndPoint);
-            new Building(parent.x-roadWidth/2-houseDepth, y1West, parent.x-roadWidth/2, y1West, parent.x-roadWidth/2-houseDepth, y2West, parent.x-roadWidth/2, y2West, Map.EAST);
-
+            int numberOfHouses = Math.abs((y2West-y1West) / minHouseWidth);
+            int houseWidth = (int) Math.abs((y2West-y1West) / (float) numberOfHouses);
+            for(int houseNum = 0; houseNum < numberOfHouses; houseNum++){
+                int y1 = (int) (y1West + houseNum*houseWidth);
+                int y2 = (int) (y1West + houseNum*houseWidth + houseWidth);
+                //new Building(parent.x-roadWidth/2-houseDepth, y1, parent.x-roadWidth/2, y1, parent.x-roadWidth/2-houseDepth, y2, parent.x-roadWidth/2, y2, Map.EAST);
+                new Building(parent.x-roadWidth/2-houseDepth, y1, parent.x-roadWidth/2, y1, parent.x-roadWidth/2-houseDepth, y2, parent.x-roadWidth/2, y2, Map.EAST);
+            }
+            
             int y1East = parent.y + (roadWidth/2 + houseDepth) * boolToInt(parent.connected[Map.EAST] != null);
             int y2East = y - (roadWidth/2 + houseDepth) * boolToInt(connected[Map.EAST] != null || isEndPoint);
-            new Building(parent.x+roadWidth/2, y1East, parent.x+roadWidth/2+houseDepth, y1East, parent.x+roadWidth/2, y2East, parent.x+roadWidth/2+houseDepth, y2East, Map.WEST);
+            numberOfHouses = Math.abs((y2East-y1East) / minHouseWidth);
+            houseWidth = (int) Math.abs((y2East-y1East) / (float) numberOfHouses);
+            for(int houseNum = 0; houseNum < numberOfHouses; houseNum++){
+                int y1 = (int) (y1East + houseNum*houseWidth);
+                int y2 = (int) (y1East + houseNum*houseWidth + houseWidth);
+                new Building(parent.x+roadWidth/2, y1, parent.x+roadWidth/2+houseDepth, y1, parent.x+roadWidth/2, y2, parent.x+roadWidth/2+houseDepth, y2, Map.WEST);
+                //new Building(parent.x+roadWidth/2, y1East, parent.x+roadWidth/2+houseDepth, y1East, parent.x+roadWidth/2, y2East, parent.x+roadWidth/2+houseDepth, y2East, Map.WEST);
+            }
         }
     }
     public Boolean allConnectedHasHouse(){
@@ -195,6 +246,7 @@ public class Node {
             new Wall(x+roadWidth/2, y1East, parent.x+roadWidth/2, y2East, wallWidth);
         }
         //Try to generate for parent22 if it exists
+        //THE POSSIBILITY OF SECONDARY PARENTS SEEMS OT HAVE DISAPPEARED
         if(parent2 != null){
                 //parent2 is to the EAST
             if (parent2 == connected[Map.EAST]){

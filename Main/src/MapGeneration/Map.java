@@ -17,14 +17,14 @@ public class Map {
     public static final int WEST  = 3;
     public Node initialNode;
     public ArrayList<Node> allNodes;
-    public ArrayList<Node> endNodes; // or maybe is should be called outer nodes?
+    public ArrayList<Node> endNodes;
     ArrayList<Wall> roads;
     private Random rand = new Random();
     private int maxLevel;
-    private final int maxRoadLength = Node.houseDepth*5+Node.roadWidth;//1000;
-    private final int minRoadLength = Node.houseDepth*3+Node.roadWidth;//500;
-    private final float minPointDist = Node.houseDepth*2;
-    private final float minRoadDist = Node.houseDepth*2+Node.roadWidth;
+    private final int maxRoadLength = Node.houseDepth*5+Node.roadWidth;
+    private final int minRoadLength = Node.houseDepth*4+Node.roadWidth+1; //BECAUSE AT LEAST ONE HOUSE SHOULD BE ON EITHER SIDE OF THE VERTICAL ROADS
+    private final float minPointDist = Node.houseDepth*3+Node.roadWidth;
+    private final float minRoadDist = Node.houseDepth*3+Node.roadWidth;
 
     public Map(int maxLevel){
         initialNode = new Node(Main.main.width/2, Main.main.height/2);
