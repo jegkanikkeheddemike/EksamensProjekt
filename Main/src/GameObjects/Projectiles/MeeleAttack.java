@@ -71,7 +71,6 @@ public class MeeleAttack extends Movables {
         Main.main.translate(Main.player.middleX(),Main.player.middleY());
         Main.main.rotate((float)((-Math.PI*1/4)+timeAlive*Math.PI/2/30));
         Main.main.line(0, 0, 0 + range * (float) Math.sin(-direction+Math.PI*1/2), 0 + range * (float) Math.cos(-direction+Math.PI*1/2));
-
         Main.main.popMatrix();
     }
 
