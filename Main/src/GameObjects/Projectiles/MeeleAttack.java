@@ -48,7 +48,7 @@ public class MeeleAttack extends Movables {
             if (relAngle > Math.toRadians(90))
                 continue;
 
-            zombie.reactGetHit(dmg, wpnType);
+            zombie.reactGetHit(dmg, wpnType, null);
         }
     }
 

@@ -1,5 +1,6 @@
 package Framework;
 
+import GameObjects.Zombie;
 import Setup.Main;
 
 public abstract class GameObject {
@@ -43,7 +44,7 @@ public abstract class GameObject {
         return y + h / 2;
     }
 
-    public void reactGetHit(float dmg, String wpnType) {
+    public void reactGetHit(float dmg, String wpnType, Zombie attacker) {
     }
 
     public void delete() {

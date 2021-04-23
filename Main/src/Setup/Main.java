@@ -50,19 +50,21 @@ public class Main extends PApplet {
         m = new Map(2);
         player = new Player(m.initialNode);
 
-        //MAKING THE REST OF THE MAP
+        // MAKING THE REST OF THE MAP
         m.generateMap();
         m.removeUselessNodes();
+
+        
 
         for (Node n : m.initialNode.connected) {
             n.housesAlongParentEdge();
             for (Node nn : n.connected) {
-                if(nn != n && nn != null){
+                if (nn != n && nn != null) {
                     nn.housesAlongParentEdge();
                 }
             }
         }
-
+        System.out.println("Map generated");
         frameRate(60);
 
         if (onWindows)
@@ -70,7 +72,7 @@ public class Main extends PApplet {
         NearThread.thread.start();
         if (onWindows)
             Sound.setupSound();
-        
+
         if (onWindows) {
             // ShaderPreRenderWorkThread.thread.start();
         }
@@ -88,7 +90,7 @@ public class Main extends PApplet {
         new AmmoBox45ACP(player.x - 50, player.y + 50);
         new AmmoBoxShells(player.x + 50, player.y - 50);
         new Pistol(player.x, player.y + 100);
-        new Shotgun(player.x+100, player.y);
+        new Shotgun(player.x + 100, player.y);
         new HealthPack(player.x, player.y);
         new Bandage(player.x, player.y);
         new Machete(player.x, player.y);
@@ -120,7 +122,7 @@ public class Main extends PApplet {
                 gameObject.draw();
             }
 
-            //m.draw();
+            // m.draw();
         } catch (Exception e) {
             e.printStackTrace();
         }

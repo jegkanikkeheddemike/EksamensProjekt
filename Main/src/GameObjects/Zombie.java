@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import Framework.*;
+import Framework.GeneticAlgorithm.Group;
 import GameObjects.Projectiles.ZombieShot;
 import Setup.Main;
 import processing.core.PVector;
@@ -12,15 +13,17 @@ public class Zombie extends Movables {
     float walkSpeed = 0.8f;
     float sprintSpeed = 2;
     float[] genes;
+    Group group;
 
-    public Zombie(float x, float y, float[] genes) {
+    public Zombie(float x, float y, float[] genes, Group group) {
         super(x, y, 40, 40);
         classID = "Zombie";
         targetX = x;
         targetY = y;
         hasHealth = true;
-        
+
         this.genes = genes;
+        this.group = group;
 
         if (genes[GENE_IS_RANGED] == 1)
             range = genes[GENE_RANGED_RANGE];
@@ -110,9 +113,9 @@ public class Zombie extends Movables {
 
         Main.main.endShape(Main.CLOSE);
 
-        //Viser hvor zombierne er på vej hen. Bruges ikke.
-        //Main.main.fill(255, 0, 0);
-        //Main.main.circle(targetX, targetY, 20);
+        // Viser hvor zombierne er på vej hen. Bruges ikke.
+        // Main.main.fill(255, 0, 0);
+        // Main.main.circle(targetX, targetY, 20);
     }
 
     float timeSinceLastPatrolChange = 0;
@@ -143,8 +146,9 @@ public class Zombie extends Movables {
 
     void attack() {
         cooldown = maxCooldown;
-        if (genes[GENE_IS_RANGED] == 0)
-            Main.player.reactGetHit(dmg, "ZMeele");
+        if (genes[GENE_IS_RANGED] == 0) {
+            Main.player.reactGetHit(dmg, "ZMeele", this);
+        }
 
         else if (genes[GENE_IS_RANGED] == 1)
             new ZombieShot(middleX(), middleY(), rotation, genes[GENE_DAMAGE], this);
@@ -369,7 +373,7 @@ public class Zombie extends Movables {
     boolean hasScreeched;
 
     @Override
-    public void reactGetHit(float dmg, String wpnType) {
+    public void reactGetHit(float dmg, String wpnType, Zombie attacker) {
         health -= dmg;
         awareness += 30;
         if (health <= 0)
@@ -383,26 +387,26 @@ public class Zombie extends Movables {
         float isRanged = r.nextInt(2); // IS 0 OR 1
         float canScreech = r.nextInt(2); // IS 0 OR 1;
         float rangedRange = 0;
-        float health = 30 + r.nextFloat()*30;
+        float health = 30 + r.nextFloat() * 30;
         float damage;
 
         if (isRanged == 0)
             damage = 30 + r.nextFloat() * 20;
         else {
             damage = 20 + r.nextFloat() * 20;
-            rangedRange = 200+r.nextFloat()*500;
+            rangedRange = 200 + r.nextFloat() * 500;
         }
 
         float isSprinter = 0;
         if (isRanged == 0)
             isSprinter = r.nextInt(2);
 
-        return new float[] { hearSkill, seeSkill, isRanged, canScreech, damage, isSprinter,rangedRange, health};
+        return new float[] { hearSkill, seeSkill, isRanged, canScreech, damage, isSprinter, rangedRange, health };
 
     }
 
     public static final String[] geneDescriptions = { "Hearing: ", "Seeing: ", "Is Ranged: ", "Can Screech: ",
-            "Damage: ", "Is Sprinter: ", "Ranged Range: ", "Health: "};
+            "Damage: ", "Is Sprinter: ", "Ranged Range: ", "Health: " };
 
     public static final int GENE_HEAR_SKILL = 0;
     public static final int GENE_SEE_SKILL = 1;
