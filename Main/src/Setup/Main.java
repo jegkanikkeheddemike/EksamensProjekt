@@ -1,6 +1,5 @@
 package Setup;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -19,7 +18,7 @@ import GameObjects.Items.Weapons.*;
 import MapGeneration.*;
 
 public class Main extends PApplet {
-    public static boolean startFromFile = true;
+    public static boolean startFromFile = false;
 
     public static boolean isRunning = true;
 
