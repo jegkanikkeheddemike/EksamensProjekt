@@ -130,7 +130,7 @@ public class Main extends PApplet {
         translate(-translateX, -translateY);
         UI.drawUI();
     }
-
+    public boolean timeStop = false;
     void step() {
 
         try {
@@ -141,6 +141,14 @@ public class Main extends PApplet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if (keyTapped('t')){
+            if (!timeStop)
+                timeStop = true;
+            else{
+                timeStop = false;
+            }
+        }
+
     }
 
     void clearLists() {

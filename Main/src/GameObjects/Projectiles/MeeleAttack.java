@@ -22,7 +22,7 @@ public class MeeleAttack extends Movables {
                 meeleWeapon.range * (float) Math.sin(-parent.rotation + (float) Math.PI / 2),
                 meeleWeapon.range * (float) Math.cos(-parent.rotation + (float) Math.PI / 2));
         direction = parent.rotation;
-        direction = (-direction + (float) Math.PI / 2);
+        //direction = (-direction + (float) Math.PI / 2);
         this.range = meeleWeapon.range;
         this.dmg = meeleWeapon.damage;
         this.wpnType = meeleWeapon.wpnType;
@@ -36,16 +36,18 @@ public class MeeleAttack extends Movables {
                 continue;
 
             // CHECK IF IN RANGE
-            if (!(GameMath.objectDistance(this, zombie) < range)) {
+            if (!(GameMath.objectDistance(Main.player, zombie) < range)) {
                 continue;
             }
             // CHECK IF IN ANGLE
 
-            float angleToZombie = GameMath.objectAngle(this, zombie);
-            angleToZombie = (-angleToZombie + (float) Math.PI / 2);
+            float angleToZombie = GameMath.objectAngle(Main.player, zombie);
+            //angleToZombie = (-angleToZombie + (float) Math.PI / 2);
+            
 
-            float relAngle = (float) Math.abs(angleToZombie - direction);
-            if (relAngle > Math.toRadians(90))
+            float relAngle = (float) Math.abs(Math.abs(angleToZombie) - Math.abs(direction));
+            Main.println("!" +Math.abs(angleToZombie) + " - " + direction +" = "+ relAngle);
+            if (relAngle > Math.toRadians(45))
                 continue;
 
             zombie.reactGetHit(dmg, wpnType);
@@ -65,7 +67,12 @@ public class MeeleAttack extends Movables {
         super.draw();
         // DRAWS the thingy
         Main.main.fill(255, 0, 0);
-        Main.main.line(x, y, x + range * (float) Math.sin(direction), y + range * (float) Math.cos(direction));
+        Main.main.pushMatrix();
+        Main.main.translate(Main.player.middleX(),Main.player.middleY());
+        Main.main.rotate((float)((-Math.PI*1/4)+timeAlive*Math.PI/2/30));
+        Main.main.line(0, 0, 0 + range * (float) Math.sin(-direction+Math.PI*1/2), 0 + range * (float) Math.cos(-direction+Math.PI*1/2));
+
+        Main.main.popMatrix();
     }
 
 }

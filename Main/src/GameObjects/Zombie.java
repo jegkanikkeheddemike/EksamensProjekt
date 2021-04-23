@@ -117,9 +117,12 @@ public class Zombie extends Movables {
 
     @Override
     public void step() {
+        if (Main.main.timeStop == false){
         lookForPlayer();
         walk();
         fight();
+        }
+
     }
 
     float dmg = 40;
