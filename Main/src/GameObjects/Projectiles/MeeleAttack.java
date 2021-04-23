@@ -15,7 +15,7 @@ public class MeeleAttack extends Movables {
     float dmg;
     String wpnType;
 
-    private static final int maxTime = 30;
+    private static final int maxTime = 10;
 
     public MeeleAttack(MeeleWeapon meeleWeapon, Movables parent) {
         super(parent.middleX(), parent.middleY(),
@@ -63,12 +63,13 @@ public class MeeleAttack extends Movables {
 
     @Override
     public void draw() {
-        super.draw();
         // DRAWS the thingy
-        Main.main.fill(255, 0, 0);
+        Main.main.strokeWeight(2);
+        Main.main.stroke(255,0,0);
         Main.main.pushMatrix();
         Main.main.translate(Main.player.middleX(),Main.player.middleY());
-        Main.main.rotate((float)((-Math.PI*1/4)+timeAlive*Math.PI/2/30));
+        Main.main.rotate((float)((-Math.PI*1/4)+timeAlive*Math.PI/2/maxTime));
+        
         Main.main.line(0, 0, 0 + range * (float) Math.sin(-direction+Math.PI*1/2), 0 + range * (float) Math.cos(-direction+Math.PI*1/2));
         Main.main.popMatrix();
     }
