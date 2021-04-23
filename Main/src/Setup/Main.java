@@ -47,6 +47,7 @@ public class Main extends PApplet {
     @Override
     public void setup() {
         Images.loadImages();
+
         m = new Map(2);
         player = new Player(m.initialNode);
 
@@ -70,6 +71,7 @@ public class Main extends PApplet {
         if (onWindows)
             Shaders.loadShaders();
         NearThread.thread.start();
+        UpdateGroupsThread.startThread();
         if (onWindows)
             Sound.setupSound();
 

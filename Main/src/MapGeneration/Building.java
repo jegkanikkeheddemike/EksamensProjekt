@@ -144,9 +144,12 @@ public class Building {
         }
 
         // #endregion
-        // makeRandomZombies(topleftX, topleftY, deltaX, deltaY);
-        Group myZombies = ZombieGenerator.generateGeneration(deltaX * deltaY);
+
+        Group myZombies = ZombieGenerator.generateGeneration(
+                (int) (Math.abs(deltaX) * Math.abs(deltaY) * ZombieGenerator.budgetPerAreaConstant));
+
         myZombies.setCoordinates(topleftX, topleftY, deltaX, deltaY);
+
     }
 
     void makeRandomZombies(int topleftX, int topleftY, int width, int height) {

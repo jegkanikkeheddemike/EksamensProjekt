@@ -123,8 +123,21 @@ public class Zombie extends Movables {
     @Override
     public void step() {
         lookForPlayer();
+        checkIfAddSpottedToScore();
         walk();
         fight();
+    }
+
+    boolean hasSpottedThisFight = false;
+
+    void checkIfAddSpottedToScore() {
+        if (state == "Chase") {
+            if (!hasSpottedThisFight) {
+                hasSpottedThisFight = true;
+                group.addSpottedToScore();
+            }
+        } else if (state == "Patrol")
+            hasSpottedThisFight = false;
     }
 
     float dmg = 40;
