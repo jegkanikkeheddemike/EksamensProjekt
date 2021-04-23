@@ -159,7 +159,6 @@ public class Node {
             for(int houseNum = 0; houseNum < numberOfHouses; houseNum++){
                 int y1 = (int) (y1West + houseNum*houseWidth);
                 int y2 = (int) (y1West + houseNum*houseWidth + houseWidth);
-                //new Building(parent.x-roadWidth/2-houseDepth, y1, parent.x-roadWidth/2, y1, parent.x-roadWidth/2-houseDepth, y2, parent.x-roadWidth/2, y2, Map.EAST);
                 new Building(parent.x-roadWidth/2-houseDepth, y1, parent.x-roadWidth/2, y1, parent.x-roadWidth/2-houseDepth, y2, parent.x-roadWidth/2, y2, Map.EAST);
             }
             
@@ -171,7 +170,6 @@ public class Node {
                 int y1 = (int) (y1East + houseNum*houseWidth);
                 int y2 = (int) (y1East + houseNum*houseWidth + houseWidth);
                 new Building(parent.x+roadWidth/2, y1, parent.x+roadWidth/2+houseDepth, y1, parent.x+roadWidth/2, y2, parent.x+roadWidth/2+houseDepth, y2, Map.WEST);
-                //new Building(parent.x+roadWidth/2, y1East, parent.x+roadWidth/2+houseDepth, y1East, parent.x+roadWidth/2, y2East, parent.x+roadWidth/2+houseDepth, y2East, Map.WEST);
             }
         }
     }
