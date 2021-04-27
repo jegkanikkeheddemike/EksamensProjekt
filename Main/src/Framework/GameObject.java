@@ -2,7 +2,8 @@ package Framework;
 
 import Setup.Main;
 
-public abstract class GameObject {
+public abstract class GameObject implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
     private static int idCounter = 0;
     public float x, y, w, h;
     public int ID;

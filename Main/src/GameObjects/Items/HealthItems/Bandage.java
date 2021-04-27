@@ -11,6 +11,6 @@ public class Bandage extends HealthItem {
 
     @Override
     protected void loadSprite() {
-        sprite = Images.SPRITE_BANDAGE;
+        sprite_ref = Images.SPRITE_BANDAGE_REF;
     }
 }

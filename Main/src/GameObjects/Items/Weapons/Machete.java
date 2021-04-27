@@ -16,7 +16,7 @@ public class Machete extends MeeleWeapon {
 
     @Override
     protected void loadSprite() {
-        sprite = Images.SPRITE_MACHETE;
+        sprite_ref = Images.SPRITE_MACHETE_REF;
     }
 
     @Override

@@ -2,12 +2,12 @@ package GameObjects.Items;
 
 import Framework.GameMath;
 import Framework.GameObject;
+import Framework.Images;
 import Framework.PlayerEffects.*;
 import Setup.Main;
-import processing.core.*;
 
 public abstract class Item extends GameObject {
-    public PImage sprite;
+    public String sprite_ref;
 
     public Boolean held = false;
     public String itemType = null;
@@ -50,8 +50,8 @@ public abstract class Item extends GameObject {
 
     public void draw() {
         if (!held) {
-            if (sprite != null) {
-                Main.main.image(sprite, x, y, w, h);
+            if (sprite_ref != null) {
+                Main.main.image(Images.getSprite(sprite_ref), x, y, w, h);
                 Main.main.fill(255);
                 Main.main.textSize(12);
                 Main.main.text(ID, x + 50, y);
@@ -74,8 +74,8 @@ public abstract class Item extends GameObject {
     }
 
     public void drawInInventory(int x, int y) {
-        if (sprite != null) {
-            Main.main.image(sprite, x, y, 80, 80);
+        if (sprite_ref != null) {
+            Main.main.image(Images.getSprite(sprite_ref), x, y, 80, 80);
         } else {
             super.draw();
         }

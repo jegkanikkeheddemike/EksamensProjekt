@@ -12,7 +12,7 @@ public class HealthPack extends HealthItem {
 
     @Override
     protected void loadSprite() {
-        sprite = Images.SPRITE_HEALTHPACK;
+        sprite_ref = Images.SPRITE_HEALTHPACK_REF;
         
     }
 

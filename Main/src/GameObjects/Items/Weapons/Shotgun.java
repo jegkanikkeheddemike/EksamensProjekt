@@ -27,7 +27,7 @@ public class Shotgun extends Weapon {
 
     @Override
     protected void loadSprite() {
-        sprite = Images.SPRITE_SHOTGUN;
+        sprite_ref = Images.SPRITE_SHOTGUN_REF;
     }
 
 }
