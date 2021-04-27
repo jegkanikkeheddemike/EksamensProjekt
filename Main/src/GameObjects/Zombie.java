@@ -74,7 +74,8 @@ public class Zombie extends Movables {
             }
         }
         Main.main.textSize(12);
-        Main.main.text(geneDescription, x + w + 10, y);
+        // Main.main.text(geneDescription, x + w + 10, y);
+        Main.main.text(timeSinceLastPatrolChange + "\n" + state, x + w + 10, y);
         drawAwarenessbar();
         if (!Main.onWindows || !Shaders.shouldDrawShaders())
             drawFOVCone();
@@ -128,11 +129,11 @@ public class Zombie extends Movables {
 
     @Override
     public void step() {
-        if (Main.main.timeStop == false){
-        lookForPlayer();
-        checkIfAddSpottedToScore();
-        walk();
-        fight();
+        if (Main.main.timeStop == false) {
+            lookForPlayer();
+            checkIfAddSpottedToScore();
+            walk();
+            fight();
         }
 
     }
@@ -177,8 +178,8 @@ public class Zombie extends Movables {
 
     }
 
-    float targetX;
-    float targetY;
+    public float targetX;
+    public float targetY;
     String state = "Patrol";
     float targetRotation;
 
@@ -229,8 +230,7 @@ public class Zombie extends Movables {
     boolean avoid;
 
     void walk() {
-        if (!avoid)
-            targetRotation = GameMath.pointAngle(middleX(), middleY(), targetX, targetY);
+        targetRotation = GameMath.pointAngle(middleX(), middleY(), targetX, targetY);
         rotateToAngle(targetRotation, 1);
 
         if (state == "Find") {
@@ -362,10 +362,8 @@ public class Zombie extends Movables {
             if (awareness > 100f / 1.5f) {
                 awareness = 100f / 1.5f;
                 state = "Find";
-                timeSinceLastPatrolChange = 0;
             } else if (awareness < 100f / 1.5f && state != "Find") {
                 state = "Patrol";
-                timeSinceLastPatrolChange = 0;
                 hasScreeched = false;
             }
         }

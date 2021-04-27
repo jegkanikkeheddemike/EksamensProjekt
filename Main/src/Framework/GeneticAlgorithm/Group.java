@@ -40,6 +40,8 @@ public class Group implements Comparable<Group> {
         Random r = new Random();
         zombie.x = topleftX + r.nextInt(deltaX);
         zombie.y = topleftY + r.nextInt(deltaY);
+        zombie.targetX = zombie.x;
+        zombie.targetY = zombie.y;
     }
 
     // DE ER FUNKTIONER FORDI VI SKAL KUNNE ÆNDRE HVAD GIVER HVAD I SCORE
