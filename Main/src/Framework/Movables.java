@@ -16,7 +16,6 @@ public abstract class Movables extends GameObject {
 
     protected void runStandardCollisions() {
         GameObject[] horiColl = getCollisions(xSpeed, 0, new String[] { "Wall", "Player" });
-        System.out.println(horiColl.length);
         // DEN SIGER i++ IKKE GØR NOGET WTF DET ER IKKE SANDT??????
         for (int i = 0; i < horiColl.length; i++) {
             float preX = x;
