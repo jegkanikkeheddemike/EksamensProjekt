@@ -33,12 +33,29 @@ public class GameSave implements java.io.Serializable{
     public static GameSave loadGame(String fileName){
         try {
             FileInputStream fis = new FileInputStream(fileName);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            GameSave gs = (GameSave) ois.readObject();
-            ois.close();
-            return gs;
+            try {
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                try{
+                    GameSave gs = (GameSave) ois.readObject();
+                    ois.close();
+                    fis.close();
+                    return gs;
+                }catch(Exception e){
+                    System.out.println("OBJECT READ");
+                    //System.out.println("LOAD GAME FAILED");
+                    System.out.println(e);
+                    return null;
+                }
+            }catch (Exception e) {
+                System.out.println("OBJECT");
+                //System.out.println("LOAD GAME FAILED");
+                System.out.println(e);
+                return null;
+            }
+            
         } catch (Exception e) {
-            System.out.println("LOAD GAME FAILED");
+            System.out.println("FILE");
+            //System.out.println("LOAD GAME FAILED");
             System.out.println(e);
             return null;
         }

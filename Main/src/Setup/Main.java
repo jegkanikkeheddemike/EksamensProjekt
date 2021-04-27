@@ -18,7 +18,7 @@ import GameObjects.Items.Weapons.*;
 import MapGeneration.*;
 
 public class Main extends PApplet {
-    public static boolean startFromFile = false;
+    public static boolean startFromFile = true;
 
     public static boolean isRunning = true;
 
@@ -66,6 +66,7 @@ public class Main extends PApplet {
                 }
             }
         }else{
+            //OPENING FROM GAME SAVE
             GameSave gs = GameSave.loadGame("src/Setup/GS.sav");
             m = gs.m;
             player = gs.player;
@@ -190,6 +191,7 @@ public class Main extends PApplet {
             k = (int) Character.toLowerCase(key);
 
             if(key == ' '){
+                //SAVING GAME
                 System.out.println("THE SPACE BAR WAS PRESSED!!!!!!!");
                 GameSave gs = new GameSave(allObjects, player, m);
                 gs.saveGame("GS.sav");
