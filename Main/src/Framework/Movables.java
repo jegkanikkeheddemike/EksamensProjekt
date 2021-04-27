@@ -16,6 +16,7 @@ public abstract class Movables extends GameObject {
 
     protected void runStandardCollisions() {
         GameObject[] horiColl = getCollisions(xSpeed, 0, new String[] { "Wall", "Player" });
+        System.out.println(horiColl.length);
         // DEN SIGER i++ IKKE GØR NOGET WTF DET ER IKKE SANDT??????
         for (int i = 0; i < horiColl.length; i++) {
             float preX = x;
@@ -66,12 +67,14 @@ public abstract class Movables extends GameObject {
 
             boolean isOnHitList = false;
             for (int j = 0; j < hitList.length; j++) {
-                if (g.classID == hitList[j])
+                if (g.classID.equals(hitList[j])){
                     isOnHitList = true;
+                    break;
+                }
             }
             if (!isOnHitList)
                 continue;
-
+            
             // TOPLEFT
             if (x + offsetX >= g.x && g.x + g.w >= x + offsetX) {
                 if (y + offsetY >= g.y && g.y + g.h >= y + offsetY) {
@@ -79,7 +82,7 @@ public abstract class Movables extends GameObject {
                     continue;
                 }
             }
-            // TOPRIGHT
+            // TOPRIGHTaW
             if (x + w + offsetX >= g.x && g.x + g.w >= x + w + offsetX) {
                 if (y + offsetY >= g.y && g.y + g.h >= y + offsetY) {
                     collisions.add(g);

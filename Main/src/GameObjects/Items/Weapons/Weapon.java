@@ -1,6 +1,7 @@
 package GameObjects.Items.Weapons;
 
 import Setup.Main;
+import Framework.Images;
 import GameObjects.Items.*;
 
 public abstract class Weapon extends Item {
@@ -21,8 +22,8 @@ public abstract class Weapon extends Item {
         super(x, y);
         this.wpnType = wpnType;
         classID = "Weapon";
-        w = (float) sprite.width / 3;
-        h = (float) sprite.height / 3;
+        w = (float) Images.getSprite(sprite_ref).width / 3;
+        h = (float) Images.getSprite(sprite_ref).height / 3;
         itemType = "Weapon";
         this.reloadTime = reloadTime;
         this.usesAmmo = usesAmmo;

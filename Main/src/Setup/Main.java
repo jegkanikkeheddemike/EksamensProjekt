@@ -19,7 +19,8 @@ import GameObjects.Items.Weapons.*;
 import MapGeneration.*;
 
 public class Main extends PApplet {
-    public static boolean startFromFile = true;
+    private static boolean startFromFile = true;
+    private static boolean saveToFile = true;
 
     public static boolean isRunning = true;
 
@@ -66,37 +67,35 @@ public class Main extends PApplet {
                     }
                 }
             }
+            Random r = new Random();
+            while (player.getCollisions(0, 0, new String[] { "Wall", "Zombie" }).length > 0) {
+                player.x = r.nextInt(1920);
+                player.y = r.nextInt(1080);
+            }
+            // #region TestObjects
+            new AmmoBox9mm(player.x + 50, player.y - 50);
+            new AmmoBox45ACP(player.x - 50, player.y + 50);
+            new AmmoBoxShells(player.x + 50, player.y - 50);
+            new Pistol(player.x, player.y + 100);
+            new Shotgun(player.x+100, player.y);
+            new HealthPack(player.x, player.y);
+            new Bandage(player.x, player.y);
+            new Machete(player.x, player.y);
+            // #endregion
         }else{
             GameSave gs = GameSave.loadGame("src/Setup/GS.sav");
             m = gs.m;
             player = gs.player;
             allObjects = gs.allObjects;
+            nearObjects = gs.nearObjects;
         }
 
-
-        Random r = new Random();
-        while (player.getCollisions(0, 0, new String[] { "Wall", "Zombie" }).length > 0) {
-            player.x = r.nextInt(1920);
-            player.y = r.nextInt(1080);
-        }
-
-        // #region TestObjects
-        new AmmoBox9mm(player.x + 50, player.y - 50);
-        new AmmoBox45ACP(player.x - 50, player.y + 50);
-        new AmmoBoxShells(player.x + 50, player.y - 50);
-        new Pistol(player.x, player.y + 100);
-        new Shotgun(player.x+100, player.y);
-        new HealthPack(player.x, player.y);
-        new Bandage(player.x, player.y);
-        new Machete(player.x, player.y);
-        // #endregion
-
+        NearThread.thread.start();
 
         frameRate(60);
 
         if (onWindows)
             Shaders.loadShaders();
-        NearThread.thread.start();
         if (onWindows)
             Sound.setupSound();
         
@@ -199,10 +198,12 @@ public class Main extends PApplet {
             k = (int) Character.toLowerCase(key);
 
             if(key == ' '){
-                System.out.println("THE SPACE BAR WAS PRESSED!!!!!!!");
-                GameSave gs = new GameSave(allObjects, player, m);
-                gs.saveGame("GS.sav");
-                System.out.println("GAME SAVED?¿¿¿");
+                if(saveToFile){
+                    System.out.println("THE SPACE BAR WAS PRESSED!!!!!!!");
+                    GameSave gs = new GameSave(allObjects, nearObjects, player, m);
+                    gs.saveGame("GS.sav");
+                    System.out.println("GAME SAVED?¿¿¿");
+                }
             }
             
             switch (key) {

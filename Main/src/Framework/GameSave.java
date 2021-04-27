@@ -12,10 +12,12 @@ import MapGeneration.Map;
 public class GameSave implements java.io.Serializable{
     private static final long serialVersionUID = -2943159986346186078L;
     public ArrayList<GameObject> allObjects;
+    public ArrayList<GameObject> nearObjects;
     public Player player;
     public Map m;
-    public GameSave(ArrayList<GameObject> allObjects, Player player, Map m){
+    public GameSave(ArrayList<GameObject> allObjects, ArrayList<GameObject> nearObjects, Player player, Map m){
         this.allObjects = allObjects;
+        this.nearObjects = nearObjects;
         this.player = player;
         this.m = m;
     }

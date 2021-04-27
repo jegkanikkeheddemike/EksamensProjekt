@@ -14,7 +14,7 @@ public class AmmoBoxShells extends AmmoItem {
 
     @Override
     protected void loadSprite() {
-        sprite = Images.SPRITE_AMMOBOXSHELLS;
+        sprite_ref = Images.SPRITE_AMMOBOXSHELLS_REF;
     }
     
 }

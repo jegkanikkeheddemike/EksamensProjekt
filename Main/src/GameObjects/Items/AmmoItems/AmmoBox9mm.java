@@ -11,6 +11,6 @@ public class AmmoBox9mm extends AmmoItem {
 
     @Override
     protected void loadSprite() {
-        sprite = Images.SPRITE_AMMOBOX9MM;
+        sprite_ref = Images.SPRITE_AMMOBOX9MM_REF;
     }
 }
