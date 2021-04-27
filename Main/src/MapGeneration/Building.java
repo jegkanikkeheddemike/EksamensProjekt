@@ -39,7 +39,7 @@ public class Building {
         int deltaY = Math.abs(botrightY - toprightY);
         // #region outer walls
         if (orientation == EAST) { // CHANGED
-            int doorLocation = wallWidth + doorWidth * r.nextInt((deltaY - 2 * wallWidth) / doorWidth);
+            int doorLocation = wallWidth + doorWidth * r.nextInt(Math.max(1, (deltaY - 2 * wallWidth) / doorWidth));
 
             // DOOR WALLS
             new Wall(toprightX - wallWidth, toprightY, wallWidth, doorLocation);
@@ -53,7 +53,7 @@ public class Building {
             new Wall(topleftX, botleftY - wallWidth, deltaX, wallWidth);
             new Wall(topleftX, topleftY, wallWidth, deltaY);
         } else if (orientation == WEST) { // CHANGED
-            int doorLocation = wallWidth + doorWidth * r.nextInt((deltaY - 2 * wallWidth) / doorWidth);
+            int doorLocation = wallWidth + doorWidth * r.nextInt(Math.max(1, (deltaY - 2 * wallWidth) / doorWidth));
             // DOOR WALLS
             new Wall(topleftX, toprightY, wallWidth, doorLocation);
             new Wall(topleftX, toprightY + doorLocation + doorWidth, wallWidth, deltaY - doorLocation - doorWidth);
@@ -65,7 +65,7 @@ public class Building {
             new Wall(topleftX, botleftY - wallWidth, deltaX, wallWidth);
             new Wall(toprightX - wallWidth, topleftY, wallWidth, deltaY);
         } else if (orientation == SOUTH) { // CHANGED
-            int doorLocation = wallWidth + doorWidth * r.nextInt((deltaX - 2 * wallWidth) / doorWidth);
+            int doorLocation = wallWidth + doorWidth * r.nextInt(Math.max(1, (deltaX - 2 * wallWidth) / doorWidth));
             // DOORWALLS
             new Wall(botleftX + wallWidth, botrightY - wallWidth, doorLocation, wallWidth);
             new Wall(botleftX + wallWidth + doorLocation + doorWidth, botrightY - wallWidth,
@@ -78,7 +78,7 @@ public class Building {
             new Wall(toprightX - wallWidth, topleftY, wallWidth, deltaY);
             new Wall(topleftX, topleftY, deltaX, wallWidth);
         } else if (orientation == NORTH) { // CHANGED
-            int doorLocation = wallWidth + doorWidth * r.nextInt((deltaX - 2 * wallWidth) / doorWidth);
+            int doorLocation = wallWidth + doorWidth * r.nextInt(Math.max(1, (deltaX - 2 * wallWidth) / doorWidth));
             // DOOR WALLS
             new Wall(botleftX + wallWidth, toprightY, doorLocation, wallWidth);
             new Wall(botleftX + wallWidth + doorLocation + doorWidth, toprightY,
@@ -93,18 +93,17 @@ public class Building {
         }
         // #endregion
         // #region Inner Walls
-
         int[] newSquare = { -1, -1, -1, -1 };
         int wallAmount = 5 + r.nextInt(1 + Math.abs(((deltaX - 2 * wallWidth) * (deltaY - 2 * wallWidth)) / 20000));
         for (int i = 0; i < wallAmount; i++) {
-            int x = wallWidth + topleftX + doorWidth * r.nextInt((deltaX - 2 * wallWidth) / doorWidth);
+            int x = wallWidth + topleftX + doorWidth * r.nextInt(Math.max(1, (deltaX - 2 * wallWidth) / doorWidth));
             newSquare[0] = x;
-            int y = wallWidth + topleftY + doorWidth * r.nextInt((deltaY - 2 * wallWidth) / doorWidth);
+            int y = wallWidth + topleftY + doorWidth * r.nextInt(Math.max(1, (deltaY - 2 * wallWidth) / doorWidth));
             newSquare[1] = y;
             boolean isVert = r.nextDouble() > 0.5;
             int w, h;
             if (isVert) {
-                w = 2 * wallWidth + wallWidth * r.nextInt((deltaX / 2) / wallWidth);
+                w = 2 * wallWidth + wallWidth * r.nextInt(Math.max(1, (deltaX / 2) / wallWidth));
                 h = wallWidth;
 
                 if (x + w > toprightX)
@@ -114,7 +113,7 @@ public class Building {
                 newSquare[3] = h;
             } else {
                 w = wallWidth;
-                h = 2 * wallWidth + wallWidth * r.nextInt((deltaY / 2) / wallWidth);
+                h = 2 * wallWidth + wallWidth * r.nextInt(Math.max(1, (deltaY / 2) / wallWidth));
 
                 if (y + h > botleftY)
                     h = botleftY - y;
@@ -149,15 +148,15 @@ public class Building {
                 (int) (Math.abs(deltaX) * Math.abs(deltaY) * ZombieGenerator.budgetPerAreaConstant));
 
         myZombies.setCoordinates(topleftX, topleftY, deltaX, deltaY);
-
     }
 
+    @Deprecated
     void makeRandomZombies(int topleftX, int topleftY, int width, int height) {
         Random r = new Random();
         int amount = 2 + r.nextInt(5);
         for (int i = 0; i < amount; i++) {
-            Zombie zombie = new Zombie(topleftX + r.nextInt(width), topleftY + r.nextInt(height), Zombie.randomGenes(),
-                    null);
+            Zombie zombie = new Zombie(topleftX + r.nextInt(Math.max(1, width)),
+                    topleftY + r.nextInt(Math.max(1, height)), Zombie.randomGenes(), null);
             while (zombie.getCollisions(0, 0, new String[] { "Wall", "Player", "Item" }).length > 0) {
                 zombie.x = topleftX + r.nextInt(width);
                 zombie.y = topleftY + r.nextInt(height);
