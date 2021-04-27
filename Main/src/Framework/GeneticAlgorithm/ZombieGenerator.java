@@ -21,11 +21,24 @@ public abstract class ZombieGenerator {
 
     public static void generateRandomGroup(Group group) {
         Random r = new Random();
-        System.out.println("Budget: " + group.budget);
         // INDTIL VIDERE HAR DE TILFÆLDIGE ATTRIBUTTER
 
-        // FORDELING
-        float[] n = { r.nextFloat(), r.nextFloat(), r.nextFloat(), r.nextFloat(), r.nextFloat() };
+        // FORDELING af budget
+        float[] n = { //
+                r.nextFloat(), //
+                r.nextFloat(), //
+                r.nextFloat(), //
+                r.nextFloat(), //
+                r.nextFloat()//
+        };
+        // Kvalitet eller kvantitet. lav q = høj kvalitet, høj q = høj kvantitet
+        float[] q = { //
+                r.nextFloat(), //
+                r.nextFloat(), //
+                r.nextFloat(), //
+                r.nextFloat(), //
+                r.nextFloat()//
+        };
         // NOMALIZE
         float sum = 0;
         for (int i = 0; i < n.length; i++) {
@@ -39,39 +52,83 @@ public abstract class ZombieGenerator {
         int amountSucceded = 5;
         float valueFailed = 0;
         for (int i = 0; i < n.length; i++) {
-            if (n[i] * group.budget < 1) {
+            if (n[i] * group.budget * q[i] < 1) {
                 amountSucceded--;
                 valueFailed += n[i];
                 n[i] = -1; // MEANS DONT CREATE
             }
         }
-
         for (int i = 0; i < n.length; i++) {
             if (n[i] != -1) {
                 n[i] += valueFailed / amountSucceded;
             }
         }
 
-        for (float f : n) {
-            for (int i = 0; i < f * group.budget; i++) {
-                group.zombies.add(new Zombie(0, 0, Zombie.randomGenes(), group));
+        for (int i = 0; i < n.length; i++) {
+            for (int j = 0; j < n[i] * group.budget; j++) {
+                float allocatedBudget = n[i] * group.budget * q[i];
+                group.zombies.add(randZombieFromPreset(i, allocatedBudget, group));
             }
         }
-
+        updateBest();
     }
 
-    public static final float budgetPerAreaConstant = 1f / 100000;
+    private static Zombie randZombieFromPreset(int preset, float allocatedBudget, Group group) {
+        float[] presetGenes = presets[preset].clone(); // SKAL VÆRE CLONE, ellers kommer reference
 
-    private static final float[][] presets = { new float[] { // SCREECHER
-            1.5f, 1, 5f, 0, 1, 15, 0, 0, 20 },
-            new float[] { // SPRINTER
-                    0.5f, 0, 5f, 0, 0, 50, 1, 0, 40 },
-            new float[] { // Sniper
-                    1, 1, 1, 0, 40, 0, 700, 20 },
-            new float[] { // Light ranged
-                    0.5f, 0.5f, 1, 0, 30, 0, 300, 30 },
-            new float[] { // Bruiser
-                    0.5f, 0.5f, 0, 0, 30, 0, 0, 70 } };
+        float budgetFocusSum = 0;
+        for (int i = 0; i < presetBudgetFocus.length; i++) {
+            budgetFocusSum += presetBudgetFocus[preset][i];
+        }
+        // presetGenes.lenth bliver miusset med 1, da presetID er ligegyldigt ikke skal
+        // regnes på
+        for (int i = 0; i < presetGenes.length - 1; i++) {
+            presetGenes[i] = presetGenes[i] + (presetBudgetFocus[preset][i] * allocatedBudget) / budgetFocusSum;
+        }
+        Zombie zombie = new Zombie(-1, -1, presetGenes, group);
+        return zombie;
+    }
+
+    private static final float[][] presetBudgetFocus = {
+            // Hvad budget kommer til at fokusere på som mængde
+            // Bemærk at det her ganges med budget, og plusses på presettet.
+            // Derfor er 0 ingen effekt på preset
+            { //    SCREECHER
+                    1f, 1f, 0f, 0f, 0f, 0f, 0f, 0.5f//
+            }, { // SPRINTER
+                    0f, 0, 0, 0, 1f, 0, 0, 0.5f//
+            }, { // SNIPER
+                    0.5f, 1f, 0, 0, 1, 0, 1, 0//
+            }, { // Light ranged
+                    0.5f, 0.5f, 0, 0, 1f, 0, 0, 0.5f//
+            }, { // Bruiser
+                    0, 0, 0, 0, 1f, 0, 0, 1//
+            } //
+    };
+
+    private static final float[][] presets = { // presets for the zombies
+            { // SCREECHER
+                    1.5f, 1, 0, 1, 15, 0, 0, 20, 0 //
+            }, { // SPRINTER
+                    0.5f, 0, 5f, 0, 50, 1, 0, 40, 1 //
+            }, { // Sniper
+                    0.5f, 1, 1, 0, 40, 0, 700, 20, 2 //
+            }, { // Light ranged
+                    1, 1, 1, 0, 30, 0, 300, 30, 3 //
+            }, { // Bruiser
+                    0.5f, 0.5f, 0, 0, 30, 0, 0, 70, 4 //
+            }
+            // Thats all :) (denne kommentar er for ellers er autoformat irriterende)
+    };
+    public static final String[] presetNames = { // Preset names
+            "Screecher", //
+            "Sprinter", //
+            "Sniper", //
+            "Light ranged", //
+            "Bruiser", //
+            "NO PRESET" // Only if made through Zombie.randomGenes()
+    };
+    public static final int NOPRESET = 5;
 
     public static String getScoreBoard() {
         String scoreBoard = "";
@@ -94,4 +151,6 @@ public abstract class ZombieGenerator {
             best20[i] = listCopy.get(i);
         }
     }
+
+    public static final float budgetPerAreaConstant = 1f / 100000;
 }

@@ -5,6 +5,7 @@ import java.util.Random;
 
 import Framework.*;
 import Framework.GeneticAlgorithm.Group;
+import Framework.GeneticAlgorithm.ZombieGenerator;
 import GameObjects.Projectiles.ZombieShot;
 import Setup.Main;
 import processing.core.PVector;
@@ -66,8 +67,13 @@ public class Zombie extends Movables {
         Main.main.fill(255);
         String geneDescription = "";
         for (int i = 0; i < geneDescriptions.length; i++) {
-            geneDescription += geneDescriptions[i] + genes[i] + "\n";
+            if (i != GENE_PRESET_NAME)
+                geneDescription += geneDescriptions[i] + genes[i] + "\n";
+            else {
+                geneDescription += geneDescriptions[i] + ZombieGenerator.presetNames[(int) genes[i]] + "\n";
+            }
         }
+        Main.main.textSize(12);
         Main.main.text(geneDescription, x + w + 10, y);
         drawAwarenessbar();
         if (!Main.onWindows || !Shaders.shouldDrawShaders())
@@ -414,12 +420,31 @@ public class Zombie extends Movables {
         if (isRanged == 0)
             isSprinter = r.nextInt(2);
 
-        return new float[] { hearSkill, seeSkill, isRanged, canScreech, damage, isSprinter, rangedRange, health };
+        return new float[] { //
+                hearSkill, //
+                seeSkill, //
+                isRanged, //
+                canScreech, //
+                damage, //
+                isSprinter, //
+                rangedRange, //
+                health, //
+                ZombieGenerator.NOPRESET //
+        };
 
     }
 
-    public static final String[] geneDescriptions = { "Hearing: ", "Seeing: ", "Is Ranged: ", "Can Screech: ",
-            "Damage: ", "Is Sprinter: ", "Ranged Range: ", "Health: " };
+    public static final String[] geneDescriptions = { //
+            "Hearing: ", //
+            "Seeing: ", //
+            "Is Ranged: ", //
+            "Can Screech: ", //
+            "Damage: ", //
+            "Is Sprinter: ", //
+            "Ranged Range: ", //
+            "Health: ", //
+            "Preset: " //
+    };
 
     public static final int GENE_HEAR_SKILL = 0;
     public static final int GENE_SEE_SKILL = 1;
@@ -429,4 +454,5 @@ public class Zombie extends Movables {
     public static final int GENE_IS_SPRINTER = 5;
     public static final int GENE_RANGED_RANGE = 6;
     public static final int GENE_HEALTH = 7;
+    public static final int GENE_PRESET_NAME = 8;
 }

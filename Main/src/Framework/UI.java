@@ -99,7 +99,10 @@ public class UI {
         // #endregion
 
         //#region Group info
-        Main.main.text(ZombieGenerator.getScoreBoard(), 10, 10);
+        Main.main.textSize(12);
+        Main.main.noStroke();
+        Main.main.fill(255);
+        Main.main.text(ZombieGenerator.getScoreBoard(), 10, 20);
 
         //#endregion
     }
