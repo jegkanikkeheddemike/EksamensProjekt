@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import GameObjects.Wall;
 import Setup.Main;
 import Framework.*;
 
-public class Map implements java.io.Serializable {
+public class Map {
     //                                        north,   south, east, west
     private static final int[][] directions = {{0,-1}, {0,1}, {1,0}, {-1,0}};
     public static final int NORTH = 0;
@@ -17,6 +18,7 @@ public class Map implements java.io.Serializable {
     public Node initialNode;
     public ArrayList<Node> allNodes;
     public ArrayList<Node> endNodes;
+    ArrayList<Wall> roads;
     private Random rand = new Random();
     private int maxLevel;
     private final int maxRoadLength = Node.houseDepth*5+Node.roadWidth;

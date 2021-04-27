@@ -4,9 +4,9 @@ import java.util.Random;
 
 import GameObjects.Wall;
 import GameObjects.Zombie;
+import Setup.Main;
 import Framework.GameMath;
 
-//THE GROUP SYSTEM SHOULD BE SERIALIZABLE BUT I AM NOT SURE THAT THAT NESCESSARILY ENTAILS THE BUILDING CLASS
 public class Building {
     int topleftX, topleftY, toprightX, toprightY, botleftX, botleftY, botrightX, botrightY;
     int orientation;

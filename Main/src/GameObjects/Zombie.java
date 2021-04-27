@@ -8,8 +8,7 @@ import GameObjects.Projectiles.ZombieShot;
 import Setup.Main;
 import processing.core.PVector;
 
-public class Zombie extends Movables{
-    private static final long serialVersionUID = 1L;
+public class Zombie extends Movables {
     float walkSpeed = 0.8f;
     float sprintSpeed = 2;
     float[] genes;

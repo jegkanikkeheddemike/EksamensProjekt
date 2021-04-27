@@ -3,7 +3,7 @@ package MapGeneration;
 import GameObjects.Wall;
 import Setup.Main;
 
-public class Node implements java.io.Serializable{
+public class Node {
     public int x, y;
     public Node parent;
     public Node parent2 = null;
