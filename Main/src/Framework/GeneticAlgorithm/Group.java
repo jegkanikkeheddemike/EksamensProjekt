@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.function.Consumer;
 
+import Framework.GameObject;
 import GameObjects.Zombie;
+import GameObjects.Items.Item;
 import Threads.UpdateGroupsThread;
 
 public class Group implements Comparable<Group>, Serializable {
     public ArrayList<Zombie> zombies = new ArrayList<Zombie>();
+    public ArrayList<Item> items = new ArrayList<Item>();
     private int score;
     int budget;
     private int groupID;
@@ -35,14 +38,24 @@ public class Group implements Comparable<Group>, Serializable {
                 setCoordinates(topleftX, topleftY, deltaX, deltaY, zombie);
             }
         }
+        for (Item item : items) {
+            setCoordinates(topleftX, topleftY, deltaX, deltaY, item);
+            while (item.getCollisions(0, 0, new String[] { "Wall" }).length > 0) {
+                setCoordinates(topleftX, topleftY, deltaX, deltaY, item);
+            }
+        }
     }
 
-    private void setCoordinates(int topleftX, int topleftY, int deltaX, int deltaY, Zombie zombie) {
+    private void setCoordinates(int topleftX, int topleftY, int deltaX, int deltaY, GameObject object) {
         Random r = new Random();
-        zombie.x = topleftX + r.nextInt(deltaX);
-        zombie.y = topleftY + r.nextInt(deltaY);
-        zombie.targetX = zombie.x;
-        zombie.targetY = zombie.y;
+        object.x = topleftX + r.nextInt(deltaX);
+        object.y = topleftY + r.nextInt(deltaY);
+        if (object.classID.equals("Zombie")) {
+            Zombie zombie = (Zombie) object;
+            zombie.targetX = zombie.x;
+            zombie.targetY = zombie.y;
+        }
+
     }
 
     // DE ER FUNKTIONER FORDI VI SKAL KUNNE ÆNDRE HVAD GIVER HVAD I SCORE

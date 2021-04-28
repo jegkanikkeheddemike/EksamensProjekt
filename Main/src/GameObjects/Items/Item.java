@@ -1,12 +1,12 @@
 package GameObjects.Items;
 
 import Framework.GameMath;
-import Framework.GameObject;
 import Framework.Images;
+import Framework.Movables;
 import Framework.PlayerEffects.*;
 import Setup.Main;
 
-public abstract class Item extends GameObject {
+public abstract class Item extends Movables {
     public String sprite_ref;
 
     public Boolean held = false;
