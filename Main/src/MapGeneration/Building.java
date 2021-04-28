@@ -9,6 +9,7 @@ import Framework.GameMath;
 import Framework.GeneticAlgorithm.Group;
 import Framework.GeneticAlgorithm.ZombieGenerator;
 
+//THE GROUP SYSTEM SHOULD BE SERIALIZABLE BUT I AM NOT SURE THAT THAT NESCESSARILY ENTAILS THE BUILDING CLASS
 public class Building {
     int topleftX, topleftY, toprightX, toprightY, botleftX, botleftY, botrightX, botrightY;
     int orientation;

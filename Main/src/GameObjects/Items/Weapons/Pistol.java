@@ -23,7 +23,7 @@ public class Pistol extends Weapon {
 
     @Override
     protected void loadSprite() {
-        sprite = Images.SPRITE_PISTOL;
+        sprite_ref = Images.SPRITE_PISTOL_REF;
 
     }
 }

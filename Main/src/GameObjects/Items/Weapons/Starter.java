@@ -23,6 +23,6 @@ public class Starter extends Weapon {
 
     @Override
     protected void loadSprite() {
-        sprite = Images.SPRITE_STARTER;
+        sprite_ref = Images.SPRITE_STARTER_REF;
     }
 }
