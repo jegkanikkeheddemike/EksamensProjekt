@@ -1,5 +1,6 @@
 package Framework.GeneticAlgorithm;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.function.Consumer;
@@ -7,7 +8,7 @@ import java.util.function.Consumer;
 import GameObjects.Zombie;
 import Threads.UpdateGroupsThread;
 
-public class Group implements Comparable<Group> {
+public class Group implements Comparable<Group>, Serializable {
     public ArrayList<Zombie> zombies = new ArrayList<Zombie>();
     private int score;
     int budget;
