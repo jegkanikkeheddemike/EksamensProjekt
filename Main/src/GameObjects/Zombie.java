@@ -331,8 +331,10 @@ public class Zombie extends Movables {
         awareness *= awarenessMulitplier;
         // INCREASE AWARENESS BASED ON SOUND
 
-        for (int i = 0; i < Main.nearObjects.size(); i++) {
-            GameObject g = Main.nearObjects.get(i);
+        GameObject[] near = Main.getNear();
+
+        for (int i = 0; i < near.length; i++) {
+            GameObject g = near[i];
             if (g.classID == "Sound") {
                 awareness += ((Sound) g).volume * (soundSense * genes[GENE_HEAR_SKILL])
                         / GameMath.objectDistance(this, g);

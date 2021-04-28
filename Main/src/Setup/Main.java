@@ -22,7 +22,7 @@ public class Main extends PApplet {
 
     public static Main main;
     public static volatile ArrayList<GameObject> allObjects = new ArrayList<GameObject>();
-    public static volatile ArrayList<GameObject> nearObjects = new ArrayList<GameObject>();
+    private static volatile ArrayList<GameObject> nearObjects = new ArrayList<GameObject>();
 
     public static ArrayList<GameObject> toBeDelted = new ArrayList<GameObject>();
     public static Player player;
@@ -54,8 +54,6 @@ public class Main extends PApplet {
         // MAKING THE REST OF THE MAP
         m.generateMap();
         m.removeUselessNodes();
-
-        
 
         for (Node n : m.initialNode.connected) {
             n.housesAlongParentEdge();
@@ -134,7 +132,9 @@ public class Main extends PApplet {
         translate(-translateX, -translateY);
         UI.drawUI();
     }
+
     public boolean timeStop = false;
+
     void step() {
 
         try {
@@ -145,10 +145,10 @@ public class Main extends PApplet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (keyTapped('t')){
+        if (keyTapped('t')) {
             if (!timeStop)
                 timeStop = true;
-            else{
+            else {
                 timeStop = false;
             }
         }
@@ -164,8 +164,22 @@ public class Main extends PApplet {
 
     void updateObjectLists() {
         if (NearThread.isReady) {
-            nearObjects = NearThread.nearObjectsUpdated;
+            //NearThread.pauseThread();
+            nearObjects.clear();
+            nearObjects.addAll(NearThread.nearObjectsUpdated);
+            //NearThread.resumeThread();
         }
+    }
+
+    public static GameObject[] getNear() {
+        GameObject[] nearArray = new GameObject[nearObjects.size()];
+        nearArray = nearObjects.toArray(nearArray);
+        return nearArray;
+    }
+
+    public static void addObjectToLists(GameObject gameObject) {
+        allObjects.add(gameObject);
+        nearObjects.add(gameObject);
     }
 
     ArrayList<Integer> downKeys = new ArrayList<Integer>();

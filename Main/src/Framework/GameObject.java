@@ -19,8 +19,7 @@ public abstract class GameObject {
         this.y = y;
         this.w = w;
         this.h = h;
-        Main.allObjects.add(this);
-        Main.nearObjects.add(this);
+        Main.addObjectToLists(this);
     }
 
     public void draw() {

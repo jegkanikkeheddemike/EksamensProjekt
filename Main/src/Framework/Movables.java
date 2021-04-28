@@ -1,4 +1,5 @@
 package Framework;
+
 import java.util.ArrayList;
 
 import Setup.Main;
@@ -55,10 +56,12 @@ public abstract class Movables extends GameObject {
     public GameObject[] getCollisions(float offsetX, float offsetY, String[] hitList) {
         ArrayList<GameObject> collisions = new ArrayList<GameObject>();
 
-        for (int i = 0; i < Main.nearObjects.size(); i++) {
-            GameObject g = Main.nearObjects.get(i);
+        GameObject[] near = Main.getNear();
+
+        for (int i = 0; i < near.length; i++) {
+            GameObject g = near[i];
             if (g == null) {
-                System.out.println("For some reason g is null. nearSize is: " + Main.nearObjects.size());
+                System.out.println("For some reason g is null. nearSize is: " + near.length);
                 continue;
             }
             if (g == this)

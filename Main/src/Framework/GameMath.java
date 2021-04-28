@@ -69,8 +69,11 @@ public class GameMath {
     public static LineData lineCollision(float x1, float y1, float x2, float y2, String[] seeList) {
         LineData data = LineData.noCollision;
         NearThread.pauseThread();
-        for (int i = 0; i < Main.nearObjects.size(); i++) {
-            GameObject g = Main.nearObjects.get(i);
+
+        GameObject[] near = Main.getNear();
+
+        for (int i = 0; i < near.length; i++) {
+            GameObject g = near[i];
             boolean onSeeList = false;
             for (int j = 0; j < seeList.length; j++) {
                 if (seeList[j].equals(g.classID)) {
