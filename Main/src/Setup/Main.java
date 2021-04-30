@@ -24,11 +24,15 @@ public class Main extends PApplet {
     public static boolean isRunning = true;
 
     public static Main main;
-    public static volatile ArrayList<GameObject> allObjects = new ArrayList<GameObject>(); //This should be saved
-    private static volatile ArrayList<GameObject> nearObjects = new ArrayList<GameObject>(); // HMM, I think we could probably just construct that at start up?
+    public static volatile ArrayList<GameObject> allObjects = new ArrayList<GameObject>(); // This should be saved
+    private static volatile ArrayList<GameObject> nearObjects = new ArrayList<GameObject>(); // HMM, I think we could
+                                                                                             // probably just construct
+                                                                                             // that at start up?
 
-    public static ArrayList<GameObject> toBeDelted = new ArrayList<GameObject>(); //The objects that are to be deleted, should be deleted before a game save
-    public static Player player; //This, should be saved as well
+    public static ArrayList<GameObject> toBeDelted = new ArrayList<GameObject>(); // The objects that are to be deleted,
+                                                                                  // should be deleted before a game
+                                                                                  // save
+    public static Player player; // This, should be saved as well
 
     public static int gameTime;
 
@@ -50,18 +54,18 @@ public class Main extends PApplet {
     @Override
     public void setup() {
         Images.loadImages();
-        if(!startFromFile){
+        if (!startFromFile) {
             m = new Map(2);
             player = new Player(m.initialNode);
 
-            //MAKING THE REST OF THE MAP
+            // MAKING THE REST OF THE MAP
             m.generateMap();
             m.removeUselessNodes();
 
             for (Node n : m.initialNode.connected) {
                 n.housesAlongParentEdge();
                 for (Node nn : n.connected) {
-                    if(nn != n && nn != null){
+                    if (nn != n && nn != null) {
                         nn.housesAlongParentEdge();
                     }
                 }
@@ -76,12 +80,12 @@ public class Main extends PApplet {
             new AmmoBox45ACP(player.x - 50, player.y + 50);
             new AmmoBoxShells(player.x + 50, player.y - 50);
             new Pistol(player.x, player.y + 100);
-            new Shotgun(player.x+100, player.y);
+            new Shotgun(player.x + 100, player.y);
             new HealthPack(player.x, player.y);
             new Bandage(player.x, player.y);
             new Machete(player.x, player.y);
             // #endregion
-        }else{
+        } else {
             GameSave gs = GameSave.loadGame("src/Setup/GS.sav");
             m = gs.m;
             player = gs.player;
@@ -173,10 +177,10 @@ public class Main extends PApplet {
 
     void updateObjectLists() {
         if (NearThread.isReady) {
-            //NearThread.pauseThread();
+            // NearThread.pauseThread();
             nearObjects.clear();
             nearObjects.addAll(NearThread.nearObjectsUpdated);
-            //NearThread.resumeThread();
+            // NearThread.resumeThread();
         }
     }
 
@@ -213,15 +217,15 @@ public class Main extends PApplet {
         } else {
             k = (int) Character.toLowerCase(key);
 
-            if(key == ' '){
-                if(saveToFile){
+            if (key == ' ') {
+                if (saveToFile) {
                     System.out.println("THE SPACE BAR WAS PRESSED!!!!!!!");
                     GameSave gs = new GameSave(allObjects, nearObjects, player, m);
                     gs.saveGame("GS.sav");
                     System.out.println("GAME SAVED?¿¿¿");
                 }
             }
-            
+
             switch (key) {
             case '!':
                 k = '1';

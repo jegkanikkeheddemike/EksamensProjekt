@@ -13,9 +13,15 @@ import Threads.UpdateGroupsThread;
 public class Group implements Comparable<Group>, Serializable {
     public ArrayList<Zombie> zombies = new ArrayList<Zombie>();
     public ArrayList<Item> items = new ArrayList<Item>();
+
+    public float[] n, q;
+
     private int score;
     int budget;
     private int groupID;
+
+    // -1 = randomly generated and thus no parent
+    private int parentID;
 
     public int getID() {
         return groupID;
@@ -23,6 +29,19 @@ public class Group implements Comparable<Group>, Serializable {
 
     public int getScore() {
         return score;
+    }
+
+    public int getParentID() {
+        return parentID;
+    }
+
+    boolean parentIDHasBeenAssigned = false;
+
+    public void assignParentID(int parentID) {
+        if (!parentIDHasBeenAssigned) {
+            parentIDHasBeenAssigned = true;
+            this.parentID = parentID;
+        }
     }
 
     public Group(Consumer<Group> generator, int budget) {
