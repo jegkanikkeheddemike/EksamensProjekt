@@ -1,5 +1,6 @@
 package Framework.GeneticAlgorithm;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -17,7 +18,7 @@ import GameObjects.Items.Weapons.Machete;
 import GameObjects.Items.Weapons.Pistol;
 import GameObjects.Items.Weapons.Shotgun;
 
-public abstract class ZombieGenerator {
+public abstract class ZombieGenerator implements Serializable {
     private static LinkedList<Group> generations = new LinkedList<Group>();
     private static Group[] best20 = new Group[20];
 
