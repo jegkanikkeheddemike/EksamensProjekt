@@ -18,7 +18,7 @@ import GameObjects.Items.Weapons.*;
 import MapGeneration.*;
 
 public class Main extends PApplet {
-    private static boolean startFromFile = true;
+    private static boolean startFromFile = false;
     private static boolean saveToFile = false;
 
     public static boolean isRunning = true;

@@ -2,11 +2,8 @@ package Framework.GeneticAlgorithm;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 import GameObjects.Zombie;
 import GameObjects.Items.Item;
@@ -18,7 +15,6 @@ import GameObjects.Items.HealthItems.HealthPack;
 import GameObjects.Items.Weapons.Machete;
 import GameObjects.Items.Weapons.Pistol;
 import GameObjects.Items.Weapons.Shotgun;
-import GameObjects.Items.Weapons.Starter;
 
 public abstract class ZombieGenerator {
     private static LinkedList<Group> generations = new LinkedList<Group>();
@@ -66,23 +62,52 @@ public abstract class ZombieGenerator {
         }
 
         // Round if not enough to create zombie and if round down give n to other types
-        int amountSucceded = 5;
-        float valueFailed = 0;
+        int amountSucceded = 0;
+        System.out.println("New attemp______");
+        System.out.println("budget: " + group.budget);
+        boolean[] failed = new boolean[n.length];
+
+        boolean failedOnce = false;
+
+        while (amountSucceded == 0) {
+            amountSucceded = 5;
+            float valueFailed = 0;
+
+            // Resets the failed
+            failed = new boolean[n.length];
+
+            if (failedOnce || new Random().nextFloat() > 0.5) {
+
+                // Adds item to increase budget. Does this until budget can spawn a zombie
+                int itemIndex = new Random().nextInt(itemBudgets.length);
+                group.budget += itemBudgets[itemIndex];
+                group.items.add(getItem(itemIndex));
+
+                // System.out.println("budget: " + group.budget);
+            }
+
+            for (int i = 0; i < n.length; i++) {
+                if (n[i] * group.budget * q[i] < 1) {
+                    amountSucceded--;
+                    valueFailed += n[i];
+                    failed[i] = true;
+                }
+            }
+            for (int i = 0; i < n.length; i++) {
+                if (failed[i] != true) {
+                    n[i] += valueFailed / amountSucceded;
+                }
+            }
+
+            if (amountSucceded == 0)
+                failedOnce = true;
+
+            // System.out.println("Amount succeded: " + amountSucceded);
+        }
 
         for (int i = 0; i < n.length; i++) {
-            if (n[i] * group.budget * q[i] < 1) {
-                amountSucceded--;
-                valueFailed += n[i];
-                n[i] = -1; // MEANS DONT CREATE
-            }
-        }
-        for (int i = 0; i < n.length; i++) {
-            if (n[i] != -1) {
-                n[i] += valueFailed / amountSucceded;
-            }
-        }
-
-        for (int i = 0; i < n.length; i++) {
+            if (failed[i])
+                continue;
             for (int j = 0; j < n[i] * group.budget; j++) {
                 float allocatedBudget = n[i] * group.budget * q[i];
                 group.zombies.add(randZombieFromPreset(i, allocatedBudget, group));
@@ -170,66 +195,38 @@ public abstract class ZombieGenerator {
         }
     }
 
-    private static final Item randomItemFromBudget(int budget) {
-        return null;
-    }
-
-    public static void setupItemBudgets() {
-
-    }
-
-    private static final int[] itemBudgets = { //
-            2, // AmmoBox 9mm
-            2, // AmmoBox 45ACP
-            3, // AmmoBox Shells
-            5, // Bandage
-            10, // Healthpack
-            20, // Machete
-            10, // Pistol
-            20, // Shotgun
-            3, // Starter
+    private static final int[] itemBudgets = { // (Starter is not included and cant be spawned)
+            1, // AmmoBox 9mm
+            1, // AmmoBox 45ACP
+            2, // AmmoBox Shells
+            3, // Bandage
+            4, // Healthpack
+            4, // Machete
+            2, // Pistol
+            4, // Shotgunr
     };
 
-    private static Consumer<Void> getConstructor(int i) {
-
+    private static Item getItem(int i) {
+        float x = -1, y = -1;
         switch (i) {
         case 0:
-            return (Void) -> {
-                new AmmoBox9mm(-1, -1);
-            };
+            return new AmmoBox9mm(x, y);
         case 1:
-            return (Void) -> {
-                new AmmoBox45ACP(-1, -1);
-            };
+            return new AmmoBox45ACP(x, y);
         case 2:
-            return (Void) -> {
-                new AmmoBoxShells(-1, -1);
-            };
+            return new AmmoBoxShells(x, y);
+        case 3:
+            return new Bandage(x, y);
         case 4:
-            return (Void) -> {
-                new Bandage(-1, -1);
-            };
+            return new HealthPack(x, y);
         case 5:
-            return (Void) -> {
-                new HealthPack(-1, -1);
-            };
+            return new Machete(x, y);
         case 6:
-            return (Void) -> {
-                new Machete(-1, -1);
-            };
+            return new Pistol(x, y);
         case 7:
-            return (Void) -> {
-                new Pistol(-1, -1);
-            };
-        case 8:
-            return (Void) -> {
-                new Shotgun(-1, -1);
-            };
-        case 9:
-            return (Void) -> {
-                new Starter(-1, -1);
-            };
+            return new Shotgun(x, y);
         default:
+            System.out.println("Tried to spawn item of index: " + i + " which does not exist. null retuned");
             return null;
         }
     }
