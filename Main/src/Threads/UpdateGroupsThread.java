@@ -7,6 +7,8 @@ public class UpdateGroupsThread extends Thread {
     private static UpdateGroupsThread instance;
 
     private UpdateGroupsThread() {
+        setName("UpdateGroupsThread");
+        System.out.println(getName() + " ThreadID: " + getId());
     }
 
     private boolean update;

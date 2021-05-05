@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import Framework.GameMath;
 import Framework.GameObject;
-import Framework.Shaders;
 import GameObjects.Wall;
 import GameObjects.Zombie;
 import Setup.Main;
@@ -24,6 +23,11 @@ public class NearThread extends Thread {
     public static volatile int roundsCompleted = 0;
 
     private static boolean wait = false;
+
+    NearThread(){
+        setName("NearThread");
+        System.out.println(getName() + " ThreadID: " + getId());
+    }
 
     @Override
     public void run() {
