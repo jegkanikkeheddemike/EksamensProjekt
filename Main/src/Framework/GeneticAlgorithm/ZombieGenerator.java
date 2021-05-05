@@ -183,7 +183,7 @@ public abstract class ZombieGenerator {
         return zombie;
     }
 
-    private static final float[] geneMult = { 0.5f, 0.5f, 0, 0, 2, 0, 50, 70f };
+    private static final float[] geneMult = { 0.5f, 1f, 1, 1, 40, 1, 2000, 70f };
 
     private static final float[][] presetBudgetFocus = {
             // Hvad budget kommer til at fokusere på som mængde
@@ -194,11 +194,11 @@ public abstract class ZombieGenerator {
             }, { // SPRINTER
                     0.3f, 0.3f, 0, 0, 1.5f, 0, 0, 0.7f//
             }, { // SNIPER
-                    0.5f, 1f, 0, 0, 1, 0, 1, 0.3f//
+                    1f, 1f, 0, 0, 2f, 0, 1, 0.3f//
             }, { // Light ranged
                     0.5f, 0.5f, 0, 0, 1f, 0, 0.3f, 0.5f//
             }, { // Bruiser
-                    0.3f, 0.3f, 0, 0, 1f, 0, 0, 0.7f//
+                    0.5f, 0.5f, 0, 0, 1f, 0, 0, 0.7f//
             } //
     };
     private static float qVal = 0f;
@@ -206,7 +206,7 @@ public abstract class ZombieGenerator {
     // kun tin som ALTID er det samme, som skal have værdier.
     private static final float[][] presets = { // presets for the zombies
             { // SCREECHER
-                    qVal, qVal, 0, 1, qVal, 0, 0, qVal, 0 //
+                    qVal, qVal, 0, 1f, qVal, 0, 0, qVal, 0 //
             }, { // SPRINTER
                     qVal, qVal, 0, 0, qVal, 1, 0, qVal, 1 //
             }, { // Sniper

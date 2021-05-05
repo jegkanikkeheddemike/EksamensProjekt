@@ -12,6 +12,7 @@ public abstract class GameObject implements java.io.Serializable {
     public boolean hasHealth;
     public float health;
     public float maxHealth;
+    public boolean isDeleted;
 
     protected GameObject(float x, float y, float w, float h) {
         this.ID = idCounter;
@@ -50,6 +51,7 @@ public abstract class GameObject implements java.io.Serializable {
     }
 
     public void delete() {
+        isDeleted = true;
         Main.toBeDelted.add(this);
     }
 

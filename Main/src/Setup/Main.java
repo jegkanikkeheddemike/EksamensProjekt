@@ -50,11 +50,10 @@ public class Main extends PApplet {
         int h = (int) (displayHeight * 0.8);
 
         if (onWindows) {
-            size((int)w,(int) h, P2D);
+            size((int) w, (int) h, P2D);
         } else
-            size((int)w, (int)h);
-        
-        
+            size((int) w, (int) h);
+
     }
 
     @Override
@@ -65,7 +64,6 @@ public class Main extends PApplet {
         NearThread.thread.start();
         UpdateGroupsThread.startThread();
         SoundThread.StartThread();
-
 
         if (!startFromFile) {
             m = new Map(2);
@@ -106,10 +104,8 @@ public class Main extends PApplet {
             nearObjects = gs.nearObjects;
             ZombieGenerator.generations = gs.generations;
             UpdateGroupsThread.update();
-            
-        }
 
-        
+        }
 
         frameRate(60);
 
@@ -147,7 +143,8 @@ public class Main extends PApplet {
         try {
             for (int i = 0; i < nearObjects.size(); i++) {
                 GameObject gameObject = nearObjects.get(i);
-                gameObject.draw();
+                if (!gameObject.isDeleted)
+                    gameObject.draw();
             }
 
             // m.draw();
@@ -168,7 +165,8 @@ public class Main extends PApplet {
         try {
             for (int i = 0; i < nearObjects.size(); i++) {
                 GameObject gameObject = nearObjects.get(i);
-                gameObject.step();
+                if (!gameObject.isDeleted)
+                    gameObject.step();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -244,14 +242,14 @@ public class Main extends PApplet {
             }
 
             switch (key) {
-            case '!':
-                k = '1';
-                break;
-            case '\"':
-                k = '2';
-                break;
-            default:
-                break;
+                case '!':
+                    k = '1';
+                    break;
+                case '\"':
+                    k = '2';
+                    break;
+                default:
+                    break;
             }
 
         }
@@ -276,14 +274,14 @@ public class Main extends PApplet {
         } else {
             k = (int) Character.toLowerCase(key);
             switch (key) {
-            case '!':
-                k = '1';
-                break;
-            case '\"':
-                k = '2';
-                break;
-            default:
-                break;
+                case '!':
+                    k = '1';
+                    break;
+                case '\"':
+                    k = '2';
+                    break;
+                default:
+                    break;
             }
 
         }
