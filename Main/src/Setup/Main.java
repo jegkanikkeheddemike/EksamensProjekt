@@ -8,6 +8,7 @@ import processing.event.MouseEvent;
 
 import Threads.*;
 import Framework.*;
+import Framework.GeneticAlgorithm.ZombieGenerator;
 import GameObjects.*;
 import GameObjects.Items.AmmoItems.*;
 import GameObjects.Items.HealthItems.Bandage;
@@ -18,7 +19,7 @@ import GameObjects.Items.Weapons.*;
 import MapGeneration.*;
 
 public class Main extends PApplet {
-    private static boolean startFromFile = false;
+    private static boolean startFromFile = true;
     private static boolean saveToFile = false;
 
     public static boolean isRunning = true;
@@ -54,6 +55,10 @@ public class Main extends PApplet {
     @Override
     public void setup() {
         Images.loadImages();
+        NearThread.thread.start();
+        UpdateGroupsThread.startThread();
+
+
         if (!startFromFile) {
             m = new Map(2);
             player = new Player(m.initialNode);
@@ -91,10 +96,12 @@ public class Main extends PApplet {
             player = gs.player;
             allObjects = gs.allObjects;
             nearObjects = gs.nearObjects;
+            ZombieGenerator.generations = gs.generations;
+            UpdateGroupsThread.update();
+            
         }
 
-        NearThread.thread.start();
-        UpdateGroupsThread.startThread();
+        
 
         frameRate(60);
 
@@ -220,7 +227,7 @@ public class Main extends PApplet {
             if (key == ' ') {
                 if (saveToFile) {
                     System.out.println("THE SPACE BAR WAS PRESSED!!!!!!!");
-                    GameSave gs = new GameSave(allObjects, nearObjects, player, m);
+                    GameSave gs = new GameSave(allObjects, nearObjects, player, m, ZombieGenerator.generations);
                     gs.saveGame("GS.sav");
                     System.out.println("GAME SAVED?¿¿¿");
                 }

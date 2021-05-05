@@ -18,7 +18,7 @@ import GameObjects.Items.Weapons.Pistol;
 import GameObjects.Items.Weapons.Shotgun;
 
 public abstract class ZombieGenerator {
-    private static LinkedList<Group> generations = new LinkedList<Group>();
+    public static LinkedList<Group> generations = new LinkedList<Group>();
     private static Group[] best20 = new Group[20];
 
     public static Group generateGeneration(int budget) {
