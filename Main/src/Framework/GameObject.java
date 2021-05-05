@@ -44,7 +44,7 @@ public abstract class GameObject implements java.io.Serializable {
         return y + h / 2;
     }
 
-    public void reactGetHit(float dmg, String wpnType, Zombie attacker) {
+    public void reactGetHit(float dmg, String wpnType, Movables attacker) {
     }
 
     public void delete() {

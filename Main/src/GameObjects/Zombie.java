@@ -6,6 +6,7 @@ import java.util.Random;
 import Framework.*;
 import Framework.GeneticAlgorithm.Group;
 import Framework.GeneticAlgorithm.ZombieGenerator;
+import GameObjects.Projectiles.ZombieMeeleAttack;
 import GameObjects.Projectiles.ZombieShot;
 import Setup.Main;
 import processing.core.PVector;
@@ -14,7 +15,7 @@ public class Zombie extends Movables {
     private static final long serialVersionUID = 1L;
     float walkSpeed = 0.8f;
     float sprintSpeed = 2;
-    float[] genes;
+    public float[] genes;
     Group group;
 
     public Zombie(float x, float y, float[] genes, Group group) {
@@ -152,7 +153,7 @@ public class Zombie extends Movables {
     }
 
     float dmg = 40;
-    float range;
+    public float range;
     float maxCooldown = 120;
     float cooldown = 0;
 
@@ -162,6 +163,9 @@ public class Zombie extends Movables {
             return;
 
         if (GameMath.objectDistance(this, Main.player) <= range) {
+            Main.println("____________________");
+            Main.println(range);
+            Main.println(genes[GENE_DAMAGE]);
             if (cooldown < 0) {
                 attack();
             }
@@ -171,7 +175,8 @@ public class Zombie extends Movables {
     void attack() {
         cooldown = maxCooldown;
         if (genes[GENE_IS_RANGED] == 0) {
-            Main.player.reactGetHit(dmg, "ZMeele", this);
+            new ZombieMeeleAttack(this, genes[GENE_DAMAGE]);
+            //Main.player.reactGetHit(genes[GENE_DAMAGE], "", this);
         }
 
         else if (genes[GENE_IS_RANGED] == 1)
@@ -396,7 +401,7 @@ public class Zombie extends Movables {
     boolean hasScreeched;
 
     @Override
-    public void reactGetHit(float dmg, String wpnType, Zombie attacker) {
+    public void reactGetHit(float dmg, String wpnType, Movables attacker) {
         health -= dmg;
         awareness += 30;
         if (health <= 0)
