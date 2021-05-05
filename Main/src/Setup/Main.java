@@ -46,9 +46,8 @@ public class Main extends PApplet {
     @Override
     public void settings() {
 
-        double w = displayWidth * 0.8;
-        double h = displayHeight * 0.8;
-        
+        int w = (int) (displayWidth * 0.8);
+        int h = (int) (displayHeight * 0.8);
 
         if (onWindows) {
             size((int)w,(int) h, P2D);

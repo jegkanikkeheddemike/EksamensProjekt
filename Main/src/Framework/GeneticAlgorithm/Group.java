@@ -17,7 +17,7 @@ public class Group implements Comparable<Group>, Serializable {
     public float[] n, q;
 
     private int score;
-    int budget;
+    float budget;
     private int groupID;
 
     // -1 = randomly generated and thus no parent
@@ -34,6 +34,9 @@ public class Group implements Comparable<Group>, Serializable {
     public int getParentID() {
         return parentID;
     }
+    public float getBudget(){
+        return budget;
+    }
 
     boolean parentIDHasBeenAssigned = false;
 
@@ -44,7 +47,7 @@ public class Group implements Comparable<Group>, Serializable {
         }
     }
 
-    public Group(Consumer<Group> generator, int budget) {
+    public Group(Consumer<Group> generator, float budget) {
         this.budget = budget;
         groupID = getNextID();
         generator.accept(this);

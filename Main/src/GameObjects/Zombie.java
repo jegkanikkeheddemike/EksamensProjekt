@@ -67,7 +67,7 @@ public class Zombie extends Movables {
         Main.main.text(awarenesIcon, middleX(), middleY() - h);
         Main.main.textSize(20);
         Main.main.fill(255);
-        String geneDescription = "";
+        String geneDescription = "\n";
         for (int i = 0; i < geneDescriptions.length; i++) {
             if (i != GENE_PRESET_NAME)
                 geneDescription += geneDescriptions[i] + genes[i] + "\n";
@@ -76,8 +76,10 @@ public class Zombie extends Movables {
             }
         }
         Main.main.textSize(12);
-        // Main.main.text(geneDescription, x + w + 10, y);
-        Main.main.text(ZombieGenerator.presetNames[(int) genes[GENE_PRESET_NAME]] + "\n" + state, x + w + 10, y);
+        //Main.main.text(, x + w + 10, y);
+        Main.main.text(ZombieGenerator.presetNames[(int) genes[GENE_PRESET_NAME]] + "\nGID:" + group.getID() + "\nVal: "
+                + group.getBudget() * group.q[(int) genes[GENE_PRESET_NAME]] * group.n[(int) genes[GENE_PRESET_NAME]] + geneDescription + state,
+                x + w + 10, y);
         drawAwarenessbar();
         if (!Main.onWindows || !Shaders.shouldDrawShaders())
             drawFOVCone();
@@ -163,9 +165,9 @@ public class Zombie extends Movables {
             return;
 
         if (GameMath.objectDistance(this, Main.player) <= range) {
-            
+
             if (cooldown < 0) {
-                
+
                 attack();
             }
         }
@@ -175,11 +177,11 @@ public class Zombie extends Movables {
         cooldown = maxCooldown;
         if (genes[GENE_IS_RANGED] == 0) {
             new ZombieMeeleAttack(this, genes[GENE_DAMAGE]);
-            //Main.player.reactGetHit(genes[GENE_DAMAGE], "", this);
-            
+            // Main.player.reactGetHit(genes[GENE_DAMAGE], "", this);
+
         }
 
-        else if (genes[GENE_IS_RANGED] == 1){
+        else if (genes[GENE_IS_RANGED] == 1) {
             new ZombieShot(middleX(), middleY(), rotation, genes[GENE_DAMAGE], this);
         }
 
@@ -248,6 +250,8 @@ public class Zombie extends Movables {
             }
         } else if (state == "Look") {
             targetRotation = GameMath.pointAngle(middleX(), middleY(), Main.player.middleX(), Main.player.middleY());
+            targetX = Main.player.x;
+            targetY = Main.player.y;
         } else if (state == "Patrol") {
             timeSinceLastPatrolChange++;
             if (GameMath.pointDistance(x, y, targetX, targetY) < 80 || timeSinceLastPatrolChange > 600) {

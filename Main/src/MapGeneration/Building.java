@@ -145,7 +145,7 @@ public class Building {
 
         // #endregion
         Group myZombies = ZombieGenerator.generateGeneration(
-                (int) (Math.abs(deltaX) * Math.abs(deltaY) * ZombieGenerator.budgetPerAreaConstant));
+                (Math.abs(deltaX) * Math.abs(deltaY) * ZombieGenerator.budgetPerAreaConstant));
 
         myZombies.setCoordinates(topleftX, topleftY, deltaX, deltaY);
     }

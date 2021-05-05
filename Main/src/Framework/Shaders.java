@@ -62,8 +62,8 @@ public class Shaders {
         zombieFOVConeShader.set("wallY", wallY);
         zombieFOVConeShader.set("wallWidth", wallWidth);
         zombieFOVConeShader.set("wallHeight", wallHeight);
-        zombieFOVConeShader.set("resX",Main.main.width);
-        zombieFOVConeShader.set("resY",Main.main.height);
+        zombieFOVConeShader.set("resX",(float) Main.main.width);
+        zombieFOVConeShader.set("resY",(float) Main.main.height);
 
         // DET ER MEGET VIGTIGT AT DER IKKE ER NOFILL(), FOR SÅ VIRKER SHADEREN IKKE!!!
         // TILFØJ NOSTROKE ellers Kommer der stroke på hjørnerne af shaderen
