@@ -131,7 +131,7 @@ public class Zombie extends Movables {
 
     @Override
     public void step() {
-        if (Main.main.timeStop == false) {
+        if (Main.main.timeStop == false && attacking == false) {
             lookForPlayer();
             checkIfAddSpottedToScore();
             walk();
@@ -170,7 +170,7 @@ public class Zombie extends Movables {
             }
         }
     }
-
+    public boolean attacking = false;
     void attack() {
         cooldown = maxCooldown;
         if (genes[GENE_IS_RANGED] == 0) {
@@ -180,9 +180,6 @@ public class Zombie extends Movables {
         }
 
         else if (genes[GENE_IS_RANGED] == 1){
-            Main.println("____________________");
-            Main.println(range);
-            Main.println(genes[GENE_DAMAGE]);
             new ZombieShot(middleX(), middleY(), rotation, genes[GENE_DAMAGE], this);
         }
 

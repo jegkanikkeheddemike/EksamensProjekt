@@ -45,6 +45,8 @@ public abstract class GameObject implements java.io.Serializable {
     }
 
     public void reactGetHit(float dmg, String wpnType, Movables attacker) {
+        if (hasHealth)
+            health -= dmg;
     }
 
     public void delete() {

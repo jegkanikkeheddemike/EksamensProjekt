@@ -304,9 +304,10 @@ public class Player extends Movables {
         }
     }
 
-    public void reactGetHit(float dmg, String vpnType, Zombie attacker) {
+    public void reactGetHit(float dmg, String wpnType, Movables attacker) {
         health -= dmg;
-        attacker.group.addDmgToScore(dmg);
+        Zombie zAttacker = (Zombie)attacker;
+        zAttacker.group.addDmgToScore(dmg);
     }
 
     boolean overInventory = false;
