@@ -46,14 +46,22 @@ public class Main extends PApplet {
     @Override
     public void settings() {
 
+        double w = displayWidth * 0.8;
+        double h = displayHeight * 0.8;
+        
+
         if (onWindows) {
-            size(1800, 900, P2D);
+            size((int)w,(int) h, P2D);
         } else
-            size(1800, 900);
+            size((int)w, (int)h);
+        
+        
     }
 
     @Override
     public void setup() {
+        surface.setResizable(true);
+        surface.setTitle("VORES MEGA SEJE GAMER SPIL! UwU");
         Images.loadImages();
         NearThread.thread.start();
         UpdateGroupsThread.startThread();

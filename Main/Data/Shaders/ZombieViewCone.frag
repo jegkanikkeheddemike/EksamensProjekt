@@ -13,6 +13,8 @@ uniform float wallWidth[70];
 uniform float wallHeight[70];
 uniform float camX;
 uniform float camY;
+uniform float resX;
+uniform float resY;
 
 bool lineCollision(float x1,float y1,float x2,float y2,float x3,float y3,float x4,float y4){
     // calculate the direction of the lines
@@ -36,9 +38,10 @@ const float PI=3.14159265359;
 void main(){
     //translated coords
     vec2 tCoords=vec2(
-        gl_FragCoord.x-1800./2.+camX,
-        900./2.-gl_FragCoord.y+camY
+        gl_FragCoord.x-resX/2.+camX,
+        resY/2.-gl_FragCoord.y+camY
     );
+    
     //er 0 hvis denne pixel ikke kan blive set, 1 hvis den godt kan.
     float seen=0.;
     

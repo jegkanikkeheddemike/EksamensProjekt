@@ -73,9 +73,9 @@ public abstract class Item extends Movables {
 
     }
 
-    public void drawInInventory(int x, int y) {
+    public void drawInInventory(int x, int y, int boxSize) {
         if (sprite_ref != null) {
-            Main.main.image(Images.getSprite(sprite_ref), x, y, 80, 80);
+            Main.main.image(Images.getSprite(sprite_ref), x+0.1f*boxSize, y+0.1f*boxSize, (int)(boxSize*0.8), (int)(boxSize*0.8));
         } else {
             super.draw();
         }

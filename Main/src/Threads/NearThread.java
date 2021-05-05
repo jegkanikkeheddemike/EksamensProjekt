@@ -19,7 +19,7 @@ public class NearThread extends Thread {
     public static volatile boolean isReady = false;
     public static volatile NearThread thread = new NearThread();
 
-    public static final int nearDist = 1000;
+    public static int nearDist = 1000;
     public static volatile int roundsCompleted = 0;
 
     private static boolean wait = false;
@@ -27,6 +27,10 @@ public class NearThread extends Thread {
     NearThread(){
         setName("NearThread");
         System.out.println(getName() + " ThreadID: " + getId());
+    }
+
+    private void calcNearDist(){
+        nearDist = (int)((Main.main.width > Main.main.height ? Main.main.width : Main.main.height)/1.5);
     }
 
     @Override
@@ -49,6 +53,8 @@ public class NearThread extends Thread {
             nearObjectsUpdated.clear();
             tempWalls.clear();
             tempZombies.clear();
+
+            calcNearDist();
 
             for (int i = 0; i < Main.allObjects.size(); i++) {
                 GameObject gameObject = Main.allObjects.get(i);

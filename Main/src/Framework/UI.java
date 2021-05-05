@@ -15,6 +15,8 @@ public class UI {
         Main.main.fill(255 - 255 * (Main.player.health / 100f), 255 * (Main.player.health / 100f), 0);
         Main.main.rect(Main.main.width / 3f, Main.main.height - 100,
                 (Main.player.health / 100f) * (Main.main.width / 3f), 50);
+        
+                
         // #endregion
         // #region KOORDINATES
         Main.main.textSize(12);
@@ -40,21 +42,25 @@ public class UI {
 
         // #endregion
         // #region INVENTORY
+
+        float inventorySize = (Main.main.height*0.9f > 1000 ? 1000 : Main.main.height*0.9f);
+        int boxSize = (int)(inventorySize / Main.player.inventory.length);
+
         Main.main.noFill();
         Main.main.stroke(150);
         Main.main.strokeWeight(3);
-        Main.main.rect(Main.main.width - 120, 20, 100, 1000);
+        Main.main.rect(Main.main.width -boxSize-20, 20, boxSize, inventorySize);
 
         for (int i = 0; i < 10; i++) {
             Main.main.noFill();
             Main.main.stroke(150);
             Main.main.strokeWeight(3);
-            Main.main.line(Main.main.width - 120, 20 + 100 * i, Main.main.width - 20, 20 + 100 * i);
+            Main.main.line(Main.main.width - boxSize-20, 20 + boxSize * i, Main.main.width - 20, 20 + boxSize * i);
             if (Main.player.inventory[i] != null) {
                 if (Main.player.inventory[i].sprite_ref != null) {
-                    Main.player.inventory[i].drawInInventory(Main.main.width - 120 + 10, 20 + 100 * i + 10);
+                    Main.player.inventory[i].drawInInventory(Main.main.width - boxSize-20, 20 + boxSize * i,boxSize);
                 } else {
-                    Main.main.text("No sprite", Main.main.width - 120 + 20, 20 + 100 * i + 10);
+                    Main.main.text("No sprite", Main.main.width - boxSize-20 + 20, 20 + boxSize * i + 10);
                 }
             }
         }
