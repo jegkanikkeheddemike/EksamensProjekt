@@ -9,8 +9,7 @@ import processing.opengl.PShader;
 
 public class Shaders {
     static PShader zombieFOVConeShader;
-    public static volatile ArrayList<Zombie> zombies = new ArrayList<Zombie>();
-    public static volatile ArrayList<Wall> walls = new ArrayList<Wall>();
+    
 
     static long renderTime = 0;
 
@@ -35,15 +34,15 @@ public class Shaders {
 
         if (NearThread.isReady) {
             NearThread.pauseThread();
-            for (int i = 0; i < zombieX.length&&i<zombies.size(); i++) {
-                Zombie z = zombies.get(i);
+            for (int i = 0; i < zombieX.length&&i<NearThread.zombies.size(); i++) {
+                Zombie z = NearThread.zombies.get(i);
                 zombieX[i] = z.middleX();
                 zombieY[i] = z.middleY();
                 zombieRotation[i] = z.rotation;
             }
 
-            for (int i = 0; i < wallX.length&&i<walls.size(); i++) {
-                Wall w = walls.get(i);
+            for (int i = 0; i < wallX.length&&i<NearThread.walls.size(); i++) {
+                Wall w = NearThread.walls.get(i);
                 wallX[i] = w.x;
                 wallY[i] = w.y;
                 wallWidth[i] = w.w;
@@ -52,8 +51,8 @@ public class Shaders {
             NearThread.resumeThread();
         }
 
-        zombieFOVConeShader.set("zombies", zombies.size());
-        zombieFOVConeShader.set("walls", walls.size());
+        zombieFOVConeShader.set("zombies", NearThread.zombies.size());
+        zombieFOVConeShader.set("walls", NearThread.walls.size());
         zombieFOVConeShader.set("camX", Main.player.middleX());
         zombieFOVConeShader.set("camY", Main.player.middleY());
         zombieFOVConeShader.set("zombieX", zombieX);

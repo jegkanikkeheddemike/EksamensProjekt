@@ -11,6 +11,12 @@ import Setup.Main;
 
 public class NearThread extends Thread {
     public static volatile ArrayList<GameObject> nearObjectsUpdated = new ArrayList<GameObject>();
+    public static volatile ArrayList<Zombie> zombies = new ArrayList<Zombie>();
+    public static volatile ArrayList<Wall> walls = new ArrayList<Wall>();
+
+    public static volatile ArrayList<Zombie> tempZombies = new ArrayList<Zombie>();
+    public static volatile ArrayList<Wall> tempWalls = new ArrayList<Wall>();
+
     public static volatile boolean isReady = false;
     public static volatile NearThread thread = new NearThread();
 
@@ -37,8 +43,8 @@ public class NearThread extends Thread {
 
             isReady = false;
             nearObjectsUpdated.clear();
-            Shaders.zombies.clear();
-            Shaders.walls.clear();
+            tempWalls.clear();
+            tempZombies.clear();
 
             for (int i = 0; i < Main.allObjects.size(); i++) {
                 GameObject gameObject = Main.allObjects.get(i);
@@ -52,18 +58,11 @@ public class NearThread extends Thread {
 
                     nearObjectsUpdated.add(gameObject);
 
-                    if (gameObject.classID == "Wall") {
-                        if (Shaders.walls.size() < Shaders.wallShaderAmount) {
-                            Shaders.walls.add((Wall) gameObject);
-                        } else {
-                            System.out.println("Too may nearby walls. Max: " + Shaders.wallShaderAmount);
-                        }
-                    } else if (gameObject.classID == "Zombie") {
-                        if (Shaders.zombies.size() < Shaders.wallShaderAmount) {
-                            Shaders.zombies.add((Zombie) gameObject);
-                        } else {
-                            System.out.println("Too may nearby zombies. Max: " + Shaders.zombieShaderAmount);
-                        }
+                    if (gameObject.classID.equals("Wall")) {
+                        tempWalls.add((Wall) gameObject);
+
+                    } else if (gameObject.classID.equals("Zombie")) {
+                        tempZombies.add((Zombie) gameObject);
                     }
                 }
             }

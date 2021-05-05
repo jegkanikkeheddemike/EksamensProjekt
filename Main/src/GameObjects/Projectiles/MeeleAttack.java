@@ -7,6 +7,7 @@ import Framework.Shaders;
 import GameObjects.Zombie;
 import GameObjects.Items.Weapons.MeeleWeapon;
 import Setup.Main;
+import Threads.NearThread;
 
 public class MeeleAttack extends Movables {
     float direction;
@@ -30,8 +31,8 @@ public class MeeleAttack extends Movables {
     }
 
     private void calculateAttack(GameObject parent) {
-        for (int i = 0; i < Shaders.zombies.size(); i++) {
-            Zombie zombie = Shaders.zombies.get(i);
+        for (int i = 0; i < NearThread.zombies.size(); i++) {
+            Zombie zombie = NearThread.zombies.get(i);
             if (zombie == parent)
                 continue;
 

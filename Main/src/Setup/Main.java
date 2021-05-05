@@ -184,10 +184,12 @@ public class Main extends PApplet {
 
     void updateObjectLists() {
         if (NearThread.isReady) {
-            // NearThread.pauseThread();
             nearObjects.clear();
             nearObjects.addAll(NearThread.nearObjectsUpdated);
-            // NearThread.resumeThread();
+            NearThread.walls.clear();
+            NearThread.walls.addAll(NearThread.tempWalls);
+            NearThread.zombies.clear();
+            NearThread.zombies.addAll(NearThread.tempZombies);
         }
     }
 
