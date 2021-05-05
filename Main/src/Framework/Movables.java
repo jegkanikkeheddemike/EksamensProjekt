@@ -16,6 +16,7 @@ public abstract class Movables extends GameObject {
     }
 
     protected void runStandardCollisions() {
+
         GameObject[] horiColl = getCollisions(xSpeed, 0, new String[] { "Wall", "Player" });
         // DEN SIGER i++ IKKE GØR NOGET WTF DET ER IKKE SANDT??????
         for (int i = 0; i < horiColl.length; i++) {
@@ -48,6 +49,30 @@ public abstract class Movables extends GameObject {
                     break;
                 }
             }
+            ySpeed = 0;
+            break;
+        }
+
+        GameObject[] diagColl = getCollisions(xSpeed, ySpeed, new String[] { "Wall", "Player" });
+        // DEN SIGER i++ IKKE GØR NOGET WTF DET ER IKKE SANDT??????
+        for (int i = 0; i < diagColl.length; i++) {
+            float preX = x;
+            float preY = y;
+            int attemps = 0;
+            while (!collisionWith(diagColl[i], Math.signum(xSpeed), Math.signum(ySpeed))) {
+                x += Math.signum(xSpeed);
+                y += Math.signum(ySpeed);
+                attemps++;
+                if (attemps > speed()*1.5) {
+                    x = preX;
+                    y = preY;
+                    xSpeed = 0;
+                    ySpeed = 0;
+                    break;
+                }
+
+            }
+            xSpeed = 0;
             ySpeed = 0;
             break;
         }

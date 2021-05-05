@@ -8,14 +8,10 @@ import java.util.function.Consumer;
 
 import GameObjects.Zombie;
 import GameObjects.Items.Item;
-import GameObjects.Items.AmmoItems.AmmoBox45ACP;
-import GameObjects.Items.AmmoItems.AmmoBox9mm;
-import GameObjects.Items.AmmoItems.AmmoBoxShells;
-import GameObjects.Items.HealthItems.Bandage;
-import GameObjects.Items.HealthItems.HealthPack;
-import GameObjects.Items.Weapons.Machete;
-import GameObjects.Items.Weapons.Pistol;
-import GameObjects.Items.Weapons.Shotgun;
+import GameObjects.Items.AmmoItems.*;
+import GameObjects.Items.HealthItems.*;
+import GameObjects.Items.Weapons.*;
+
 
 public abstract class ZombieGenerator {
     public static LinkedList<Group> generations = new LinkedList<Group>();
