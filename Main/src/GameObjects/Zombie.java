@@ -110,7 +110,7 @@ public class Zombie extends Movables {
             }
             points.add(v);
         }
-        Main.main.fill(0, 0, 255, (int) (255 * 0.3));
+        Main.main.fill(0, 0, 255, (int) (255 * 0.1));
         Main.main.noStroke();
         Main.main.beginShape();
         Main.main.vertex(middleX(), middleY());

@@ -57,6 +57,7 @@ public class Main extends PApplet {
         Images.loadImages();
         NearThread.thread.start();
         UpdateGroupsThread.startThread();
+        SoundThread.StartThread();
 
 
         if (!startFromFile) {

@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import Setup.Main;
+import Threads.SoundThread;
 import processing.sound.*;
 
 public class Sound extends GameObject {
@@ -16,7 +17,7 @@ public class Sound extends GameObject {
         if(Main.onWindows){ 
             r = new Random().nextInt(sounds.size());
             sounds.get(r).amp(volume / 100);
-            sounds.get(r).play();
+            SoundThread.playSound(sounds.get(r));
         }
         classID = "Sound";
     }
@@ -26,7 +27,7 @@ public class Sound extends GameObject {
         this.volume = volume;
         if(Main.onWindows){
             soundFile.amp(volume / 100);
-            soundFile.play();
+            SoundThread.playSound(soundFile);
         }
         classID = "Sound";
     }
@@ -44,7 +45,11 @@ public class Sound extends GameObject {
         Main.main.noFill();
         Main.main.stroke(255);
         Main.main.strokeWeight(2);
-        Main.main.circle(x, y, 10 * timeAlive);
+        Main.main.beginShape();
+        for (float i = 0; i <= 2*Math.PI; i+=2*Math.PI/30) {
+            Main.main.vertex(x+(float)Math.sin(i)*timeAlive*5,y+(float)Math.cos(i)*timeAlive*5);
+        }
+        Main.main.endShape(Main.LINES);
     }
 
     public static ArrayList<SoundFile> footsteps = new ArrayList<SoundFile>();
