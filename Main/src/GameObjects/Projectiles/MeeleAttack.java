@@ -15,6 +15,7 @@ public class MeeleAttack extends Movables {
     int timeAlive = maxTime;
     float dmg;
     String wpnType;
+    Movables parent;
 
     private static final int maxTime = 10;
 
@@ -22,6 +23,7 @@ public class MeeleAttack extends Movables {
         super(parent.middleX(), parent.middleY(),
                 meeleWeapon.range * (float) Math.sin(-parent.rotation + (float) Math.PI / 2),
                 meeleWeapon.range * (float) Math.cos(-parent.rotation + (float) Math.PI / 2));
+        this.parent = parent;
         direction = parent.rotation;
         //direction = (-direction + (float) Math.PI / 2);
         this.range = meeleWeapon.range;
@@ -48,9 +50,6 @@ public class MeeleAttack extends Movables {
 
             float relAngle = (float) Math.abs(Math.abs(angleToZombie) - Math.abs(direction));
             if (relAngle > Math.toRadians(45)|| GameMath.lineCollision(Main.player,zombie, new String[] {"Wall"}).collision){
-                    if (GameMath.lineCollision(Main.player,zombie, new String[] {"Wall"}).collision){
-                        Main.println("I Hit Wall");
-                    }
                 continue;
             }
 
@@ -72,7 +71,7 @@ public class MeeleAttack extends Movables {
         Main.main.strokeWeight(2);
         Main.main.stroke(255,0,0);
         Main.main.pushMatrix();
-        Main.main.translate(Main.player.middleX(),Main.player.middleY());
+        Main.main.translate(parent.middleX(),parent.middleY());
         Main.main.rotate((float)((-Math.PI*1/4)+timeAlive*Math.PI/2/maxTime));
         
         Main.main.line(0, 0, 0 + range * (float) Math.sin(-direction+Math.PI*1/2), 0 + range * (float) Math.cos(-direction+Math.PI*1/2));
