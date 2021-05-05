@@ -163,10 +163,9 @@ public class Zombie extends Movables {
             return;
 
         if (GameMath.objectDistance(this, Main.player) <= range) {
-            Main.println("____________________");
-            Main.println(range);
-            Main.println(genes[GENE_DAMAGE]);
+            
             if (cooldown < 0) {
+                
                 attack();
             }
         }
@@ -177,10 +176,15 @@ public class Zombie extends Movables {
         if (genes[GENE_IS_RANGED] == 0) {
             new ZombieMeeleAttack(this, genes[GENE_DAMAGE]);
             //Main.player.reactGetHit(genes[GENE_DAMAGE], "", this);
+            
         }
 
-        else if (genes[GENE_IS_RANGED] == 1)
+        else if (genes[GENE_IS_RANGED] == 1){
+            Main.println("____________________");
+            Main.println(range);
+            Main.println(genes[GENE_DAMAGE]);
             new ZombieShot(middleX(), middleY(), rotation, genes[GENE_DAMAGE], this);
+        }
 
     }
 
