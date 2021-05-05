@@ -66,6 +66,10 @@ public class GameMath {
         return (float) (Math.atan2(dy, dx));
     }
 
+    public static LineData lineCollision(GameObject o1, GameObject o2, String[] seeList){
+        return lineCollision(o1.middleX(), o1.middleY(), o2.middleX(), o2.middleY(), seeList);
+    }
+
     public static LineData lineCollision(float x1, float y1, float x2, float y2, String[] seeList) {
         LineData data = LineData.noCollision;
         NearThread.pauseThread();
@@ -95,6 +99,8 @@ public class GameMath {
         NearThread.resumeThread();
         return data;
     }
+
+    
 
     // LINE/RECTANGLE
     private static LineData lineRect(float x1, float y1, float x2, float y2, float rx, float ry, float rw, float rh) {

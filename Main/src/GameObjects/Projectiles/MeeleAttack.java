@@ -37,7 +37,7 @@ public class MeeleAttack extends Movables {
                 continue;
 
             // CHECK IF IN RANGE
-            if (!(GameMath.objectDistance(Main.player, zombie) < range)) {
+            if ((GameMath.objectDistance(Main.player, zombie) > range)){
                 continue;
             }
             // CHECK IF IN ANGLE
@@ -47,8 +47,12 @@ public class MeeleAttack extends Movables {
             
 
             float relAngle = (float) Math.abs(Math.abs(angleToZombie) - Math.abs(direction));
-            if (relAngle > Math.toRadians(45))
+            if (relAngle > Math.toRadians(45)|| GameMath.lineCollision(Main.player,zombie, new String[] {"Wall"}).collision){
+                    if (GameMath.lineCollision(Main.player,zombie, new String[] {"Wall"}).collision){
+                        Main.println("I Hit Wall");
+                    }
                 continue;
+            }
 
             zombie.reactGetHit(dmg, wpnType, null);
         }
