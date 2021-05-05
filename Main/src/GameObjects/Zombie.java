@@ -211,6 +211,7 @@ public class Zombie extends Movables{
 
         if (state == "Find") {
             timeSinceLastPatrolChange++;
+            Main.main.text(timeSinceLastPatrolChange, x+10, y);
             if (GameMath.pointDistance(x, y, targetX, targetY) < 80 || timeSinceLastPatrolChange > 600) {
                 timeSinceLastPatrolChange = 0;
                 state = "Patrol";
