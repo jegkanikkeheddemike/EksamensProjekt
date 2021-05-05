@@ -4,32 +4,38 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import Framework.*;
+import Framework.GeneticAlgorithm.Group;
+import Framework.GeneticAlgorithm.ZombieGenerator;
 import GameObjects.Projectiles.ZombieShot;
 import Setup.Main;
 import processing.core.PVector;
 
-public class Zombie extends Movables{
+public class Zombie extends Movables {
     private static final long serialVersionUID = 1L;
     float walkSpeed = 0.8f;
     float sprintSpeed = 2;
     float[] genes;
+    Group group;
 
-    public Zombie(float x, float y, float[] genes) {
+    public Zombie(float x, float y, float[] genes, Group group) {
         super(x, y, 40, 40);
         classID = "Zombie";
         targetX = x;
         targetY = y;
         hasHealth = true;
-        maxHealth = 50;
-        health = maxHealth;
+
         this.genes = genes;
+        this.group = group;
 
         if (genes[GENE_IS_RANGED] == 1)
-            range = 500;
+            range = genes[GENE_RANGED_RANGE];
         else
             range = 100;
         if (genes[GENE_IS_SPRINTER] == 1)
             sprintSpeed = 2 * sprintSpeed;
+
+        maxHealth = genes[GENE_HEALTH];
+        health = maxHealth;
     }
 
     @Override
@@ -62,9 +68,15 @@ public class Zombie extends Movables{
         Main.main.fill(255);
         String geneDescription = "";
         for (int i = 0; i < geneDescriptions.length; i++) {
-            geneDescription += geneDescriptions[i] + genes[i] + "\n";
+            if (i != GENE_PRESET_NAME)
+                geneDescription += geneDescriptions[i] + genes[i] + "\n";
+            else {
+                geneDescription += geneDescriptions[i] + ZombieGenerator.presetNames[(int) genes[i]] + "\n";
+            }
         }
-        Main.main.text(geneDescription, x + w + 10, y);
+        Main.main.textSize(12);
+        // Main.main.text(geneDescription, x + w + 10, y);
+        Main.main.text(ZombieGenerator.presetNames[(int) genes[GENE_PRESET_NAME]] + "\n" + state, x + w + 10, y);
         drawAwarenessbar();
         if (!Main.onWindows || !Shaders.shouldDrawShaders())
             drawFOVCone();
@@ -109,21 +121,34 @@ public class Zombie extends Movables{
 
         Main.main.endShape(Main.CLOSE);
 
-        //Viser hvor zombierne er på vej hen. Bruges ikke.
-        //Main.main.fill(255, 0, 0);
-        //Main.main.circle(targetX, targetY, 20);
+        // Viser hvor zombierne er på vej hen. Bruges ikke.
+        // Main.main.fill(255, 0, 0);
+        // Main.main.circle(targetX, targetY, 20);
     }
 
     float timeSinceLastPatrolChange = 0;
 
     @Override
     public void step() {
-        if (Main.main.timeStop == false){
-        lookForPlayer();
-        walk();
-        fight();
+        if (Main.main.timeStop == false) {
+            lookForPlayer();
+            checkIfAddSpottedToScore();
+            walk();
+            fight();
         }
 
+    }
+
+    boolean hasSpottedThisFight = false;
+
+    void checkIfAddSpottedToScore() {
+        if (state == "Chase") {
+            if (!hasSpottedThisFight) {
+                hasSpottedThisFight = true;
+                group.addSpottedToScore();
+            }
+        } else if (state == "Patrol")
+            hasSpottedThisFight = false;
     }
 
     float dmg = 40;
@@ -145,16 +170,17 @@ public class Zombie extends Movables{
 
     void attack() {
         cooldown = maxCooldown;
-        if (genes[GENE_IS_RANGED] == 0)
-            Main.player.reactGetHit(dmg, "ZMeele");
+        if (genes[GENE_IS_RANGED] == 0) {
+            Main.player.reactGetHit(dmg, "ZMeele", this);
+        }
 
         else if (genes[GENE_IS_RANGED] == 1)
             new ZombieShot(middleX(), middleY(), rotation, genes[GENE_DAMAGE], this);
 
     }
 
-    float targetX;
-    float targetY;
+    public float targetX;
+    public float targetY;
     String state = "Patrol";
     float targetRotation;
 
@@ -205,8 +231,7 @@ public class Zombie extends Movables{
     boolean avoid;
 
     void walk() {
-        if (!avoid)
-            targetRotation = GameMath.pointAngle(middleX(), middleY(), targetX, targetY);
+        targetRotation = GameMath.pointAngle(middleX(), middleY(), targetX, targetY);
         rotateToAngle(targetRotation, 1);
 
         if (state == "Find") {
@@ -308,8 +333,10 @@ public class Zombie extends Movables{
         awareness *= awarenessMulitplier;
         // INCREASE AWARENESS BASED ON SOUND
 
-        for (int i = 0; i < Main.nearObjects.size(); i++) {
-            GameObject g = Main.nearObjects.get(i);
+        GameObject[] near = Main.getNear();
+
+        for (int i = 0; i < near.length; i++) {
+            GameObject g = near[i];
             if (g.classID == "Sound") {
                 awareness += ((Sound) g).volume * (soundSense * genes[GENE_HEAR_SKILL])
                         / GameMath.objectDistance(this, g);
@@ -339,10 +366,8 @@ public class Zombie extends Movables{
             if (awareness > 100f / 1.5f) {
                 awareness = 100f / 1.5f;
                 state = "Find";
-                timeSinceLastPatrolChange = 0;
             } else if (awareness < 100f / 1.5f && state != "Find") {
                 state = "Patrol";
-                timeSinceLastPatrolChange = 0;
                 hasScreeched = false;
             }
         }
@@ -372,7 +397,7 @@ public class Zombie extends Movables{
     boolean hasScreeched;
 
     @Override
-    public void reactGetHit(float dmg, String wpnType) {
+    public void reactGetHit(float dmg, String wpnType, Zombie attacker) {
         health -= dmg;
         awareness += 30;
         if (health <= 0)
@@ -385,24 +410,46 @@ public class Zombie extends Movables{
         float seeSkill = 0.5f + r.nextFloat();
         float isRanged = r.nextInt(2); // IS 0 OR 1
         float canScreech = r.nextInt(2); // IS 0 OR 1;
-
+        float rangedRange = 0;
+        float health = 30 + r.nextFloat() * 30;
         float damage;
 
         if (isRanged == 0)
             damage = 30 + r.nextFloat() * 20;
-        else
+        else {
             damage = 20 + r.nextFloat() * 20;
+            rangedRange = 200 + r.nextFloat() * 500;
+        }
 
         float isSprinter = 0;
         if (isRanged == 0)
             isSprinter = r.nextInt(2);
 
-        return new float[] { hearSkill, seeSkill, isRanged, canScreech, damage, isSprinter };
+        return new float[] { //
+                hearSkill, //
+                seeSkill, //
+                isRanged, //
+                canScreech, //
+                damage, //
+                isSprinter, //
+                rangedRange, //
+                health, //
+                ZombieGenerator.NOPRESET //
+        };
 
     }
 
-    public static final String[] geneDescriptions = { "Hearing: ", "Seeing: ", "Is Ranged: ", "Can Screech: ",
-            "Damage: ", "Is Sprinter: " };
+    public static final String[] geneDescriptions = { //
+            "Hearing: ", //
+            "Seeing: ", //
+            "Is Ranged: ", //
+            "Can Screech: ", //
+            "Damage: ", //
+            "Is Sprinter: ", //
+            "Ranged Range: ", //
+            "Health: ", //
+            "Preset: " //
+    };
 
     public static final int GENE_HEAR_SKILL = 0;
     public static final int GENE_SEE_SKILL = 1;
@@ -410,4 +457,7 @@ public class Zombie extends Movables{
     public static final int GENE_CAN_SCREECH = 3;
     public static final int GENE_DAMAGE = 4;
     public static final int GENE_IS_SPRINTER = 5;
+    public static final int GENE_RANGED_RANGE = 6;
+    public static final int GENE_HEALTH = 7;
+    public static final int GENE_PRESET_NAME = 8;
 }

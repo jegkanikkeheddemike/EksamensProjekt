@@ -1,5 +1,6 @@
 package Framework;
 
+import Framework.GeneticAlgorithm.ZombieGenerator;
 import Framework.PlayerEffects.PlayerEffect;
 import Setup.Main;
 
@@ -83,6 +84,7 @@ public class UI {
 
         // #endregion
         // #region GAME INFO
+        /*
         Main.main.fill(255);
         Main.main.textSize(12);
         Main.main.text("Near Objects " + Main.nearObjects.size(), 10, 20);
@@ -93,6 +95,15 @@ public class UI {
         Main.main.text("Framerate (60): " + (Main.main.frameRate + "       ").substring(0, 4), 10, 120);
         Main.main.text("Shaders: " + (Shaders.shouldDrawShaders() ? "Enabled"
                 : "Disabled due to low framerate"), 10, 140);
+                */
         // #endregion
+
+        //#region Group info
+        Main.main.textSize(12);
+        Main.main.noStroke();
+        Main.main.fill(255);
+        Main.main.text(ZombieGenerator.getScoreBoard(), 10, 20);
+
+        //#endregion
     }
 }

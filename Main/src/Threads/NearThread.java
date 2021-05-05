@@ -30,6 +30,7 @@ public class NearThread extends Thread {
                     e.printStackTrace();
                 }
             }
+            timeWaited = 0;
             if (timeWaited > 100)
                 System.out.println(
                         "NearThread waited for too long and began again. Check if you forgot to call endWait(). If not increase waittime?");

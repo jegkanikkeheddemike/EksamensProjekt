@@ -35,14 +35,14 @@ public class Shaders {
 
         if (NearThread.isReady) {
             NearThread.pauseThread();
-            for (int i = 0; i < zombies.size(); i++) {
+            for (int i = 0; i < zombieX.length&&i<zombies.size(); i++) {
                 Zombie z = zombies.get(i);
                 zombieX[i] = z.middleX();
                 zombieY[i] = z.middleY();
                 zombieRotation[i] = z.rotation;
             }
 
-            for (int i = 0; i < walls.size(); i++) {
+            for (int i = 0; i < wallX.length&&i<walls.size(); i++) {
                 Wall w = walls.get(i);
                 wallX[i] = w.x;
                 wallY[i] = w.y;
@@ -80,15 +80,17 @@ public class Shaders {
 
         renderTime = System.currentTimeMillis() - preTime;
     }
+
     static int shaderMaxTime = 3600;
     static int shaderTimer = 0;
     static boolean drawShaders = true;
-    public static boolean shouldDrawShaders(){
-        if (shaderTimer <= 0 || Main.main.frameRate <= minFrameRateForZombieShader){
+
+    public static boolean shouldDrawShaders() {
+        if (shaderTimer <= 0 || Main.main.frameRate <= minFrameRateForZombieShader) {
             shaderTimer = shaderMaxTime;
-            if (Main.main.frameRate >= minFrameRateForZombieShader){
+            if (Main.main.frameRate >= minFrameRateForZombieShader) {
                 drawShaders = true;
-            }else{
+            } else {
                 drawShaders = false;
             }
         }

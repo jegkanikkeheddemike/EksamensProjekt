@@ -1,5 +1,6 @@
 package Framework;
 
+import GameObjects.Zombie;
 import Setup.Main;
 
 public abstract class GameObject implements java.io.Serializable {
@@ -19,8 +20,7 @@ public abstract class GameObject implements java.io.Serializable {
         this.y = y;
         this.w = w;
         this.h = h;
-        Main.allObjects.add(this);
-        Main.nearObjects.add(this);
+        Main.addObjectToLists(this);
     }
 
     public void draw() {
@@ -44,7 +44,7 @@ public abstract class GameObject implements java.io.Serializable {
         return y + h / 2;
     }
 
-    public void reactGetHit(float dmg, String wpnType) {
+    public void reactGetHit(float dmg, String wpnType, Zombie attacker) {
     }
 
     public void delete() {
