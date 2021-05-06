@@ -169,7 +169,7 @@ public abstract class ZombieGenerator {
         return zombie;
     }
 
-      private static final float[] geneMult = {1.2f,  2f,      1,       1,     40,      1,  2000,    70f };
+      private static final float[] geneMult = {1.2f,  2f,      1,       1,     40,      1,  2000,    50f };
     //private static final float[] geneMult = {HEAR, SEE, RANGED, SCREECH, DAMAGE, SPRINT, RANGE, Health };
 
     private static final float[][] presetBudgetFocus = {
