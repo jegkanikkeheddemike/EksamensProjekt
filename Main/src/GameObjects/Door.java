@@ -51,7 +51,7 @@ public class Door extends Wall{
                     nearestZombie = zombie;
                 }
             }
-            if ((GameMath.objectDistance(this, nearestZombie) > Math.min(w, h))){
+            if ((GameMath.objectDistance(this, nearestZombie) > Math.min(w, h)) && !Main.player.occupied){
                 Main.player.addPlayerEffect(new DoorEffect(this));
             }
             
