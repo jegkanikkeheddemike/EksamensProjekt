@@ -22,6 +22,7 @@ public class Main extends PApplet {
     private static boolean startFromFile = false;
     private static boolean saveToFile = false;
     public static boolean forceShaders = false;
+    private static float score = 0;
 
     public static boolean isRunning = true;
 
@@ -142,7 +143,7 @@ public class Main extends PApplet {
         try {
             for (int i = 0; i < nearObjects.size(); i++) {
                 GameObject gameObject = nearObjects.get(i);
-                if (!gameObject.isDeleted)
+                if (gameObject != null &&!gameObject.isDeleted)
                     gameObject.draw();
             }
 
@@ -164,7 +165,7 @@ public class Main extends PApplet {
         try {
             for (int i = 0; i < nearObjects.size(); i++) {
                 GameObject gameObject = nearObjects.get(i);
-                if (!gameObject.isDeleted)
+                if (gameObject != null &&!gameObject.isDeleted)
                     gameObject.step();
             }
         } catch (Exception e) {
@@ -352,6 +353,13 @@ public class Main extends PApplet {
     }
 
     public static boolean onWindows = true;
+
+    public static void addToScore(float s){
+        score += s;
+    }
+    public static float getScore(){
+        return score;
+    }
 
     public static void main(String[] args) {
 

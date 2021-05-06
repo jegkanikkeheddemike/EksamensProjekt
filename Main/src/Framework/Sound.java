@@ -53,13 +53,21 @@ public class Sound extends GameObject {
     }
 
     public static ArrayList<SoundFile> footsteps = new ArrayList<SoundFile>();
+    public static ArrayList<SoundFile> shotgunshots = new ArrayList<SoundFile>();
+    public static ArrayList<SoundFile> pistolshots = new ArrayList<SoundFile>();
     public static SoundFile screech;
 
     public static void setupSound() {
         for (int i = 1; i < 11; i++) {
-            footsteps.add(new SoundFile(Main.main, "\\Sound\\FootSteps\\" + i + ".wav"));
+            footsteps.add(new SoundFile(Main.main, "/Sound/FootSteps/" + i + ".wav"));
         }
-        screech = new SoundFile(Main.main, "Sound\\Zombies\\Screech.wav");
+        for(int i = 1; i <= 3; i ++){
+            shotgunshots.add(new SoundFile(Main.main,"/Sound/ShotgunShots/shot" + i + ".wav"));
+        }
+        for(int i = 1; i <= 4; i ++){
+            pistolshots.add(new SoundFile(Main.main,"/Sound/PistolShots/pistolshot" + i + ".wav"));
+        }
+        screech = new SoundFile(Main.main, "Sound/Zombies/Screech.wav");
     }
 
 }

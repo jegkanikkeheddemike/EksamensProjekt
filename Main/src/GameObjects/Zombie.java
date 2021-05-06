@@ -76,10 +76,10 @@ public class Zombie extends Movables {
             }
         }
         Main.main.textSize(12);
-        //Main.main.text(, x + w + 10, y);
+        // Main.main.text(, x + w + 10, y);
         Main.main.text(ZombieGenerator.presetNames[(int) genes[GENE_PRESET_NAME]] + "\nGID:" + group.getID() + "\nVal: "
-                + group.getBudget() * group.q[(int) genes[GENE_PRESET_NAME]] * group.n[(int) genes[GENE_PRESET_NAME]] + geneDescription + state,
-                x + w + 10, y);
+                + group.getBudget() * group.q[(int) genes[GENE_PRESET_NAME]] * group.n[(int) genes[GENE_PRESET_NAME]]
+                + geneDescription + state, x + w + 10, y);
         drawAwarenessbar();
         if (!Main.onWindows || !Shaders.shouldDrawShaders())
             drawFOVCone();
@@ -172,7 +172,9 @@ public class Zombie extends Movables {
             }
         }
     }
+
     public boolean attacking = false;
+
     void attack() {
         cooldown = maxCooldown;
         if (genes[GENE_IS_RANGED] == 0) {
@@ -409,8 +411,11 @@ public class Zombie extends Movables {
     public void reactGetHit(float dmg, String wpnType, Movables attacker) {
         health -= dmg;
         awareness += 30;
-        if (health <= 0)
+        if (health <= 0) {
             delete();
+            //Adds value of zombie to total score
+            Main.addToScore(group.getBudget() * group.q[(int) genes[GENE_PRESET_NAME]] * group.n[(int) genes[GENE_PRESET_NAME]]);
+        }
     }
 
     public static float[] randomGenes() {

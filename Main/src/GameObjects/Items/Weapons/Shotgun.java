@@ -1,6 +1,7 @@
 package GameObjects.Items.Weapons;
 
 import Framework.Images;
+import Framework.Sound;
 import GameObjects.Projectiles.Bullet;
 import Setup.Main;
 
@@ -23,6 +24,7 @@ public class Shotgun extends Weapon {
         for (int i = 0; i < shotsPrShot; i++) {
             new Bullet(Main.player.rotation);
         }
+        new Sound(Main.player.middleX(), Main.player.middleY(), 50, Sound.shotgunshots);
     }
 
     @Override
