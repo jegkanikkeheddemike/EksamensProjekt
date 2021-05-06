@@ -105,7 +105,7 @@ public class Zombie extends Movables {
                     + (fov / 360f) * Math.PI / 2f;
             PVector v = new PVector(middleX() + seeRange * (float) Math.sin(angle),
                     middleY() + seeRange * (float) Math.cos(angle));
-            LineData vData = GameMath.lineCollision(middleX(), middleY(), v.x, v.y, new String[] { "Wall" });
+            LineData vData = GameMath.lineCollision(middleX(), middleY(), v.x, v.y, new String[] { "Wall" , "ClosedDoor"});
             if (vData.collision) {
                 v.x = vData.x;
                 v.y = vData.y;
@@ -260,7 +260,7 @@ public class Zombie extends Movables {
                 float length = new Random().nextFloat() * 1000;
 
                 LineData newLine = GameMath.lineCollision(x, y, x + length * (float) Math.sin(randomDir),
-                        y + length * (float) Math.cos(randomDir), new String[] { "Wall" });
+                        y + length * (float) Math.cos(randomDir), new String[] { "Wall", "ClosedDoor" });
                 if (newLine.collision) {
                     targetX = newLine.x;
                     targetY = newLine.y;
@@ -297,7 +297,7 @@ public class Zombie extends Movables {
         ySpeed = (float) Math.cos(walkdir) * cSpeed;
 
         if (speed() < cSpeed && (state == "Chase" || state == "Find")) {
-            GameObject[] collisions = getCollisions(xSpeed, ySpeed, new String[] { "Wall", "Player" });
+            GameObject[] collisions = getCollisions(xSpeed, ySpeed, collisionEntities);
             GameObject nearest = null;
             for (int i = 0; i < collisions.length; i++) {
                 if (nearest == null
@@ -348,12 +348,12 @@ public class Zombie extends Movables {
             GameObject g = near[i];
             if (g.classID == "Sound") {
                 awareness += ((Sound) g).volume * (soundSense * genes[GENE_HEAR_SKILL])
-                        / GameMath.objectDistance(this, g);
+                        / (Math.pow(GameMath.objectDistance(this, g)/10 + 1,2));
             }
         }
 
         LineData lineToPlayer = GameMath.lineCollision(middleX(), middleY(), Main.player.middleX(),
-                Main.player.middleY(), new String[] { "Wall" });
+                Main.player.middleY(), new String[] { "Wall", "ClosedDoor" });
 
         if (!lineToPlayer.collision) {
             float dist = GameMath.objectDistance(this, Main.player);

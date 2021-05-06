@@ -262,8 +262,9 @@ public class Player extends Movables {
         } else {
             getWeapon().cooldown += 1;
         }
-        if (Main.keyTapped('r') && getWeapon().cClip != getWeapon().clipSize && !occupied
-                && Main.player.getItemTypeFromInventory(getWeapon().ammoType) != null) {
+        if ((Main.keyTapped('r') && getWeapon().cClip != getWeapon().clipSize) || Main.mousePressed && getWeapon().cooldown > getWeapon().shotCooldown
+        && (!getWeapon().usesAmmo || getWeapon().cClip == 0)
+                && Main.player.getItemTypeFromInventory(getWeapon().ammoType) != null && !occupied) {
             addPlayerEffect(new ReloadEffect(getWeapon()));
         }
     }

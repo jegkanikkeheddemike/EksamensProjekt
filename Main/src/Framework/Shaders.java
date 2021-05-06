@@ -1,7 +1,5 @@
 package Framework;
 
-import java.util.ArrayList;
-
 import GameObjects.*;
 import Setup.Main;
 import Threads.NearThread;
