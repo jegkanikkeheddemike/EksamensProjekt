@@ -9,6 +9,7 @@ public class PickupEffect extends PlayerEffect{
     public PickupEffect(Item item) {
         super(pickupTime, "Picking Up: " + item.classID);
         this.item = item;
+        Main.player.occupied = true;
     }
 
     @Override
