@@ -14,10 +14,10 @@ public abstract class Movables extends GameObject {
     public float speed() {
         return (float) Math.sqrt(xSpeed * xSpeed + ySpeed * ySpeed);
     }
-
+    public final static String[] collisionEntities = { "Wall", "Player", "ClosedDoor" };
     protected void runStandardCollisions() {
 
-        GameObject[] horiColl = getCollisions(xSpeed, 0, new String[] { "Wall", "Player" });
+        GameObject[] horiColl = getCollisions(xSpeed, 0, collisionEntities);
         // DEN SIGER i++ IKKE GØR NOGET WTF DET ER IKKE SANDT??????
         for (int i = 0; i < horiColl.length; i++) {
             float preX = x;
@@ -36,7 +36,7 @@ public abstract class Movables extends GameObject {
             break;
         }
 
-        GameObject[] vertColl = getCollisions(0, ySpeed, new String[] { "Wall", "Player" });
+        GameObject[] vertColl = getCollisions(0, ySpeed, collisionEntities);
         for (int i = 0; i < vertColl.length; i++) {
             float preY = y;
             int attempts = 0;
@@ -53,7 +53,7 @@ public abstract class Movables extends GameObject {
             break;
         }
 
-        GameObject[] diagColl = getCollisions(xSpeed, ySpeed, new String[] { "Wall", "Player" });
+        GameObject[] diagColl = getCollisions(xSpeed, ySpeed, collisionEntities);
         // DEN SIGER i++ IKKE GØR NOGET WTF DET ER IKKE SANDT??????
         for (int i = 0; i < diagColl.length; i++) {
             float preX = x;
