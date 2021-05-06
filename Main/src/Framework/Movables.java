@@ -109,7 +109,7 @@ public abstract class Movables extends GameObject {
                     continue;
                 }
             }
-            // TOPRIGHTaW
+            // TOPRIGHT
             if (x + w + offsetX >= g.x && g.x + g.w >= x + w + offsetX) {
                 if (y + offsetY >= g.y && g.y + g.h >= y + offsetY) {
                     collisions.add(g);

@@ -192,6 +192,14 @@ public class Player extends Movables {
             xSpeed = Math.signum(xSpeed) * cMaxSpeed;
         if (Math.abs(ySpeed) >= cMaxSpeed)
             ySpeed = Math.signum(ySpeed) * cMaxSpeed;
+        float totalSpeed = (float)Math.sqrt(Math.pow(xSpeed, 2)+Math.pow(ySpeed, 2));
+        
+        if (totalSpeed > cMaxSpeed){
+            xSpeed *= cMaxSpeed/totalSpeed;
+            ySpeed *= cMaxSpeed/totalSpeed;
+        }
+        
+        
 
         if (!acceleratingX)
             xSpeed *= friction;

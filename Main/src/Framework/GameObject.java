@@ -1,6 +1,5 @@
 package Framework;
 
-import GameObjects.Zombie;
 import Setup.Main;
 
 public abstract class GameObject implements java.io.Serializable {

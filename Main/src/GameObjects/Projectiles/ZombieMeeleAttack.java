@@ -13,7 +13,7 @@ public class ZombieMeeleAttack extends Movables{
     float dmg;
     String wpnType;
     Zombie parent;
-    int attackTime = 60;
+    int attackTime = 20;
 
     private static final int maxTime = 70;
 
