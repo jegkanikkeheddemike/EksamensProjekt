@@ -108,7 +108,9 @@ public class UI {
         Main.main.textSize(12);
         Main.main.noStroke();
         Main.main.fill(255);
-        Main.main.text(ZombieGenerator.getScoreBoard(), 10, 20);
+        Main.main.text("Score: "+Main.getScore(),10,20);
+
+        //Main.main.text(ZombieGenerator.getScoreBoard(), 10, 20);
 
         //#endregion
     }
