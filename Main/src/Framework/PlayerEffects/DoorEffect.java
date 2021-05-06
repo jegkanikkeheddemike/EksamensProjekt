@@ -6,7 +6,7 @@ import Setup.Main;
 public class DoorEffect extends PlayerEffect{
     Door door;
     public DoorEffect(Door door) {
-        super(Door.openTime, "Dooring");
+        super(Door.openTime, door.open ? "closing door" : "opening door");
         this.door = door;
     }
 

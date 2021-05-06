@@ -56,13 +56,13 @@ public class Group implements Comparable<Group>, Serializable {
     public void setCoordinates(int topleftX, int topleftY, int deltaX, int deltaY) {
         for (Zombie zombie : zombies) {
             setCoordinates(topleftX, topleftY, deltaX, deltaY, zombie);
-            while (zombie.getCollisions(0, 0, new String[] { "Wall" }).length > 0) {
+            while (zombie.getCollisions(0, 0, new String[] { "Wall", "ClosedDoors" }).length > 0) {
                 setCoordinates(topleftX, topleftY, deltaX, deltaY, zombie);
             }
         }
         for (Item item : items) {
             setCoordinates(topleftX, topleftY, deltaX, deltaY, item);
-            while (item.getCollisions(0, 0, new String[] { "Wall" }).length > 0) {
+            while (item.getCollisions(0, 0, new String[] { "Wall", "ClosedDoors" }).length > 0) {
                 setCoordinates(topleftX, topleftY, deltaX, deltaY, item);
             }
         }
