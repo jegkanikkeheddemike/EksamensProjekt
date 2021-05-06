@@ -24,6 +24,18 @@ public class Door extends Wall{
             Main.main.stroke(color);
             Main.main.rect(x, y, w, h);
         }
+        if ((GameMath.objectDistance(this, Main.player) <= Math.min(w, h)+20 && GameMath.objectDistance(this, Main.player) > Math.min(w, h))){
+            Main.main.textSize(12);
+            Main.main.stroke(0);
+            Main.main.strokeWeight(5);
+            Main.main.fill(255);
+            if(open)
+                Main.main.text(" press \n     E \n to close", middleX(), middleY()-50);
+            else
+                Main.main.text(" press \n     E \n to open", middleX(), middleY()-50);
+            
+        }
+
     }
 
     @Override

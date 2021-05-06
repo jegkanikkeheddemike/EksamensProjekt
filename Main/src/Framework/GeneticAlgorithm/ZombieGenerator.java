@@ -243,10 +243,10 @@ public abstract class ZombieGenerator {
             0.5f, // AmmoBox 45ACP
             0.8f, // AmmoBox Shells
             0.6f, // Bandage
-            1.f, // Healthpack
+            1.0f, // Healthpack
             1.5f, // Machete
             0.4f, // Pistol
-            1.5f, // Shotgunr
+            1.5f, // Shotgun
     };
 
     private static int getSemiRandomItemIndex() {
@@ -258,7 +258,7 @@ public abstract class ZombieGenerator {
                 2, //
                 1, //
                 2, //
-                1//
+                1 //
         };
 
         { // CHANGE PROBALITIES BASED ON PLAYER
