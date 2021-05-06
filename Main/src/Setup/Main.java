@@ -21,7 +21,7 @@ import MapGeneration.*;
 public class Main extends PApplet {
     private static boolean startFromFile = false;
     private static boolean saveToFile = false;
-    public static boolean forceShaders = false;
+    public static boolean forceShaders = true;
 
     public static boolean isRunning = true;
 

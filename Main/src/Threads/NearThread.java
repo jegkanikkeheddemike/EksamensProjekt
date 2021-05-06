@@ -68,7 +68,7 @@ public class NearThread extends Thread {
 
                     nearObjectsUpdated.add(gameObject);
 
-                    if (gameObject.classID.equals("Wall")) {
+                    if (gameObject.classID.equals("Wall")||gameObject.classID.equals("ClosedDoor")) {
                         tempWalls.add((Wall) gameObject);
 
                     } else if (gameObject.classID.equals("Zombie")) {
