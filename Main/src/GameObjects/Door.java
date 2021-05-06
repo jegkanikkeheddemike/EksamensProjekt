@@ -1,7 +1,6 @@
 package GameObjects;
 
 import Framework.GameMath;
-import Framework.GameObject;
 import Setup.Main;
 import Threads.NearThread;
 

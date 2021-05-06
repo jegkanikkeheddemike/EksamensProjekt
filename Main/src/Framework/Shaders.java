@@ -14,7 +14,7 @@ public class Shaders {
         zombieFOVConeShader = Main.main.loadShader("Shaders\\ZombieViewCone.frag");
     }
 
-    public static final int zombieShaderAmount = 20;
+    public static final int zombieShaderAmount = 30;
     public static final int wallShaderAmount = 100;
 
     // MAX AMOUNT OF ZOMBIES ON SCREEN IS 30 FOR NOW
