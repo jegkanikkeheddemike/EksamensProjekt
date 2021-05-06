@@ -1,11 +1,13 @@
 package GameObjects;
 
 import Framework.GameMath;
+import Framework.PlayerEffects.DoorEffect;
 import Setup.Main;
 import Threads.NearThread;
 
 public class Door extends Wall{
-    boolean open = false;
+    public boolean open = false;
+    public static int openTime = 10;
 
     public Door(int x, int y, int w, int h) {
         super(x, y, w, h);
@@ -50,10 +52,7 @@ public class Door extends Wall{
                 }
             }
             if ((GameMath.objectDistance(this, nearestZombie) > Math.min(w, h))){
-                if (!open)
-                    open = true;
-                else
-                    open = false;
+                Main.player.addPlayerEffect(new DoorEffect(this));
             }
             
         }
