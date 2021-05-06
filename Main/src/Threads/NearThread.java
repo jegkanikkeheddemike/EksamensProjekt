@@ -26,7 +26,7 @@ public class NearThread extends Thread {
 
     NearThread(){
         setName("NearThread");
-        System.out.println(getName() + " ThreadID: " + getId());
+        //System.out.println(getName() + " ThreadID: " + getId());
     }
 
     private void calcNearDist(){

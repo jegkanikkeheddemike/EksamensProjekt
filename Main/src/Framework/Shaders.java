@@ -1,7 +1,5 @@
 package Framework;
 
-import java.util.ArrayList;
-
 import GameObjects.*;
 import Setup.Main;
 import Threads.NearThread;
@@ -9,7 +7,6 @@ import processing.opengl.PShader;
 
 public class Shaders {
     static PShader zombieFOVConeShader;
-    
 
     static long renderTime = 0;
 
@@ -18,7 +15,7 @@ public class Shaders {
     }
 
     public static final int zombieShaderAmount = 20;
-    public static final int wallShaderAmount = 70;
+    public static final int wallShaderAmount = 100;
 
     // MAX AMOUNT OF ZOMBIES ON SCREEN IS 30 FOR NOW
     private static float[] zombieX = new float[zombieShaderAmount];
@@ -32,16 +29,22 @@ public class Shaders {
     public static void drawZombieFOVCone() {
         long preTime = System.currentTimeMillis();
 
-        if (NearThread.isReady) {
+        if (NearThread.zombies.size() > zombieShaderAmount)
+            System.out.println("For mange zombier");
+        if (NearThread.walls.size() > wallShaderAmount)
+            System.out.println("For mange walls");
+
+        if (NearThread.isReady) { // Hvis klar, skal den opdatere dataen i shadersne, hvis ikke bruger den fra
+                                  // tidligere
             NearThread.pauseThread();
-            for (int i = 0; i < zombieX.length&&i<NearThread.zombies.size(); i++) {
+            for (int i = 0; i < zombieX.length && i < NearThread.zombies.size(); i++) {
                 Zombie z = NearThread.zombies.get(i);
                 zombieX[i] = z.middleX();
                 zombieY[i] = z.middleY();
                 zombieRotation[i] = z.rotation;
             }
 
-            for (int i = 0; i < wallX.length&&i<NearThread.walls.size(); i++) {
+            for (int i = 0; i < wallX.length && i < NearThread.walls.size(); i++) {
                 Wall w = NearThread.walls.get(i);
                 wallX[i] = w.x;
                 wallY[i] = w.y;
@@ -50,9 +53,8 @@ public class Shaders {
             }
             NearThread.resumeThread();
         }
-
-        zombieFOVConeShader.set("zombies", NearThread.zombies.size());
-        zombieFOVConeShader.set("walls", NearThread.walls.size());
+        zombieFOVConeShader.set("zombies", Math.min(NearThread.zombies.size(), zombieShaderAmount));
+        zombieFOVConeShader.set("walls", Math.min(NearThread.walls.size(), wallShaderAmount));
         zombieFOVConeShader.set("camX", Main.player.middleX());
         zombieFOVConeShader.set("camY", Main.player.middleY());
         zombieFOVConeShader.set("zombieX", zombieX);
@@ -62,8 +64,8 @@ public class Shaders {
         zombieFOVConeShader.set("wallY", wallY);
         zombieFOVConeShader.set("wallWidth", wallWidth);
         zombieFOVConeShader.set("wallHeight", wallHeight);
-        zombieFOVConeShader.set("resX",(float) Main.main.width);
-        zombieFOVConeShader.set("resY",(float) Main.main.height);
+        zombieFOVConeShader.set("resX", (float) Main.main.width);
+        zombieFOVConeShader.set("resY", (float) Main.main.height);
 
         // DET ER MEGET VIGTIGT AT DER IKKE ER NOFILL(), FOR SÅ VIRKER SHADEREN IKKE!!!
         // TILFØJ NOSTROKE ellers Kommer der stroke på hjørnerne af shaderen
@@ -74,7 +76,8 @@ public class Shaders {
         Main.main.shader(zombieFOVConeShader);
 
         // SHADER RECT DÆKKER HELE SKÆRMEN
-        Main.main.rect(Main.player.middleX() - 1920 / 2, Main.player.middleY() - 1080 / 2, 1920, 1080);
+        Main.main.rect(Main.player.middleX() - Main.main.width / 2, Main.player.middleY() - Main.main.height / 2,
+                Main.main.width, Main.main.height);
 
         // HUST AT RESET SHADER BAGEFTER, ELLER FÅR ANDRE TEXTURES FORKERT SHADER :( !!
         Main.main.resetShader();
@@ -96,7 +99,7 @@ public class Shaders {
             }
         }
         shaderTimer--;
-        return drawShaders;
+        return drawShaders || Main.forceShaders;
     }
 
     public static final int minFrameRateForZombieShader = 50;
