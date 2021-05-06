@@ -44,7 +44,7 @@ public class MeeleAttack extends Movables {
             
 
             float relAngle = (float) Math.abs(Math.abs(angleToZombie) - Math.abs(direction));
-            if (relAngle > Math.toRadians(45)|| GameMath.lineCollision(Main.player,zombie, new String[] {"Wall"}).collision){
+            if (relAngle > Math.toRadians(45)|| GameMath.lineCollision(Main.player,zombie, new String[] {"Wall", "ClosedDoor"}).collision){
                 continue;
             }
 
