@@ -2,6 +2,7 @@ package GameObjects;
 
 import Framework.GameMath;
 import Setup.Main;
+import Threads.NearThread;
 
 public class Door extends Wall{
     boolean open = false;
@@ -18,18 +19,43 @@ public class Door extends Wall{
             super.draw();
         }else{
             Main.main.noFill();
-            Main.main.strokeWeight(5);
+            Main.main.strokeWeight(1);
+            Main.main.stroke(color);
             Main.main.rect(x, y, w, h);
         }
+        if ((GameMath.objectDistance(this, Main.player) <= Math.min(w, h)+20 && GameMath.objectDistance(this, Main.player) > Math.min(w, h))){
+            Main.main.textSize(12);
+            Main.main.stroke(0);
+            Main.main.strokeWeight(5);
+            Main.main.fill(255);
+            if(open)
+                Main.main.text(" press \n     E \n to close", middleX(), middleY()-50);
+            else
+                Main.main.text(" press \n     E \n to open", middleX(), middleY()-50);
+            
+        }
+
     }
 
     @Override
     public void step(){
-        if ((GameMath.objectDistance(this, Main.player) <= Main.player.w+10 && GameMath.objectDistance(this, Main.player) > Main.player.w) && Main.keyTapped('e')){
-            if (!open)
-                open = true;
-            else
-                open = false;
+        Zombie nearestZombie = null;
+
+        if ((GameMath.objectDistance(this, Main.player) <= Math.min(w, h)+20 && GameMath.objectDistance(this, Main.player) > Math.min(w, h)) && Main.keyTapped('e')){
+            for (Zombie zombie : NearThread.zombies) {
+                if (nearestZombie == null){
+                    nearestZombie = zombie;
+                }else if(GameMath.objectDistance(zombie, this)<GameMath.objectDistance(nearestZombie, this)){
+                    nearestZombie = zombie;
+                }
+            }
+            if ((GameMath.objectDistance(this, nearestZombie) > Math.min(w, h))){
+                if (!open)
+                    open = true;
+                else
+                    open = false;
+            }
+            
         }
         if (open)
             classID = "OpenDoor";
