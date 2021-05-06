@@ -1,7 +1,6 @@
 package GameObjects;
 
 import Framework.GameMath;
-import Framework.GameObject;
 import Setup.Main;
 
 public class Door extends Wall{

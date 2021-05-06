@@ -309,7 +309,6 @@ public class Player extends Movables {
         health -= dmg;
         Zombie zAttacker = (Zombie)attacker;
         zAttacker.group.addDmgToScore(dmg);
-        System.out.println("Damaged: " + dmg + " by " + wpnType);
     }
 
     boolean overInventory = false;
