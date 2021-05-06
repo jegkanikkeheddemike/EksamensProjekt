@@ -22,7 +22,6 @@ public class ZombieShot extends Movables {
         for (GameObject gameObject : collision) {
             if (gameObject != parent){
                 gameObject.reactGetHit(dmg, "ZRanged", parent);
-                System.out.println("ZOEG");
                 delete();
             }
         }

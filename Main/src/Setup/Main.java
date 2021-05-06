@@ -21,6 +21,7 @@ import MapGeneration.*;
 public class Main extends PApplet {
     private static boolean startFromFile = false;
     private static boolean saveToFile = false;
+    public static boolean forceShaders = false;
 
     public static boolean isRunning = true;
 
@@ -53,12 +54,10 @@ public class Main extends PApplet {
             size((int) w, (int) h, P2D);
         } else
             size((int) w, (int) h);
-
     }
 
     @Override
-    public void setup() {
-        surface.setResizable(true);
+    public void setup() {;
         surface.setTitle("VORES MEGA SEJE GAMER SPIL! UwU");
         Images.loadImages();
         NearThread.thread.start();

@@ -11,6 +11,7 @@ import GameObjects.Items.Item;
 import GameObjects.Items.AmmoItems.*;
 import GameObjects.Items.HealthItems.*;
 import GameObjects.Items.Weapons.*;
+import Setup.Main;
 
 public abstract class ZombieGenerator {
     public static LinkedList<Group> generations = new LinkedList<Group>();
@@ -85,11 +86,11 @@ public abstract class ZombieGenerator {
         };
         // Kvalitet eller kvantitet. lav q = høj kvalitet, høj q = høj kvantitet
         float[] q = { //
-                r.nextFloat()*0.5f + 0.25f, //
-                r.nextFloat()*0.5f + 0.25f, //
-                r.nextFloat()*0.5f + 0.25f, //
-                r.nextFloat()*0.5f + 0.25f, //
-                r.nextFloat()*0.5f + 0.25f//
+                r.nextFloat() * 0.5f + 0.25f, //
+                r.nextFloat() * 0.5f + 0.25f, //
+                r.nextFloat() * 0.5f + 0.25f, //
+                r.nextFloat() * 0.5f + 0.25f, //
+                r.nextFloat() * 0.5f + 0.25f//
         };
         group.n = n;
         group.q = q;
@@ -113,7 +114,7 @@ public abstract class ZombieGenerator {
 
         // Generates random items
         while (new Random().nextFloat() > itemSpawnFactor) {
-            int itemIndex = new Random().nextInt(itemBudgets.length);
+            int itemIndex = getSemiRandomItemIndex();
             group.budget += itemBudgets[itemIndex];
             group.items.add(getItem(itemIndex));
         }
@@ -134,22 +135,7 @@ public abstract class ZombieGenerator {
                     group.zombies.add(zombieFromPreset(i, group.n[i] * group.budget * group.q[i], group));
                     success = true;
                 }
-
-                /*
-                 * while (allocatedBudget*group.q[i] > 1) {
-                 * group.zombies.add(zombieFromPreset(i, allocatedBudget*group.q[i], group));
-                 * thisNSucess = 1; allocatedBudget -= allocatedBudget*group.q[i];
-                 * 
-                 * }
-                 */
             }
-
-        }
-        System.out.println("_______________ : " + group.getID() + " at " + System.currentTimeMillis());
-        System.out.println(group.budget);
-        for (int i = 0; i < group.n.length; i++) {
-            System.out.println(group.n[i] + " " + group.q[i] + " " + presetNames[i] + " "
-                    + group.n[i] * group.budget * group.q[i]);
         }
         updateBest();
     }
@@ -257,11 +243,57 @@ public abstract class ZombieGenerator {
             0.5f, // AmmoBox 45ACP
             0.8f, // AmmoBox Shells
             0.6f, // Bandage
-            0.8f, // Healthpack
+            1.f, // Healthpack
             1.5f, // Machete
             0.4f, // Pistol
             1.5f, // Shotgunr
     };
+
+    private static int getSemiRandomItemIndex() {
+        int[] probabilities = { //
+                7, //
+                7, //
+                5, //
+                6, //
+                2, //
+                1, //
+                2, //
+                1//
+        };
+
+        { // CHANGE PROBALITIES BASED ON PLAYER
+          // If low health
+            if (Main.player.health < Main.player.maxHealth / 2f) {
+                probabilities[3] *= 2;
+                probabilities[4] *= 2;
+            }
+
+            // if Uses shotgun
+            if (Main.player.cWeapon0.wpnType.equals("Shotgun") || Main.player.cWeapon1.wpnType.equals("Shotgun")) {
+                probabilities[2] *= 2;
+            }
+
+            // if Uses pistol
+            if (Main.player.cWeapon0.wpnType.equals("Pistol") || Main.player.cWeapon1.wpnType.equals("Pistol")) {
+                probabilities[2] *= 2;
+            }
+        }
+
+        // Normalize
+        int totalSum = 0;
+        for (int i = 0; i < probabilities.length; i++) {
+            totalSum += probabilities[i];
+        }
+
+        int index = new Random().nextInt(totalSum);
+        int i = 0;
+        int sum = 0;
+        while (sum < index) {
+            sum = sum + probabilities[i++];
+        }
+
+        return Math.max(0,i-1);
+    }
 
     private static Item getItem(int i) {
         float x = -1, y = -1;
