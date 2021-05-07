@@ -21,6 +21,8 @@ public abstract class ZombieGenerator {
     private static final float mutationfactor = 0.1f;
     private static final float reproductionSpread = 0.3f;
 
+    public static final float budgetScoreMult = 0.01f;   //For hver score, stiger budget med 0.01
+
     public static Group generateGeneration(float budget) {
         // Hvis mængden af generationer er over 20, er de genetiske, ellers er ge
         // tilfældige

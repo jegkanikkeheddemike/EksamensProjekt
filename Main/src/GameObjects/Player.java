@@ -317,6 +317,12 @@ public class Player extends Movables {
         health -= dmg;
         Zombie zAttacker = (Zombie)attacker;
         zAttacker.group.addDmgToScore(dmg);
+        if (health < 0){
+            health = 0;
+            Main.timeStop = true;
+            Main.windows.deathScreen.isActive = true;
+
+        }
     }
 
     boolean overInventory = false;

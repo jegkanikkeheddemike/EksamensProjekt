@@ -72,7 +72,10 @@ public class Main extends PApplet {
             size((int) w, (int) h);
     }
     public static void createNewGame(){
+        allObjects.clear();
+        nearObjects.clear();
         gameStarted = true;
+        timeStop = false;
 
         m = new Map(2);
         player = new Player(m.initialNode);
@@ -106,7 +109,11 @@ public class Main extends PApplet {
     }
     
     public static void startGameFromGameSave(String filename){
+        allObjects.clear();
+        nearObjects.clear();
+
         gameStarted = true;
+        timeStop = false;
 
         GameSave gs = GameSave.loadGame(filename);
         m = gs.m;
@@ -168,9 +175,6 @@ public class Main extends PApplet {
         if (onWindows)
             Sound.setupSound();
 
-        if (onWindows) {
-            // ShaderPreRenderWorkThread.thread.start();
-        }
         if (onWindows)
             Sound.setupSound();
 
@@ -181,6 +185,7 @@ public class Main extends PApplet {
         clear();
         step();
         render();
+
         // MUST BE LAST
         clearLists();
         updateObjectLists();

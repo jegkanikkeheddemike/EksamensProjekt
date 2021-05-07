@@ -23,6 +23,10 @@ public class GameSaveButton extends Button{
         f.delete();
 
         Main.windows.savesScreen.isActive = false;
+        Main.windows.deathScreen.isActive = false;
+        
+        Main.timeStop = false;
+        
     }
     
 }

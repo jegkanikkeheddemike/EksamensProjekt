@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import GameObjects.*;
+import Setup.Main;
 import Framework.GameMath;
 import Framework.GeneticAlgorithm.Group;
 import Framework.GeneticAlgorithm.ZombieGenerator;
 
-//THE GROUP SYSTEM SHOULD BE SERIALIZABLE BUT I AM NOT SURE THAT THAT NESCESSARILY ENTAILS THE BUILDING CLASS
 public class Building {
     int topleftX, topleftY, toprightX, toprightY, botleftX, botleftY, botrightX, botrightY;
     int orientation;
@@ -154,9 +154,10 @@ public class Building {
             }
         }
 
+        float areaBudget = (Math.abs(deltaX) * Math.abs(deltaY) * ZombieGenerator.budgetPerAreaConstant);
+        float finalBudget = ZombieGenerator.budgetScoreMult*Main.getScore()*areaBudget + areaBudget;
         // #endregion
-        Group myZombies = ZombieGenerator.generateGeneration(
-                (Math.abs(deltaX) * Math.abs(deltaY) * ZombieGenerator.budgetPerAreaConstant));
+        Group myZombies = ZombieGenerator.generateGeneration(finalBudget);
 
         myZombies.setCoordinates(topleftX, topleftY, deltaX, deltaY);
     }

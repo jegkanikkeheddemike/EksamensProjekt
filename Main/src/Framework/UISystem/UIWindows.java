@@ -18,6 +18,7 @@ public class UIWindows {
         public List saves;
     public Window createUserScreen;
     public Window pauseScreen;
+    public Window deathScreen;
     
     public static int verticalSpacer = 10;
     public static int buttonHeight = 40;
@@ -29,23 +30,30 @@ public class UIWindows {
         makeSavesScreen();
         makeCreateUserScreen();
         makePauseScreen();
+        makeDeathScreen();
     }
+    
     public void step(){
+        
         startScreen.stepWindow();
         loginScreen.stepWindow();
         savesScreen.stepWindow();
         createUserScreen.stepWindow();
         pauseScreen.stepWindow();
+        deathScreen.stepWindow();
+        
     }
     public void draw(){
+        deathScreen.drawWindow();
         startScreen.drawWindow();
         loginScreen.drawWindow();
         savesScreen.drawWindow();
         createUserScreen.drawWindow();
         pauseScreen.drawWindow();
+        
     }
 
-    public void makeStartScreen(){
+    private void makeStartScreen(){
         startScreen = new Window(Main.main.width/4, Main.main.height/4, Main.main.width/2, (int) (Main.main.height/2), "STARTSCREEN");
         startScreen.elements.add(new TextDisplay("GameTitle", "ZOMBIE GAME", Main.main.width/4, headlineSize/2+30, headlineSize, startScreen, Main.main.CENTER));
         startScreen.elements.add(new Button("Start", "Start game", (int) (Main.main.width/8), headlineSize+30+verticalSpacer, Main.main.width/4, buttonHeight, startScreen){
@@ -75,7 +83,7 @@ public class UIWindows {
         });
         startScreen.isActive = true;
     }
-    public void makeLoginScreen(){
+    private void makeLoginScreen(){
         loginScreen = new Window(Main.main.width/4, Main.main.height/4, Main.main.width/2, (int) (Main.main.height/2), "LOGINSCREEN");
         loginScreen.elements.add(new TextDisplay("LoginTitle", "LOGIN", Main.main.width/4, headlineSize/2+30, headlineSize, loginScreen, Main.main.CENTER));
         loginScreen.elements.add(new TextBox("Username", "Username:", Main.main.width/16, headlineSize+30+verticalSpacer, (int) (1.5*Main.main.width/4), buttonHeight, loginScreen));
@@ -136,7 +144,7 @@ public class UIWindows {
         });
         loginScreen.isActive = false;
     }
-    public void makeSavesScreen(){
+    private void makeSavesScreen(){
         savesScreen = new Window(Main.main.width/4, Main.main.height/4, Main.main.width/2, (int) (Main.main.height/2), "SAVESSCREEN");
         savesScreen.elements.add(new TextDisplay("GameSavesTitle", "CHOOSE GAME SAVE", Main.main.width/4, headlineSize/2+30, headlineSize, savesScreen, Main.main.CENTER));
         
@@ -154,7 +162,7 @@ public class UIWindows {
         });
         savesScreen.isActive = false;
     }
-    public void makeCreateUserScreen(){
+    private void makeCreateUserScreen(){
         createUserScreen = new Window(Main.main.width/4, Main.main.height/4, Main.main.width/2, (int) (Main.main.height/2), "CREATEUSERSCREEN");
         createUserScreen.elements.add(new TextDisplay("CreateUserTitle", "CREATE USER", Main.main.width/4, headlineSize/2+30, headlineSize, createUserScreen, Main.main.CENTER));
         createUserScreen.elements.add(new TextBox("Username", "Choose your username:", Main.main.width/16, headlineSize+30+verticalSpacer, (int) (1.5*Main.main.width/4), buttonHeight, createUserScreen));
@@ -225,9 +233,9 @@ public class UIWindows {
         });
         createUserScreen.isActive = false;
     }
-    public void makePauseScreen(){
+    private void makePauseScreen(){
         pauseScreen = new Window(Main.main.width/4, Main.main.height/4, Main.main.width/2, (int) (Main.main.height/2), "PAUSESCREEN");
-        pauseScreen.elements.add(new TextDisplay("Pause", "Game paused", Main.main.width/4, headlineSize/2+30, headlineSize, pauseScreen, Main.main.CENTER));
+        pauseScreen.elements.add(new TextDisplay("Pause", "Game paused", Main.main.width/4, headlineSize/2+30, headlineSize, pauseScreen, Main.CENTER));
         pauseScreen.elements.add(new Button("Save", "Save game", (int) (Main.main.width/8), headlineSize+30+verticalSpacer, Main.main.width/4, buttonHeight, pauseScreen){
             @Override
             public void reactClickedOn(){
@@ -249,7 +257,36 @@ public class UIWindows {
         });
         pauseScreen.isActive = false;
     }    
+    private void makeDeathScreen() {
+        deathScreen = new Window(Main.main.width/4, Main.main.height/4,Main.main.width/2,Main.main.height/2,"DeathScreen");
+        deathScreen.elements.add(new TextDisplay("Death", "You Died", Main.main.width/4, headlineSize/2+30, headlineSize, deathScreen, Main.CENTER));
+        deathScreen.elements.add(new Button("LoadSave", "Load Save", (int) (Main.main.width/8), headlineSize+30+verticalSpacer, Main.main.width/4, buttonHeight, deathScreen){
+            @Override
+            public void reactClickedOn(){
+                deathScreen.isActive = false;
+                saves.elements.clear();
+                updateSavesList();
+                savesScreen.isActive = true;
+                
+            }
+        });
+        deathScreen.elements.add(new Button("MainMenu","Main Menu",(Main.main.width/8), headlineSize+30+2*verticalSpacer+buttonHeight, Main.main.width/4, buttonHeight, deathScreen){
+            @Override
+            public void reactClickedOn(){
+                deathScreen.isActive = false;
+                startScreen.isActive = true;
+            }
+        });
 
+        deathScreen.elements.add(new Button("ExitGame","Exit Game",(Main.main.width/8), headlineSize+30+3*verticalSpacer+2*buttonHeight, Main.main.width/4, buttonHeight, deathScreen){
+            @Override
+            public void reactClickedOn(){
+                Main.main.exit();
+            }
+        });
+
+        deathScreen.isActive = false;
+    }
     //helpers
     static String getHash(String i){
         try{
