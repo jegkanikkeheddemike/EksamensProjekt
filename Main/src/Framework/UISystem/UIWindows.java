@@ -14,6 +14,7 @@ import Setup.Main;
 public class UIWindows {
     public Window startScreen;
     public Window loginScreen;
+        public Window priorLoginScreen;
     public Window savesScreen;
         public List saves;
     public Window createUserScreen;
@@ -62,7 +63,14 @@ public class UIWindows {
             public void reactClickedOn(){
                 System.out.println("START GAME from save (i.e. switch to login screen)");
                 startScreen.isActive = false;
-                loginScreen.isActive = true;
+                if(!Session.loggedIn){
+                    loginScreen.isActive = true;
+                    priorLoginScreen = startScreen;
+                }else{
+                    saves.elements.clear();
+                    updateSavesList();
+                    savesScreen.isActive = true;
+                }
             };
         });
         startScreen.elements.add(new Button("CreateUser", "Create new user", (int) (Main.main.width/8), headlineSize+30+3*verticalSpacer+2*buttonHeight, Main.main.width/4, buttonHeight, startScreen){
@@ -104,12 +112,14 @@ public class UIWindows {
                                 //Ryd felterne
                                 loginScreen.getElement("Username").clearText();
                                 loginScreen.getElement("Password").clearText();
-                                //Ryk videre til saves skærmen
-                                loginScreen.isActive = false;
-                                //Opdater saves listen med de nye gamesave navne
-                                saves.elements.clear();
-                                updateSavesList();
-                                savesScreen.isActive = true;
+                                if(priorLoginScreen == startScreen){
+                                    //Ryk videre til saves skærmen
+                                    loginScreen.isActive = false;
+                                    //Opdater saves listen med de nye gamesave navne
+                                    saves.elements.clear();
+                                    updateSavesList();
+                                    savesScreen.isActive = true;
+                                }
                             }else{
                                 System.out.println("WRONG PASSWORD!! : ( ");
                             }
@@ -124,14 +134,14 @@ public class UIWindows {
                 }
             };
         });
-        loginScreen.elements.add(new Button("BackToStartScreen", "Back to start screen", (int) (Main.main.width/8), headlineSize+30+4*verticalSpacer+5*buttonHeight, Main.main.width/4, buttonHeight, loginScreen){
+        loginScreen.elements.add(new Button("BackToPriorScreen", "Back to prior screen", (int) (Main.main.width/8), headlineSize+30+4*verticalSpacer+5*buttonHeight, Main.main.width/4, buttonHeight, loginScreen){
             @Override
             public void reactClickedOn(){
                 System.out.println("GO BACK TO START SCREEN :)");
                 loginScreen.isActive = false;
                 loginScreen.getElement("Username").clearText();
                 loginScreen.getElement("Password").clearText();
-                startScreen.isActive = true;
+                priorLoginScreen.isActive = true;
             };
         });
         loginScreen.isActive = false;
@@ -191,7 +201,16 @@ public class UIWindows {
                             Statement st = DB.db.createStatement();
                             st.executeUpdate("INSERT INTO users (name, password) VALUES ('"+username+"', '"+getHash(password)+"');");
                             st.close();
-                            System.out.printf("THE USER ", username, "WAS CREATED WELL DONE :)", "\n");
+
+                            //We get the users userID
+                            st = DB.db.createStatement();
+                            ResultSet rs = st.executeQuery("SELECT id, name FROM users  WHERE ( name = '"+username+"');");
+                            rs.next();
+                            Session.update(rs.getInt("id"), rs.getString("name"));
+                            rs.close();
+                            st.close();
+
+                            System.out.printf("THE USER with the userId", Session.userID, "and username", Session.username, "WAS CREATED WELL DONE :)", "\n");
                             userCreated = true;
                         }catch(Exception e){
                             e.printStackTrace();
@@ -236,15 +255,25 @@ public class UIWindows {
 
             };
         });
-        pauseScreen.elements.add(new Button("Return", "Return to game", (int) (Main.main.width/8), headlineSize+30+2*verticalSpacer+buttonHeight, Main.main.width/4, buttonHeight, pauseScreen){
+        pauseScreen.elements.add(new Button("Login", "Login", (int) (Main.main.width/8), headlineSize+30+2*verticalSpacer+buttonHeight, Main.main.width/4, buttonHeight, pauseScreen){
+            @Override
+            public void reactClickedOn(){
+                System.out.println("LOGIN");
+                pauseScreen.isActive = false;
+                if(!Session.loggedIn){
+                    loginScreen.isActive = true;
+                    priorLoginScreen = pauseScreen;
+                }
+            };
+        });
+        pauseScreen.elements.add(new Button("Return", "Return to game", (int) (Main.main.width/8), headlineSize+30+3*verticalSpacer+2*buttonHeight, Main.main.width/4, buttonHeight, pauseScreen){
             @Override
             public void reactClickedOn(){
                 System.out.println("RETURN TO GAME");
-                //Main.startGameFromGameSave();
-                //Main.createNewGame();
                 pauseScreen.isActive = false;
+                loginScreen.getElement("Username").clearText();
+                loginScreen.getElement("Password").clearText();
                 Main.timeStop = false;
-
             };
         });
         pauseScreen.isActive = false;

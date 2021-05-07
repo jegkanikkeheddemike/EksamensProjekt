@@ -26,7 +26,9 @@ public class List extends UIElement {
     void stepAlways() {
       if (isVisible) {
         for (UIElement element : elements) {
-          element.step();
+          if(element.y > y && element.y < y+sizeY){
+            element.step();
+          }
         }
         if (mouseOn()) {
           scroll += Main.scrollAmount;
