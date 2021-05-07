@@ -1,5 +1,6 @@
 package GameObjects.Items.AmmoItems;
 
+import Framework.UI;
 import GameObjects.Items.Item;
 import Setup.Main;
 
@@ -16,9 +17,9 @@ public abstract class AmmoItem extends Item {
     public void drawInInventory(int x, int y, int boxSize) {
         super.drawInInventory(x, y,boxSize);
         Main.main.noStroke();
-        Main.main.textSize(20);
+        Main.main.textSize((float)Math.ceil(boxSize/80*13));
         Main.main.fill(255);
-        Main.main.text(itemType + ": "+ amount, x, y + 85);
+        Main.main.text(itemType + ": "+ amount, x+boxSize/2, y+boxSize/1.15f);
         
     }
 
