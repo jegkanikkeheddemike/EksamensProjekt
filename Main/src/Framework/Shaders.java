@@ -1,7 +1,5 @@
 package Framework;
 
-import java.util.ArrayList;
-
 import GameObjects.*;
 import Setup.Main;
 import Threads.NearThread;
@@ -28,7 +26,6 @@ public class Shaders {
     private static float[] wallY = new float[wallShaderAmount];
     private static float[] wallWidth = new float[wallShaderAmount];
     private static float[] wallHeight = new float[wallShaderAmount];
-
     public static void drawZombieFOVCone() {
         long preTime = System.currentTimeMillis();
 
