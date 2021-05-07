@@ -12,7 +12,7 @@ public class SoundThread extends Thread {
 
     SoundThread(){
         setName("SoundThread");
-        System.out.println(getName() + " ThreadID: " + getId());
+        //System.out.println(getName() + " ThreadID: " + getId());
     }
 
     public static synchronized void playSound(SoundFile soundFile){

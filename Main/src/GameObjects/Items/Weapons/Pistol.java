@@ -1,6 +1,7 @@
 package GameObjects.Items.Weapons;
 
 import Framework.Images;
+import Framework.Sound;
 import GameObjects.Projectiles.Bullet;
 import Setup.Main;
 
@@ -19,6 +20,7 @@ public class Pistol extends Weapon {
 
     public void use() {
         new Bullet(Main.player.rotation);
+        new Sound(Main.player.middleX(), Main.player.middleY(), 40, Sound.pistolshots);
     }
 
     @Override

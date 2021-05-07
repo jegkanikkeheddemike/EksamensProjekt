@@ -3,8 +3,7 @@ package MapGeneration;
 import java.util.ArrayList;
 import java.util.Random;
 
-import GameObjects.Wall;
-import GameObjects.Zombie;
+import GameObjects.*;
 import Framework.GameMath;
 import Framework.GeneticAlgorithm.Group;
 import Framework.GeneticAlgorithm.ZombieGenerator;
@@ -47,6 +46,9 @@ public class Building {
             new Wall(toprightX - wallWidth, toprightY + doorLocation + doorWidth, wallWidth,
                     deltaY - doorLocation - doorWidth);
 
+            // DOOR
+            new Door(toprightX - wallWidth, toprightY + doorLocation, wallWidth, doorWidth);
+
             doorSquare[0] = toprightX - wallWidth;
             doorSquare[1] = toprightY + doorLocation;
             // STANDARD WALLS
@@ -58,6 +60,9 @@ public class Building {
             // DOOR WALLS
             new Wall(topleftX, toprightY, wallWidth, doorLocation);
             new Wall(topleftX, toprightY + doorLocation + doorWidth, wallWidth, deltaY - doorLocation - doorWidth);
+
+            // DOOR
+            new Door(topleftX, toprightY + doorLocation, wallWidth, doorWidth);
 
             doorSquare[0] = topleftX;
             doorSquare[1] = toprightY + doorLocation;
@@ -72,6 +77,9 @@ public class Building {
             new Wall(botleftX + wallWidth + doorLocation + doorWidth, botrightY - wallWidth,
                     deltaX - (wallWidth + doorLocation + doorWidth), wallWidth);
 
+            // DOOR
+            new Door(botleftX + wallWidth + doorLocation, botrightY - wallWidth, doorWidth, wallWidth);
+
             doorSquare[0] = botleftX + wallWidth + doorLocation;
             doorSquare[1] = botrightY - wallWidth;
             // STANDARD WALLS
@@ -84,6 +92,9 @@ public class Building {
             new Wall(botleftX + wallWidth, toprightY, doorLocation, wallWidth);
             new Wall(botleftX + wallWidth + doorLocation + doorWidth, toprightY,
                     deltaX - (wallWidth + doorLocation + doorWidth), wallWidth);
+
+            // DOOR
+            new Door(botleftX + wallWidth + doorLocation, toprightY, doorWidth, wallWidth);
 
             doorSquare[0] = botleftX + wallWidth + doorLocation;
             doorSquare[1] = toprightY;
@@ -145,7 +156,7 @@ public class Building {
 
         // #endregion
         Group myZombies = ZombieGenerator.generateGeneration(
-                (int) (Math.abs(deltaX) * Math.abs(deltaY) * ZombieGenerator.budgetPerAreaConstant));
+                (Math.abs(deltaX) * Math.abs(deltaY) * ZombieGenerator.budgetPerAreaConstant));
 
         myZombies.setCoordinates(topleftX, topleftY, deltaX, deltaY);
     }

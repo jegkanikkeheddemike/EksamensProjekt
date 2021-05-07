@@ -67,7 +67,7 @@ public class Zombie extends Movables {
         Main.main.text(awarenesIcon, middleX(), middleY() - h);
         Main.main.textSize(20);
         Main.main.fill(255);
-        String geneDescription = "";
+        String geneDescription = "\n";
         for (int i = 0; i < geneDescriptions.length; i++) {
             if (i != GENE_PRESET_NAME)
                 geneDescription += geneDescriptions[i] + genes[i] + "\n";
@@ -76,8 +76,10 @@ public class Zombie extends Movables {
             }
         }
         Main.main.textSize(12);
-        // Main.main.text(geneDescription, x + w + 10, y);
-        Main.main.text(ZombieGenerator.presetNames[(int) genes[GENE_PRESET_NAME]] + "\n" + state, x + w + 10, y);
+        // Main.main.text(, x + w + 10, y);
+        Main.main.text(ZombieGenerator.presetNames[(int) genes[GENE_PRESET_NAME]] + "\nGID:" + group.getID() + "\nVal: "
+                + group.getBudget() * group.q[(int) genes[GENE_PRESET_NAME]] * group.n[(int) genes[GENE_PRESET_NAME]]
+                + geneDescription + state, x + w + 10, y);
         drawAwarenessbar();
         if (!Main.onWindows || !Shaders.shouldDrawShaders())
             drawFOVCone();
@@ -103,7 +105,7 @@ public class Zombie extends Movables {
                     + (fov / 360f) * Math.PI / 2f;
             PVector v = new PVector(middleX() + seeRange * (float) Math.sin(angle),
                     middleY() + seeRange * (float) Math.cos(angle));
-            LineData vData = GameMath.lineCollision(middleX(), middleY(), v.x, v.y, new String[] { "Wall" });
+            LineData vData = GameMath.lineCollision(middleX(), middleY(), v.x, v.y, new String[] { "Wall" , "ClosedDoor"});
             if (vData.collision) {
                 v.x = vData.x;
                 v.y = vData.y;
@@ -131,11 +133,12 @@ public class Zombie extends Movables {
 
     @Override
     public void step() {
-        
-        lookForPlayer();
-        checkIfAddSpottedToScore();
-        walk();
-        fight();
+        if(!attacking){
+            lookForPlayer();
+            checkIfAddSpottedToScore();
+            walk();
+            fight();
+        }
     }
 
     boolean hasSpottedThisFight = false;
@@ -161,26 +164,25 @@ public class Zombie extends Movables {
             return;
 
         if (GameMath.objectDistance(this, Main.player) <= range) {
-            
+
             if (cooldown < 0) {
-                
+
                 attack();
             }
         }
     }
 
+    public boolean attacking = false;
+
     void attack() {
         cooldown = maxCooldown;
         if (genes[GENE_IS_RANGED] == 0) {
             new ZombieMeeleAttack(this, genes[GENE_DAMAGE]);
-            //Main.player.reactGetHit(genes[GENE_DAMAGE], "", this);
-            
+            // Main.player.reactGetHit(genes[GENE_DAMAGE], "", this);
+
         }
 
-        else if (genes[GENE_IS_RANGED] == 1){
-            Main.println("____________________");
-            Main.println(range);
-            Main.println(genes[GENE_DAMAGE]);
+        else if (genes[GENE_IS_RANGED] == 1) {
             new ZombieShot(middleX(), middleY(), rotation, genes[GENE_DAMAGE], this);
         }
 
@@ -249,6 +251,8 @@ public class Zombie extends Movables {
             }
         } else if (state == "Look") {
             targetRotation = GameMath.pointAngle(middleX(), middleY(), Main.player.middleX(), Main.player.middleY());
+            targetX = Main.player.x;
+            targetY = Main.player.y;
         } else if (state == "Patrol") {
             timeSinceLastPatrolChange++;
             if (GameMath.pointDistance(x, y, targetX, targetY) < 80 || timeSinceLastPatrolChange > 600) {
@@ -257,7 +261,7 @@ public class Zombie extends Movables {
                 float length = new Random().nextFloat() * 1000;
 
                 LineData newLine = GameMath.lineCollision(x, y, x + length * (float) Math.sin(randomDir),
-                        y + length * (float) Math.cos(randomDir), new String[] { "Wall" });
+                        y + length * (float) Math.cos(randomDir), new String[] { "Wall", "ClosedDoor" });
                 if (newLine.collision) {
                     targetX = newLine.x;
                     targetY = newLine.y;
@@ -294,7 +298,7 @@ public class Zombie extends Movables {
         ySpeed = (float) Math.cos(walkdir) * cSpeed;
 
         if (speed() < cSpeed && (state == "Chase" || state == "Find")) {
-            GameObject[] collisions = getCollisions(xSpeed, ySpeed, new String[] { "Wall", "Player" });
+            GameObject[] collisions = getCollisions(xSpeed, ySpeed, collisionEntities);
             GameObject nearest = null;
             for (int i = 0; i < collisions.length; i++) {
                 if (nearest == null
@@ -345,12 +349,12 @@ public class Zombie extends Movables {
             GameObject g = near[i];
             if (g.classID == "Sound") {
                 awareness += ((Sound) g).volume * (soundSense * genes[GENE_HEAR_SKILL])
-                        / GameMath.objectDistance(this, g);
+                        / (Math.pow(GameMath.objectDistance(this, g)/10 + 1,2));
             }
         }
 
         LineData lineToPlayer = GameMath.lineCollision(middleX(), middleY(), Main.player.middleX(),
-                Main.player.middleY(), new String[] { "Wall" });
+                Main.player.middleY(), new String[] { "Wall", "ClosedDoor" });
 
         if (!lineToPlayer.collision) {
             float dist = GameMath.objectDistance(this, Main.player);
@@ -406,8 +410,11 @@ public class Zombie extends Movables {
     public void reactGetHit(float dmg, String wpnType, Movables attacker) {
         health -= dmg;
         awareness += 30;
-        if (health <= 0)
+        if (health <= 0) {
             delete();
+            //Adds value of zombie to total score
+            Main.addToScore(group.getBudget() * group.q[(int) genes[GENE_PRESET_NAME]] * group.n[(int) genes[GENE_PRESET_NAME]]);
+        }
     }
 
     public static float[] randomGenes() {

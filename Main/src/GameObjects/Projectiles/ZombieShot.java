@@ -18,9 +18,9 @@ public class ZombieShot extends Movables {
 
     @Override
     public void step() {
-        GameObject[] collision = getCollisions(0, 0, new String[] { "Wall","Zombie","Player" });
+        GameObject[] collision = getCollisions(0, 0, new String[] { "Wall","Zombie","Player", "ClosedDoor"});
         for (GameObject gameObject : collision) {
-            if (gameObject != parent) {
+            if (gameObject != parent){
                 gameObject.reactGetHit(dmg, "ZRanged", parent);
                 delete();
             }

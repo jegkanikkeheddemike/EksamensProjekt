@@ -26,7 +26,7 @@ public class NearThread extends Thread {
 
     NearThread(){
         setName("NearThread");
-        System.out.println(getName() + " ThreadID: " + getId());
+        //System.out.println(getName() + " ThreadID: " + getId());
     }
 
     private void calcNearDist(){
@@ -68,7 +68,7 @@ public class NearThread extends Thread {
 
                     nearObjectsUpdated.add(gameObject);
 
-                    if (gameObject.classID.equals("Wall")) {
+                    if (gameObject.classID.equals("Wall")||gameObject.classID.equals("ClosedDoor")) {
                         tempWalls.add((Wall) gameObject);
 
                     } else if (gameObject.classID.equals("Zombie")) {

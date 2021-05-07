@@ -28,7 +28,9 @@ import S3FileServer.DBInterface;
 
 public class Main extends PApplet {
     private static boolean startFromFile = false;
-    private static boolean saveToFile = true;
+    private static boolean saveToFile = false;
+    public static boolean forceShaders = false;
+    private static float score = 0;
 
     public static boolean isRunning = true;
     public static boolean gameStarted = false;
@@ -62,16 +64,13 @@ public class Main extends PApplet {
     @Override
     public void settings() {
 
-        double w = displayWidth * 0.8;
-        double h = displayHeight * 0.8;
-        
+        int w = (int) (displayWidth * 0.8);
+        int h = (int) (displayHeight * 0.8);
 
         if (onWindows) {
-            size((int)w,(int) h, P2D);
+            size((int) w, (int) h, P2D);
         } else
-            size((int)w, (int)h);
-        
-        
+            size((int) w, (int) h);
     }
     public static void createNewGame(){
         gameStarted = true;
@@ -92,7 +91,7 @@ public class Main extends PApplet {
             }
         }
         Random r = new Random();
-        while (player.getCollisions(0, 0, new String[] { "Wall", "Zombie" }).length > 0) {
+        while (player.getCollisions(0, 0, new String[] { "Wall", "Zombie", "ClosedDoor" }).length > 0) {
             player.x = r.nextInt(1920);
             player.y = r.nextInt(1080);
         }
@@ -144,8 +143,7 @@ public class Main extends PApplet {
     }
     
     @Override
-    public void setup() {
-        surface.setResizable(true);
+    public void setup() {;
         surface.setTitle("VORES MEGA SEJE GAMER SPIL! UwU");
         Images.loadImages();
         
@@ -199,11 +197,11 @@ public class Main extends PApplet {
             try {
                 for (int i = 0; i < nearObjects.size(); i++) {
                     GameObject gameObject = nearObjects.get(i);
-                    gameObject.draw();
+                    if (gameObject != null &&!gameObject.isDeleted)
+                        gameObject.draw();
                 }
-
                 // m.draw();
-            } catch (Exception e) {
+            }catch (Exception e) {
                 e.printStackTrace();
             }
             if (onWindows && Shaders.shouldDrawShaders()) {
@@ -226,7 +224,8 @@ public class Main extends PApplet {
                 try {
                     for (int i = 0; i < nearObjects.size(); i++) {
                         GameObject gameObject = nearObjects.get(i);
-                        gameObject.step();
+                        if (gameObject != null &&!gameObject.isDeleted)
+                            gameObject.step();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -297,25 +296,15 @@ public class Main extends PApplet {
         } else {
             k = (int) Character.toLowerCase(key);
 
-            if (key == ' ') {
-                if (saveToFile) {
-                    System.out.println("THE SPACE BAR WAS PRESSED!!!!!!!");
-                    GameSave gs = new GameSave(allObjects, nearObjects, player, m, ZombieGenerator.generations);
-                    gs.saveGame("GS.sav");
-                    dbi.uploadToBucket("eksamensprojektddu", "GS.sav");
-                    System.out.println("GAME SAVED?¿¿¿");
-                }
-            }
-
             switch (key) {
-            case '!':
-                k = '1';
-                break;
-            case '\"':
-                k = '2';
-                break;
-            default:
-                break;
+                case '!':
+                    k = '1';
+                    break;
+                case '\"':
+                    k = '2';
+                    break;
+                default:
+                    break;
             }
 
         }
@@ -340,14 +329,14 @@ public class Main extends PApplet {
         } else {
             k = (int) Character.toLowerCase(key);
             switch (key) {
-            case '!':
-                k = '1';
-                break;
-            case '\"':
-                k = '2';
-                break;
-            default:
-                break;
+                case '!':
+                    k = '1';
+                    break;
+                case '\"':
+                    k = '2';
+                    break;
+                default:
+                    break;
             }
 
         }
@@ -419,6 +408,13 @@ public class Main extends PApplet {
     }
 
     public static boolean onWindows = true;
+
+    public static void addToScore(float s){
+        score += s;
+    }
+    public static float getScore(){
+        return score;
+    }
 
     public static void main(String[] args) {
 

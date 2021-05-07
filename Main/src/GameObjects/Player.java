@@ -192,6 +192,14 @@ public class Player extends Movables {
             xSpeed = Math.signum(xSpeed) * cMaxSpeed;
         if (Math.abs(ySpeed) >= cMaxSpeed)
             ySpeed = Math.signum(ySpeed) * cMaxSpeed;
+        float totalSpeed = (float)Math.sqrt(Math.pow(xSpeed, 2)+Math.pow(ySpeed, 2));
+        
+        if (totalSpeed > cMaxSpeed){
+            xSpeed *= cMaxSpeed/totalSpeed;
+            ySpeed *= cMaxSpeed/totalSpeed;
+        }
+        
+        
 
         if (!acceleratingX)
             xSpeed *= friction;
@@ -262,8 +270,9 @@ public class Player extends Movables {
         } else {
             getWeapon().cooldown += 1;
         }
-        if (Main.keyTapped('r') && getWeapon().cClip != getWeapon().clipSize && !occupied
-                && Main.player.getItemTypeFromInventory(getWeapon().ammoType) != null) {
+        if (((Main.keyTapped('r') && getWeapon().cClip != getWeapon().clipSize) || Main.mousePressed && getWeapon().cooldown > getWeapon().shotCooldown
+        && (!getWeapon().usesAmmo || getWeapon().cClip == 0))
+                && Main.player.getItemTypeFromInventory(getWeapon().ammoType) != null && !occupied) {
             addPlayerEffect(new ReloadEffect(getWeapon()));
         }
     }
@@ -304,9 +313,10 @@ public class Player extends Movables {
         }
     }
 
-    public void reactGetHit(float dmg, String vpnType, Zombie attacker) {
+    public void reactGetHit(float dmg, String wpnType, Movables attacker) {
         health -= dmg;
-        attacker.group.addDmgToScore(dmg);
+        Zombie zAttacker = (Zombie)attacker;
+        zAttacker.group.addDmgToScore(dmg);
     }
 
     boolean overInventory = false;

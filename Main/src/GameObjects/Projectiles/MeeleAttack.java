@@ -1,9 +1,6 @@
 package GameObjects.Projectiles;
 
-import Framework.GameMath;
-import Framework.GameObject;
-import Framework.Movables;
-import Framework.Shaders;
+import Framework.*;
 import GameObjects.Zombie;
 import GameObjects.Items.Weapons.MeeleWeapon;
 import Setup.Main;
@@ -25,7 +22,6 @@ public class MeeleAttack extends Movables {
                 meeleWeapon.range * (float) Math.cos(-parent.rotation + (float) Math.PI / 2));
         this.parent = parent;
         direction = parent.rotation;
-        //direction = (-direction + (float) Math.PI / 2);
         this.range = meeleWeapon.range;
         this.dmg = meeleWeapon.damage;
         this.wpnType = meeleWeapon.wpnType;
@@ -45,11 +41,10 @@ public class MeeleAttack extends Movables {
             // CHECK IF IN ANGLE
 
             float angleToZombie = GameMath.objectAngle(Main.player, zombie);
-            //angleToZombie = (-angleToZombie + (float) Math.PI / 2);
             
 
             float relAngle = (float) Math.abs(Math.abs(angleToZombie) - Math.abs(direction));
-            if (relAngle > Math.toRadians(45)|| GameMath.lineCollision(Main.player,zombie, new String[] {"Wall"}).collision){
+            if (relAngle > Math.toRadians(45)|| GameMath.lineCollision(Main.player,zombie, new String[] {"Wall", "ClosedDoor"}).collision){
                 continue;
             }
 

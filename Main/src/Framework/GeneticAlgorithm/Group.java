@@ -17,7 +17,7 @@ public class Group implements Comparable<Group>, Serializable {
     public float[] n, q;
 
     private int score;
-    int budget;
+    float budget;
     private int groupID;
 
     // -1 = randomly generated and thus no parent
@@ -34,6 +34,9 @@ public class Group implements Comparable<Group>, Serializable {
     public int getParentID() {
         return parentID;
     }
+    public float getBudget(){
+        return budget;
+    }
 
     boolean parentIDHasBeenAssigned = false;
 
@@ -44,7 +47,7 @@ public class Group implements Comparable<Group>, Serializable {
         }
     }
 
-    public Group(Consumer<Group> generator, int budget) {
+    public Group(Consumer<Group> generator, float budget) {
         this.budget = budget;
         groupID = getNextID();
         generator.accept(this);
@@ -53,13 +56,13 @@ public class Group implements Comparable<Group>, Serializable {
     public void setCoordinates(int topleftX, int topleftY, int deltaX, int deltaY) {
         for (Zombie zombie : zombies) {
             setCoordinates(topleftX, topleftY, deltaX, deltaY, zombie);
-            while (zombie.getCollisions(0, 0, new String[] { "Wall" }).length > 0) {
+            while (zombie.getCollisions(0, 0, new String[] { "Wall", "ClosedDoors" }).length > 0) {
                 setCoordinates(topleftX, topleftY, deltaX, deltaY, zombie);
             }
         }
         for (Item item : items) {
             setCoordinates(topleftX, topleftY, deltaX, deltaY, item);
-            while (item.getCollisions(0, 0, new String[] { "Wall" }).length > 0) {
+            while (item.getCollisions(0, 0, new String[] { "Wall", "ClosedDoors" }).length > 0) {
                 setCoordinates(topleftX, topleftY, deltaX, deltaY, item);
             }
         }

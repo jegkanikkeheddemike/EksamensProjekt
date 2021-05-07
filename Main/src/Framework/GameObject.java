@@ -1,6 +1,5 @@
 package Framework;
 
-import GameObjects.Zombie;
 import Setup.Main;
 
 public abstract class GameObject implements java.io.Serializable {
@@ -12,6 +11,7 @@ public abstract class GameObject implements java.io.Serializable {
     public boolean hasHealth;
     public float health;
     public float maxHealth;
+    public boolean isDeleted;
 
     protected GameObject(float x, float y, float w, float h) {
         this.ID = idCounter;
@@ -45,9 +45,12 @@ public abstract class GameObject implements java.io.Serializable {
     }
 
     public void reactGetHit(float dmg, String wpnType, Movables attacker) {
+        if (hasHealth)
+            health -= dmg;
     }
 
     public void delete() {
+        isDeleted = true;
         Main.toBeDelted.add(this);
     }
 
