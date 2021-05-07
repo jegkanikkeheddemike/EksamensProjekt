@@ -77,7 +77,6 @@ public class UI {
         }
 
         // #endregion
-
         // #region SHADER INFO
 
         if (!Main.onWindows) {
@@ -103,15 +102,7 @@ public class UI {
                 : "Disabled due to low framerate"), 10, 140);
                 */
         // #endregion
-
-        //#region Group info
-        Main.main.textSize(12);
-        Main.main.noStroke();
-        Main.main.fill(255);
-        Main.main.text("Score: "+Main.getScore(),10,20);
-
-        //Main.main.text(ZombieGenerator.getScoreBoard(), 10, 20);
-
+        // #region Group info
         //#endregion
     }
 }

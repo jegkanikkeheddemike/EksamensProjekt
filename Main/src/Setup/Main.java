@@ -12,24 +12,17 @@ import processing.event.MouseEvent;
 
 import Threads.*;
 import Framework.*;
-import Framework.GeneticAlgorithm.ZombieGenerator;
-import Framework.Networking.DB;
-import Framework.Networking.GameSave;
-import Framework.Networking.Session;
-import Framework.UISystem.UIWindows;
+import Framework.GeneticAlgorithm.*;
+import Framework.Networking.*;
+import Framework.UISystem.*;
 import GameObjects.*;
 import GameObjects.Items.AmmoItems.*;
-import GameObjects.Items.HealthItems.Bandage;
-import GameObjects.Items.HealthItems.HealthPack;
-import GameObjects.Items.Weapons.Machete;
-import GameObjects.Items.Weapons.Pistol;
+import GameObjects.Items.HealthItems.*;
 import GameObjects.Items.Weapons.*;
 import MapGeneration.*;
-import S3FileServer.DBInterface;
+import S3FileServer.*;
 
 public class Main extends PApplet {
-    private static boolean startFromFile = false;
-    private static boolean saveToFile = false;
     public static boolean forceShaders = false;
     private static float score = 0;
 
