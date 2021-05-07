@@ -39,7 +39,7 @@ public class Window {
       interacterable.add("Choice");
     }
   
-    UIElement getElement(String elementName) {
+    public UIElement getElement(String elementName) {
       for (UIElement element : elements) {
         if (element.name.equals(elementName)) {
           return element;

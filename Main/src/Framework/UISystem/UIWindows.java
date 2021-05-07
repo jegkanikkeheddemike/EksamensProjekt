@@ -17,9 +17,13 @@ public class UIWindows {
         public Window priorLoginScreen;
     public Window savesScreen;
         public List saves;
+        public Window priorSavesScreen;
     public Window createUserScreen;
     public Window pauseScreen;
     public Window deathScreen;
+
+    public TimedWindow successScreen;
+    public TimedWindow errorScreen;
     
     public static int verticalSpacer = 10;
     public static int buttonHeight = 40;
@@ -32,17 +36,18 @@ public class UIWindows {
         makeCreateUserScreen();
         makePauseScreen();
         makeDeathScreen();
+        makeTimedScreens();
     }
     
     public void step(){
-        
         startScreen.stepWindow();
         loginScreen.stepWindow();
         savesScreen.stepWindow();
         createUserScreen.stepWindow();
         pauseScreen.stepWindow();
         deathScreen.stepWindow();
-        
+        successScreen.stepWindow();
+        errorScreen.stepWindow();
     }
     public void draw(){
         deathScreen.drawWindow();
@@ -51,7 +56,8 @@ public class UIWindows {
         savesScreen.drawWindow();
         createUserScreen.drawWindow();
         pauseScreen.drawWindow();
-        
+        successScreen.drawWindow();
+        errorScreen.drawWindow();
     }
 
     private void makeStartScreen(){
@@ -60,8 +66,6 @@ public class UIWindows {
         startScreen.elements.add(new Button("Start", "Start game", (int) (Main.main.width/8), headlineSize+30+verticalSpacer, Main.main.width/4, buttonHeight, startScreen){
             @Override
             public void reactClickedOn(){
-                System.out.println("START GAME");
-                //Main.startGameFromGameSave();
                 Main.createNewGame();
                 startScreen.isActive = false;
             };
@@ -69,12 +73,12 @@ public class UIWindows {
         startScreen.elements.add(new Button("Saves", "Start from save", (int) (Main.main.width/8), headlineSize+30+2*verticalSpacer+buttonHeight, Main.main.width/4, buttonHeight, startScreen){
             @Override
             public void reactClickedOn(){
-                System.out.println("START GAME from save (i.e. switch to login screen)");
                 startScreen.isActive = false;
                 if(!Session.loggedIn){
                     loginScreen.isActive = true;
                     priorLoginScreen = startScreen;
                 }else{
+                    priorSavesScreen = startScreen;
                     saves.elements.clear();
                     updateSavesList();
                     savesScreen.isActive = true;
@@ -84,7 +88,6 @@ public class UIWindows {
         startScreen.elements.add(new Button("CreateUser", "Create new user", (int) (Main.main.width/8), headlineSize+30+3*verticalSpacer+2*buttonHeight, Main.main.width/4, buttonHeight, startScreen){
             @Override
             public void reactClickedOn(){
-                System.out.println("SWITCH TO MAKE NEW USER SCREEN");
                 startScreen.isActive = false;
                 createUserScreen.isActive = true;
             };
@@ -99,7 +102,6 @@ public class UIWindows {
         loginScreen.elements.add(new Button("Login", "Login", (int) (Main.main.width/8), headlineSize+30+3*verticalSpacer+4*buttonHeight, Main.main.width/4, buttonHeight, loginScreen){
             @Override
             public void reactClickedOn(){
-                System.out.println("TRY TO LOGIN");
                 String username = loginScreen.getElement("Username").getOutput();
                 String password = loginScreen.getElement("Password").getOutput();
                 
@@ -114,7 +116,8 @@ public class UIWindows {
                             //Hvis ja, tjek om det hashede password er det samme som i databasen
                             if(dbHashedPassword.equals(getHash(password))){
                                 //Hvis ja, så log ind :)
-                                System.out.println("SUCCESSFULL LOGIN :)");
+                                successScreen.getElement("SuccessMessage").description = "Successful login";
+                                successScreen.show();
                                 //Opdatér session
                                 Session.update(rs.getInt("id"), rs.getString("name"));
                                 //Ryd felterne
@@ -124,28 +127,31 @@ public class UIWindows {
                                     //Ryk videre til saves skærmen
                                     loginScreen.isActive = false;
                                     //Opdater saves listen med de nye gamesave navne
+                                    priorSavesScreen = startScreen;
                                     saves.elements.clear();
                                     updateSavesList();
                                     savesScreen.isActive = true;
                                 }
                             }else{
-                                System.out.println("WRONG PASSWORD!! : ( ");
+                                errorScreen.getElement("ErrorMessage").description = "Wrong password";
+                                errorScreen.show();
                             }
                         }else{
-                            System.out.println("THE USER DOES NOT EXIST");
+                            errorScreen.getElement("ErrorMessage").description = "No user with that username";
+                            errorScreen.show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }else{
-                    System.out.println("NOT ALL THE FIELDS ARE FILLED OUT");
+                    errorScreen.getElement("ErrorMessage").description = "Not all fields are filled out";
+                    errorScreen.show();
                 }
             };
         });
         loginScreen.elements.add(new Button("BackToPriorScreen", "Back to prior screen", (int) (Main.main.width/8), headlineSize+30+4*verticalSpacer+5*buttonHeight, Main.main.width/4, buttonHeight, loginScreen){
             @Override
             public void reactClickedOn(){
-                System.out.println("GO BACK TO START SCREEN :)");
                 loginScreen.isActive = false;
                 loginScreen.getElement("Username").clearText();
                 loginScreen.getElement("Password").clearText();
@@ -154,6 +160,7 @@ public class UIWindows {
         });
         loginScreen.isActive = false;
     }
+    //GØR SÅDAN AT DEN GÅR TILBAGE TIL DEN SKÆRM DER LEDTE DEN DERHEN
     private void makeSavesScreen(){
         savesScreen = new Window(Main.main.width/4, Main.main.height/4, Main.main.width/2, (int) (Main.main.height/2), "SAVESSCREEN");
         savesScreen.elements.add(new TextDisplay("GameSavesTitle", "CHOOSE GAME SAVE", Main.main.width/4, headlineSize/2+30, headlineSize, savesScreen, Main.main.CENTER));
@@ -162,12 +169,11 @@ public class UIWindows {
         saves = new List("Saves", "Game saves", Main.main.width/16, headlineSize+30+verticalSpacer, (int) (1.5*Main.main.width/4), savesListHeight, savesScreen);
         savesScreen.elements.add(saves);
         
-        savesScreen.elements.add(new Button("BackToStartScreen", "Back to start screen", (int) (Main.main.width/8), headlineSize+30+2*verticalSpacer+savesListHeight, Main.main.width/4, buttonHeight, savesScreen){
+        savesScreen.elements.add(new Button("BackToPriorScreen", "Back to prior screen", (int) (Main.main.width/8), headlineSize+30+2*verticalSpacer+savesListHeight, Main.main.width/4, buttonHeight, savesScreen){
             @Override
             public void reactClickedOn(){
-                System.out.println("GO BACK TO START SCREEN :)");
                 savesScreen.isActive = false;
-                startScreen.isActive = true;
+                priorSavesScreen.isActive = true;
             };
         });
         savesScreen.isActive = false;
@@ -180,7 +186,6 @@ public class UIWindows {
         createUserScreen.elements.add(new Button("CreateUser", "Create User", (int) (Main.main.width/8), headlineSize+30+3*verticalSpacer+4*buttonHeight, Main.main.width/4, buttonHeight, createUserScreen){
             @Override
             public void reactClickedOn(){
-                System.out.println("TRY TO MAKE THE USER IN THE DATABASE");
                 Boolean userAlreadyExists = false;
                 Boolean userCreated = false;
                 String username = createUserScreen.getElement("Username").getOutput();
@@ -195,7 +200,8 @@ public class UIWindows {
                             String name = rs.getString("name");
                             //SIG NOGET :)
                             userAlreadyExists = true;
-                            System.out.println("THE USER ALREADY EXISTS");
+                            errorScreen.getElement("ErrorMessage").description = "User already exists";
+                            errorScreen.show();
                         }
                         rs.close();
                         st.close();    
@@ -218,14 +224,19 @@ public class UIWindows {
                             rs.close();
                             st.close();
 
-                            System.out.printf("THE USER with the userId", Session.userID, "and username", Session.username, "WAS CREATED WELL DONE :)", "\n");
+                            successScreen.getElement("SuccessMessage").description = "User " + Session.username + " was created";
+                            successScreen.show();
+
                             userCreated = true;
                         }catch(Exception e){
+                            errorScreen.getElement("ErrorMessage").description = "Can not connect to database";
+                            errorScreen.show();
                             e.printStackTrace();
                         }  
                     }
                 }else{
-                    System.out.println("NOT ALL THE FIELDS ARE FILLED OUT");
+                    errorScreen.getElement("ErrorMessage").description = "Not all fields are filled out";
+                    errorScreen.show();
                 }
             
                 if(userCreated){
@@ -243,7 +254,6 @@ public class UIWindows {
         createUserScreen.elements.add(new Button("BackToStartScreen", "Back to start screen", (int) (Main.main.width/8), headlineSize+30+4*verticalSpacer+5*buttonHeight, Main.main.width/4, buttonHeight, createUserScreen){
             @Override
             public void reactClickedOn(){
-                System.out.println("GO BACK TO START SCREEN :)");
                 createUserScreen.isActive = false;
                 createUserScreen.getElement("Username").clearText();
                 createUserScreen.getElement("Password").clearText();
@@ -258,26 +268,20 @@ public class UIWindows {
         pauseScreen.elements.add(new Button("Save", "Save game", (int) (Main.main.width/8), headlineSize+30+verticalSpacer, Main.main.width/4, buttonHeight, pauseScreen){
             @Override
             public void reactClickedOn(){
-                System.out.println("SAVE GAME");
                 Main.saveGame();
-
             };
         });
         pauseScreen.elements.add(new Button("Login", "Login", (int) (Main.main.width/8), headlineSize+30+2*verticalSpacer+buttonHeight, Main.main.width/4, buttonHeight, pauseScreen){
             @Override
             public void reactClickedOn(){
-                System.out.println("LOGIN");
                 pauseScreen.isActive = false;
-                if(!Session.loggedIn){
-                    loginScreen.isActive = true;
-                    priorLoginScreen = pauseScreen;
-                }
+                loginScreen.isActive = true;
+                priorLoginScreen = pauseScreen;
             };
         });
         pauseScreen.elements.add(new Button("Return", "Return to game", (int) (Main.main.width/8), headlineSize+30+3*verticalSpacer+2*buttonHeight, Main.main.width/4, buttonHeight, pauseScreen){
             @Override
             public void reactClickedOn(){
-                System.out.println("RETURN TO GAME");
                 pauseScreen.isActive = false;
                 loginScreen.getElement("Username").clearText();
                 loginScreen.getElement("Password").clearText();
@@ -293,6 +297,7 @@ public class UIWindows {
             @Override
             public void reactClickedOn(){
                 deathScreen.isActive = false;
+                priorSavesScreen = deathScreen;
                 saves.elements.clear();
                 updateSavesList();
                 savesScreen.isActive = true;
@@ -315,6 +320,16 @@ public class UIWindows {
         });
 
         deathScreen.isActive = false;
+    }
+    public void makeTimedScreens(){
+        errorScreen = new TimedWindow(0, 0, Main.main.width, Main.main.height/5, "Error", 1000);
+        errorScreen.backdropColor = Main.main.color(255, 0, 0, 125);
+        errorScreen.elements.add(new TextDisplay("ErrorMessage", "", Main.main.width/2, (int) 30+(Main.main.height/10), 60, errorScreen, Main.main.CENTER, Main.main.color(255)));
+      
+        //SUCCESSWINDOW
+        successScreen = new TimedWindow(0, 0, Main.main.width, Main.main.height/5, "Success", 1000);
+        successScreen.backdropColor = Main.main.color(0, 255, 0, 125);
+        successScreen.elements.add(new TextDisplay("SuccessMessage", "", Main.main.width/2, (int) 30+(Main.main.height/10), 60, successScreen, Main.main.CENTER, Main.main.color(255)));
     }
     //helpers
     static String getHash(String i){

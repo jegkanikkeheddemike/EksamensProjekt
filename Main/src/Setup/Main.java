@@ -120,7 +120,6 @@ public class Main extends PApplet {
     }
     public static void saveGame(){
         if(Session.loggedIn){
-            System.out.println("THE SPACE BAR WAS PRESSED!!!!!!!");
             String timeStamp = new SimpleDateFormat("MM-dd-HH-mm").format(new Date());
             String filename = Session.username + "-" + timeStamp + ".sav";
             //Making the .sav file
@@ -133,15 +132,18 @@ public class Main extends PApplet {
                 Statement st = DB.db.createStatement();
                 st.executeUpdate("INSERT INTO gamesaves (userID, fileName) VALUES ('"+Session.userID+"', '"+filename+"');");
                 st.close();
-                System.out.printf("GAMESAVE PUT INTO DATABASE");
             }catch(Exception e){
                 e.printStackTrace();
+                windows.errorScreen.getElement("ErrorMessage").description = "Could not insert into database";
+                windows.errorScreen.show();
             }
             File f = new File(filename);
             f.delete();
-            System.out.println("GAME SAVED?¿¿¿");
+            windows.successScreen.getElement("SuccessMessage").description = "Game saved";
+            windows.successScreen.show();
         }else{
-            System.out.println("YOU ARE NOT LOGGED IN SORRY : |");
+            windows.errorScreen.getElement("ErrorMessage").description = "You are not logged in";
+            windows.errorScreen.show();
         }
     }
     

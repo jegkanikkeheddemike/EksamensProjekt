@@ -7,7 +7,7 @@ import processing.core.PGraphics;
 
 public class UIElement {
     String name;
-    String description;
+    public String description;
     String type = "";
     int localX;
     int localY;
