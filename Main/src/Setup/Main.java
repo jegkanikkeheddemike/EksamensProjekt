@@ -238,8 +238,10 @@ public class Main extends PApplet {
                     //SHOW PAUSE SCREEN
                     windows.pauseScreen.isActive = true;
                 }else {
-                    timeStop = false;
-                    windows.pauseScreen.isActive = false;
+                    if(!windows.loginScreen.isActive){
+                        timeStop = false;
+                        windows.pauseScreen.isActive = false;
+                    }
                 }
             }
         }
