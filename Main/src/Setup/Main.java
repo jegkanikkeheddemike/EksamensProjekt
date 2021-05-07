@@ -28,8 +28,6 @@ import MapGeneration.*;
 import S3FileServer.DBInterface;
 
 public class Main extends PApplet {
-    private static boolean startFromFile = false;
-    private static boolean saveToFile = false;
     public static boolean forceShaders = false;
     private static float score = 0;
 
