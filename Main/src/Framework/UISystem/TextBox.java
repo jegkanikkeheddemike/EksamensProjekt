@@ -23,7 +23,7 @@ public class TextBox extends UIElement {
         for (Integer tappedKey : Main.tappedKeys) {
   
   
-          if (tappedKey == Main.main.BACKSPACE && text.substring(0, cursorIndex).length() > 0) {
+          if (tappedKey == Main.BACKSPACE && text.substring(0, cursorIndex).length() > 0) {
             text = text.substring(0, cursorIndex - 1) + text.substring(cursorIndex);
             cursorIndex -= 1;
           } else if (tappedKey == -2 && cursorIndex > 0) {  //LEFT ARROW KEY
@@ -45,7 +45,7 @@ public class TextBox extends UIElement {
   
     void drawElement() {
       if (isVisible) {
-        Main.main.textAlign(Main.main.LEFT);
+        Main.main.textAlign(Main.LEFT);
         Main.main.stroke(0);
         Main.main.strokeWeight(sizeY / 10);
         if (isActive) {
@@ -77,7 +77,7 @@ public class TextBox extends UIElement {
   
     void drawElementInList(PGraphics window) {
       if (isVisible) {
-        window.textAlign(Main.main.LEFT);
+        window.textAlign(Main.LEFT);
         window.stroke(0);
         window.strokeWeight(sizeY / 10);
         if (isActive) {
