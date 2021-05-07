@@ -39,7 +39,7 @@ public class Building {
         int deltaY = Math.abs(botrightY - toprightY);
         // #region outer walls
         if (orientation == EAST) { // CHANGED
-            int doorLocation = wallWidth + doorWidth * r.nextInt(Math.max(1, (deltaY - 2 * wallWidth) / doorWidth));
+            int doorLocation = wallWidth + doorWidth * r.nextInt(Math.max(1, (deltaY - 3 * wallWidth) / doorWidth));
 
             // DOOR WALLS
             new Wall(toprightX - wallWidth, toprightY, wallWidth, doorLocation);
@@ -56,7 +56,7 @@ public class Building {
             new Wall(topleftX, botleftY - wallWidth, deltaX, wallWidth);
             new Wall(topleftX, topleftY, wallWidth, deltaY);
         } else if (orientation == WEST) { // CHANGED
-            int doorLocation = wallWidth + doorWidth * r.nextInt(Math.max(1, (deltaY - 2 * wallWidth) / doorWidth));
+            int doorLocation = wallWidth + doorWidth * r.nextInt(Math.max(1, (deltaY - 3 * wallWidth) / doorWidth));
             // DOOR WALLS
             new Wall(topleftX, toprightY, wallWidth, doorLocation);
             new Wall(topleftX, toprightY + doorLocation + doorWidth, wallWidth, deltaY - doorLocation - doorWidth);
@@ -71,7 +71,7 @@ public class Building {
             new Wall(topleftX, botleftY - wallWidth, deltaX, wallWidth);
             new Wall(toprightX - wallWidth, topleftY, wallWidth, deltaY);
         } else if (orientation == SOUTH) { // CHANGED
-            int doorLocation = wallWidth + doorWidth * r.nextInt(Math.max(1, (deltaX - 2 * wallWidth) / doorWidth));
+            int doorLocation = wallWidth + doorWidth * r.nextInt(Math.max(1, (deltaX - 3 * wallWidth) / doorWidth));
             // DOORWALLS
             new Wall(botleftX + wallWidth, botrightY - wallWidth, doorLocation, wallWidth);
             new Wall(botleftX + wallWidth + doorLocation + doorWidth, botrightY - wallWidth,
@@ -87,7 +87,7 @@ public class Building {
             new Wall(toprightX - wallWidth, topleftY, wallWidth, deltaY);
             new Wall(topleftX, topleftY, deltaX, wallWidth);
         } else if (orientation == NORTH) { // CHANGED
-            int doorLocation = wallWidth + doorWidth * r.nextInt(Math.max(1, (deltaX - 2 * wallWidth) / doorWidth));
+            int doorLocation = wallWidth + doorWidth * r.nextInt(Math.max(1, (deltaX - 3 * wallWidth) / doorWidth));
             // DOOR WALLS
             new Wall(botleftX + wallWidth, toprightY, doorLocation, wallWidth);
             new Wall(botleftX + wallWidth + doorLocation + doorWidth, toprightY,
