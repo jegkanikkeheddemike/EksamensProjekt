@@ -67,14 +67,14 @@ public class Zombie extends Movables {
         Main.main.text(awarenesIcon, middleX(), middleY() - h);
         Main.main.textSize(20);
         Main.main.fill(255);
-        String geneDescription = "\n";
+        /*String geneDescription = "\n";
         for (int i = 0; i < geneDescriptions.length; i++) {
             if (i != GENE_PRESET_NAME)
                 geneDescription += geneDescriptions[i] + genes[i] + "\n";
             else {
                 geneDescription += geneDescriptions[i] + ZombieGenerator.presetNames[(int) genes[i]] + "\n";
             }
-        }
+        }*/
         Main.main.textSize(12);
         // Main.main.text(, x + w + 10, y);
         Main.main.text(ZombieGenerator.presetNames[(int) genes[GENE_PRESET_NAME]]/* + "\nGID:" + group.getID() + "\nVal: "
