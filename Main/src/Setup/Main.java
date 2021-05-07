@@ -1,6 +1,10 @@
 package Setup;
 
+import java.io.File;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 import processing.core.PApplet;
@@ -9,6 +13,10 @@ import processing.event.MouseEvent;
 import Threads.*;
 import Framework.*;
 import Framework.GeneticAlgorithm.ZombieGenerator;
+import Framework.Networking.DB;
+import Framework.Networking.GameSave;
+import Framework.Networking.Session;
+import Framework.UISystem.UIWindows;
 import GameObjects.*;
 import GameObjects.Items.AmmoItems.*;
 import GameObjects.Items.HealthItems.Bandage;
@@ -17,6 +25,7 @@ import GameObjects.Items.Weapons.Machete;
 import GameObjects.Items.Weapons.Pistol;
 import GameObjects.Items.Weapons.*;
 import MapGeneration.*;
+import S3FileServer.DBInterface;
 
 public class Main extends PApplet {
     private static boolean startFromFile = false;
@@ -25,6 +34,7 @@ public class Main extends PApplet {
     private static float score = 0;
 
     public static boolean isRunning = true;
+    public static boolean gameStarted = false;
 
     public static Main main;
     public static volatile ArrayList<GameObject> allObjects = new ArrayList<GameObject>(); // This should be saved
@@ -41,6 +51,13 @@ public class Main extends PApplet {
 
     public static Map m;
 
+    public static UIWindows windows;
+
+    //This is actually not for the database but for the S3 fileserver
+    public static DBInterface dbi;
+
+
+
     public Main() {
         main = this;
     }
@@ -56,56 +73,95 @@ public class Main extends PApplet {
         } else
             size((int) w, (int) h);
     }
+    public static void createNewGame(){
+        gameStarted = true;
 
+        m = new Map(2);
+        player = new Player(m.initialNode);
+
+        // MAKING THE REST OF THE MAP
+        m.generateMap();
+        m.removeUselessNodes();
+
+        for (Node n : m.initialNode.connected) {
+            n.housesAlongParentEdge();
+            for (Node nn : n.connected) {
+                if (nn != n && nn != null) {
+                    nn.housesAlongParentEdge();
+                }
+            }
+        }
+        Random r = new Random();
+        while (player.getCollisions(0, 0, new String[] { "Wall", "Zombie", "ClosedDoor" }).length > 0) {
+            player.x = r.nextInt(1920);
+            player.y = r.nextInt(1080);
+        }
+        // #region TestObjects
+        new AmmoBox9mm(player.x + 50, player.y - 50);
+        new AmmoBox45ACP(player.x - 50, player.y + 50);
+        new AmmoBoxShells(player.x + 50, player.y - 50);
+        new Pistol(player.x, player.y + 100);
+        new Shotgun(player.x + 100, player.y);
+        new HealthPack(player.x, player.y);
+        new Bandage(player.x, player.y);
+        new Machete(player.x, player.y);
+    }
+    
+    public static void startGameFromGameSave(String filename){
+        gameStarted = true;
+
+        GameSave gs = GameSave.loadGame(filename);
+        m = gs.m;
+        player = gs.player;
+        allObjects = gs.allObjects;
+        nearObjects = gs.nearObjects;
+        ZombieGenerator.generations = gs.generations;
+        UpdateGroupsThread.update();
+    }
+    public static void saveGame(){
+        if(Session.loggedIn){
+            System.out.println("THE SPACE BAR WAS PRESSED!!!!!!!");
+            String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+            String filename = Session.username + timeStamp + ".sav";
+            //Making the .sav file
+            GameSave gs = new GameSave(allObjects, nearObjects, player, m, ZombieGenerator.generations);
+            gs.saveGame(filename);
+            //Uploading it to S3
+            dbi.uploadToBucket("eksamensprojektddu", filename);
+            //Putting the filename and userid in database
+            try{
+                Statement st = DB.db.createStatement();
+                st.executeUpdate("INSERT INTO gamesaves (userID, fileName) VALUES ('"+Session.userID+"', '"+filename+"');");
+                st.close();
+                System.out.printf("GAMESAVE PUT INTO DATABASE");
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            File f = new File(filename);
+            f.delete();
+            System.out.println("GAME SAVED?¿¿¿");
+        }else{
+            System.out.println("YOU ARE NOT LOGGED IN SORRY : |");
+        }
+    }
+    
     @Override
     public void setup() {;
         surface.setTitle("VORES MEGA SEJE GAMER SPIL! UwU");
         Images.loadImages();
+        
+        //Connect to elephantsql
+        DB.connectToDatabase();
+        //Connect to S3
+        dbi = new DBInterface();
+        dbi.connect();
+
         NearThread.thread.start();
         UpdateGroupsThread.startThread();
         SoundThread.StartThread();
 
-        if (!startFromFile) {
-            m = new Map(2);
-            player = new Player(m.initialNode);
-
-            // MAKING THE REST OF THE MAP
-            m.generateMap();
-            m.removeUselessNodes();
-
-            for (Node n : m.initialNode.connected) {
-                n.housesAlongParentEdge();
-                for (Node nn : n.connected) {
-                    if (nn != n && nn != null) {
-                        nn.housesAlongParentEdge();
-                    }
-                }
-            }
-            Random r = new Random();
-            while (player.getCollisions(0, 0, new String[] { "Wall", "Zombie" }).length > 0) {
-                player.x = r.nextInt(1920);
-                player.y = r.nextInt(1080);
-            }
-            // #region TestObjects
-            new AmmoBox9mm(player.x + 50, player.y - 50);
-            new AmmoBox45ACP(player.x - 50, player.y + 50);
-            new AmmoBoxShells(player.x + 50, player.y - 50);
-            new Pistol(player.x, player.y + 100);
-            new Shotgun(player.x + 100, player.y);
-            new HealthPack(player.x, player.y);
-            new Bandage(player.x, player.y);
-            new Machete(player.x, player.y);
-            // #endregion
-        } else {
-            GameSave gs = GameSave.loadGame("src/Setup/GS.sav");
-            m = gs.m;
-            player = gs.player;
-            allObjects = gs.allObjects;
-            nearObjects = gs.nearObjects;
-            ZombieGenerator.generations = gs.generations;
-            UpdateGroupsThread.update();
-
-        }
+        //makeStartScreen();
+        windows = new UIWindows();        
 
         frameRate(60);
 
@@ -135,47 +191,58 @@ public class Main extends PApplet {
     }
 
     void render() {
-        float translateX = width / 2 - player.middleX();
-        float translateY = height / 2 - player.middleY();
+        if(gameStarted){
+            float translateX = width / 2 - player.middleX();
+            float translateY = height / 2 - player.middleY();
 
-        translate(translateX, translateY);
+            translate(translateX, translateY);
 
-        try {
-            for (int i = 0; i < nearObjects.size(); i++) {
-                GameObject gameObject = nearObjects.get(i);
-                if (gameObject != null &&!gameObject.isDeleted)
-                    gameObject.draw();
+            try {
+                for (int i = 0; i < nearObjects.size(); i++) {
+                    GameObject gameObject = nearObjects.get(i);
+                    if (gameObject != null &&!gameObject.isDeleted)
+                        gameObject.draw();
+                }
+                // m.draw();
+            }catch (Exception e) {
+                e.printStackTrace();
             }
-
-            // m.draw();
-        } catch (Exception e) {
-            e.printStackTrace();
+            if (onWindows && Shaders.shouldDrawShaders()) {
+                Shaders.drawZombieFOVCone();
+            }
+            translate(-translateX, -translateY);
+            UI.drawUI();
         }
-        if (onWindows && Shaders.shouldDrawShaders()) {
-            Shaders.drawZombieFOVCone();
-        }
-        translate(-translateX, -translateY);
-        UI.drawUI();
+        //startScreen.drawWindow();
+        windows.draw();
     }
 
-    public boolean timeStop = false;
+    public static boolean timeStop = false;
 
     void step() {
-
-        try {
-            for (int i = 0; i < nearObjects.size(); i++) {
-                GameObject gameObject = nearObjects.get(i);
-                if (gameObject != null &&!gameObject.isDeleted)
-                    gameObject.step();
+        //startScreen.stepWindow();
+        windows.step();
+        if(gameStarted){
+            if(!timeStop){
+                try {
+                    for (int i = 0; i < nearObjects.size(); i++) {
+                        GameObject gameObject = nearObjects.get(i);
+                        if (gameObject != null &&!gameObject.isDeleted)
+                            gameObject.step();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (keyTapped('t')) {
-            if (!timeStop)
-                timeStop = true;
-            else {
-                timeStop = false;
+            if (keyTapped('m')) {
+                if (!timeStop){
+                    timeStop = true;
+                    //SHOW PAUSE SCREEN
+                    windows.pauseScreen.isActive = true;
+                }else {
+                    timeStop = false;
+                    windows.pauseScreen.isActive = false;
+                }
             }
         }
 
@@ -211,11 +278,11 @@ public class Main extends PApplet {
     }
 
     ArrayList<Integer> downKeys = new ArrayList<Integer>();
-    ArrayList<Integer> tappedKeys = new ArrayList<Integer>();
+    public static ArrayList<Integer> tappedKeys = new ArrayList<Integer>();
     ArrayList<Integer> ignoredChar = new ArrayList<Integer>();
     public static boolean mousePressed = false;
     public static boolean mouseReleased = false;
-    float scrollAmount = 0;
+    public static float scrollAmount = 0;
 
     public void keyPressed() {
         int k = (int) key;
@@ -231,15 +298,6 @@ public class Main extends PApplet {
             }
         } else {
             k = (int) Character.toLowerCase(key);
-
-            if (key == ' ') {
-                if (saveToFile) {
-                    System.out.println("THE SPACE BAR WAS PRESSED!!!!!!!");
-                    GameSave gs = new GameSave(allObjects, nearObjects, player, m, ZombieGenerator.generations);
-                    gs.saveGame("GS.sav");
-                    System.out.println("GAME SAVED?¿¿¿");
-                }
-            }
 
             switch (key) {
                 case '!':

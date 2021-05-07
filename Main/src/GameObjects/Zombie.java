@@ -133,13 +133,12 @@ public class Zombie extends Movables {
 
     @Override
     public void step() {
-        if (Main.main.timeStop == false && attacking == false) {
+        if(!attacking){
             lookForPlayer();
             checkIfAddSpottedToScore();
             walk();
             fight();
         }
-
     }
 
     boolean hasSpottedThisFight = false;
