@@ -92,15 +92,6 @@ public class Main extends PApplet {
             player.x = r.nextInt(1920);
             player.y = r.nextInt(1080);
         }
-        // #region TestObjects
-        new AmmoBox9mm(player.x + 50, player.y - 50);
-        new AmmoBox45ACP(player.x - 50, player.y + 50);
-        new AmmoBoxShells(player.x + 50, player.y - 50);
-        new Pistol(player.x, player.y + 100);
-        new Shotgun(player.x + 100, player.y);
-        new HealthPack(player.x, player.y);
-        new Bandage(player.x, player.y);
-        new Machete(player.x, player.y);
     }
     
     public static void startGameFromGameSave(String filename){
