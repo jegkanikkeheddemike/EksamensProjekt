@@ -41,7 +41,7 @@ public class Zombie extends Movables {
 
     @Override
     public void draw() {
-
+        Main.main.textAlign(Main.LEFT);
         Main.main.noStroke();
         Main.main.fill(50, 255, 50);
         Main.main.pushMatrix();

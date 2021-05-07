@@ -42,6 +42,7 @@ public abstract class PlayerEffect {
         Main.main.noStroke();
         Main.main.fill(255);
         Main.main.textSize(20);
+        Main.main.textAlign(Main.LEFT);
         Main.main.text(effectName, x + 10, y + 25);
 
         // PROGRESSBAR

@@ -288,6 +288,22 @@ public class UIWindows {
                 Main.timeStop = false;
             };
         });
+
+        pauseScreen.elements.add(new Button("MainMenu","Main Menu",(Main.main.width/8), headlineSize+30+4*verticalSpacer+3*buttonHeight, Main.main.width/4, buttonHeight, pauseScreen){
+            @Override
+            public void reactClickedOn(){
+                pauseScreen.isActive = false;
+                startScreen.isActive = true;
+            }
+        });
+
+        pauseScreen.elements.add(new Button("ExitGame","Exit Game",(Main.main.width/8), headlineSize+30+5*verticalSpacer+4*buttonHeight, Main.main.width/4, buttonHeight, pauseScreen){
+            @Override
+            public void reactClickedOn(){
+                Main.main.exit();
+            }
+        });
+
         pauseScreen.isActive = false;
     }    
     private void makeDeathScreen() {

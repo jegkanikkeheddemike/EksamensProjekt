@@ -1,6 +1,5 @@
 package Framework;
 
-import Framework.GeneticAlgorithm.ZombieGenerator;
 import Framework.PlayerEffects.PlayerEffect;
 import Setup.Main;
 
