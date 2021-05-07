@@ -16,9 +16,6 @@ import Framework.GeneticAlgorithm.*;
 import Framework.Networking.*;
 import Framework.UISystem.*;
 import GameObjects.*;
-import GameObjects.Items.AmmoItems.*;
-import GameObjects.Items.HealthItems.*;
-import GameObjects.Items.Weapons.*;
 import MapGeneration.*;
 import S3FileServer.*;
 
@@ -360,14 +357,14 @@ public class Main extends PApplet {
     }
 
     public static boolean keyTapped(char input) {
-        if (main.tappedKeys.contains((int) input)) {
+        if (tappedKeys.contains((int) input)) {
             return true;
         }
         return false;
     }
 
     public static boolean keyTapped(int input) {
-        if (main.tappedKeys.contains(input)) {
+        if (tappedKeys.contains(input)) {
             return true;
         }
         return false;
