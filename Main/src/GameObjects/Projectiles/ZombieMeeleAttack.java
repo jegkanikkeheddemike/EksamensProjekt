@@ -13,9 +13,9 @@ public class ZombieMeeleAttack extends Movables{
     float dmg;
     String wpnType;
     Zombie parent;
-    int attackTime = 20;
+    static int attackTime = 20;
 
-    private static final int maxTime = 70;
+    private static final int maxTime = attackTime + 10;
 
     public ZombieMeeleAttack(Zombie parent, float dmg) {
         super(parent.middleX(), parent.middleY(),
@@ -59,7 +59,9 @@ public class ZombieMeeleAttack extends Movables{
 
     @Override
     public void step() {
-        
+        if (parent.isDeleted){
+            this.delete();
+        }
         if (timeAlive == maxTime){
             
             parent.attacking = true;
