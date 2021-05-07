@@ -1,5 +1,7 @@
 package Framework.UISystem;
 
+import java.io.File;
+
 import Setup.Main;
 
 //Only in list
@@ -16,6 +18,10 @@ public class GameSaveButton extends Button{
         Main.dbi.downloadFromBucket("eksamensprojektddu", name);
         //Right now the name and description will both just be the filename
         Main.startGameFromGameSave(name);
+
+        File f = new File(name);
+        f.delete();
+
         Main.windows.savesScreen.isActive = false;
     }
     

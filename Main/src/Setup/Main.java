@@ -1,5 +1,6 @@
 package Setup;
 
+import java.io.File;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -136,6 +137,8 @@ public class Main extends PApplet {
             }catch(Exception e){
                 e.printStackTrace();
             }
+            File f = new File(filename);
+            f.delete();
             System.out.println("GAME SAVED?¿¿¿");
         }else{
             System.out.println("YOU ARE NOT LOGGED IN SORRY : |");

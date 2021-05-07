@@ -142,32 +142,6 @@ public class UIWindows {
         
         int savesListHeight = Main.main.height/2 - (headlineSize+30+verticalSpacer) - 2*buttonHeight - 2*verticalSpacer - 30;
         saves = new List("Saves", "Game saves", Main.main.width/16, headlineSize+30+verticalSpacer, (int) (1.5*Main.main.width/4), savesListHeight, savesScreen);
-        /*
-        saves.elements.add(new Button("", "cl1", 0, 0, (int) (1.5*Main.main.width/4), buttonHeight, savesScreen){
-            @Override
-            public void reactClickedOn(){
-                System.out.println("LISTE KNAP1");
-            };
-        });
-        saves.elements.add(new Button("", "cl2", 0, 0, (int) (1.5*Main.main.width/4), buttonHeight, savesScreen){
-            @Override
-            public void reactClickedOn(){
-                System.out.println("LISTE KNAP2");
-            };
-        });
-        saves.elements.add(new Button("", "cl3", 0, 0, (int) (1.5*Main.main.width/4), buttonHeight, savesScreen){
-            @Override
-            public void reactClickedOn(){
-                System.out.println("LISTE KNAP3");
-            };
-        });
-        saves.elements.add(new Button("", "cl4", 0, 0, (int) (1.5*Main.main.width/4), buttonHeight, savesScreen){
-            @Override
-            public void reactClickedOn(){
-                System.out.println("LISTE KNAP4");
-            };
-        });
-        */
         savesScreen.elements.add(saves);
         
         savesScreen.elements.add(new Button("BackToStartScreen", "Back to start screen", (int) (Main.main.width/8), headlineSize+30+2*verticalSpacer+savesListHeight, Main.main.width/4, buttonHeight, savesScreen){
@@ -259,9 +233,6 @@ public class UIWindows {
             public void reactClickedOn(){
                 System.out.println("SAVE GAME");
                 Main.saveGame();
-                //Main.startGameFromGameSave();
-                //Main.createNewGame();
-                //.isActive = false;
 
             };
         });
