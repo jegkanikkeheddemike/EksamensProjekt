@@ -1,10 +1,7 @@
 #include <iostream>
-#include <stdexcept>
-#include <stdio.h>
-#include <string>
 
 int main() {
 	system("java -jar --enable-preview \"Main.jar\"");
-	std::cout<<"\n\nBemærk, at for at køre dette, kræver det den nyeste version af Java runtime!\n";
+	std::cout<<"\n\nHusk, at for at spille dette, skal du have den nyeste version af Java runtime OG den nyeste JDK (Java development kit)!\n";
 	system("Pause");
 }
