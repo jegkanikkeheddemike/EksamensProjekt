@@ -119,8 +119,8 @@ public class Main extends PApplet {
     public static void saveGame(){
         if(Session.loggedIn){
             System.out.println("THE SPACE BAR WAS PRESSED!!!!!!!");
-            String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-            String filename = Session.username + timeStamp + ".sav";
+            String timeStamp = new SimpleDateFormat("MM-dd-HH-mm").format(new Date());
+            String filename = Session.username + "-" + timeStamp + ".sav";
             //Making the .sav file
             GameSave gs = new GameSave(allObjects, nearObjects, player, m, ZombieGenerator.generations);
             gs.saveGame(filename);
