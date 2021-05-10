@@ -88,9 +88,9 @@ public class Node implements java.io.Serializable{
         hasHouse = true; // IDK IF IT SAFE TO PUT IT HERE BUT I THINK IT IS
         //Parent is to the EAST
         if (parent == connected[Map.EAST]){
-            //THEN A HOUSE SHOULD BE TO THE NORTH OF THE ROAD
-            int x1North = x + roadWidth/2 * boolToInt(connected[Map.NORTH] != null || isEndPoint);
-            int x2North = parent.x - (houseDepth + roadWidth/2) * boolToInt(parent.connected[Map.NORTH] != null);
+            //THEN A HOUSE SHOULD BE TO THE NORTH OF THE ROAD                           CLOSE OFF THE CORNERS?¿¿
+            int x1North = x + roadWidth/2 * boolToInt(connected[Map.NORTH] != null) - roadWidth/2 * boolToInt(connected[Map.NORTH] == null && connected[Map.WEST] == null);
+            int x2North = parent.x - (houseDepth + roadWidth/2) * boolToInt(parent.connected[Map.NORTH] != null) + roadWidth/2 * boolToInt(parent.connected[Map.NORTH] == null && parent.connected[Map.EAST] == null);
             int numberOfHouses = Math.abs((x2North-x1North) / minHouseWidth);
             float houseWidth = Math.abs((x2North-x1North) / (float) numberOfHouses);
             for(int houseNum = 0; houseNum < numberOfHouses; houseNum++){
@@ -100,8 +100,8 @@ public class Node implements java.io.Serializable{
             }
             
             //AND ONE TO THE SOUTH OF THE ROAD
-            int x1South = x + (houseDepth + roadWidth/2) * boolToInt(connected[Map.SOUTH] != null || isEndPoint);
-            int x2South = parent.x - roadWidth/2 * boolToInt(parent.connected[Map.SOUTH] != null);
+            int x1South = x + (houseDepth + roadWidth/2) * boolToInt(connected[Map.SOUTH] != null) - roadWidth/2 * boolToInt(connected[Map.SOUTH] == null && connected[Map.WEST] == null);
+            int x2South = parent.x - roadWidth/2 * boolToInt(parent.connected[Map.SOUTH] != null) + roadWidth/2 * boolToInt(parent.connected[Map.SOUTH] == null && parent.connected[Map.EAST] == null);
             numberOfHouses = Math.abs((x2South-x1South) / minHouseWidth);
             houseWidth = Math.abs((x2South-x1South) / (float) numberOfHouses);
             for(int houseNum = 0; houseNum < numberOfHouses; houseNum++){
@@ -111,8 +111,8 @@ public class Node implements java.io.Serializable{
             }
         }else if (parent == connected[Map.WEST]){
             //THEN A HOUSE SHOULD BE TO THE NORTH OF THE ROAD
-            int x1North = parent.x + roadWidth/2 * boolToInt(parent.connected[Map.NORTH] != null);
-            int x2North = x - (houseDepth + roadWidth/2) * boolToInt(connected[Map.NORTH] != null || isEndPoint);
+            int x1North = parent.x + roadWidth/2 * boolToInt(parent.connected[Map.NORTH] != null) - roadWidth/2 * boolToInt(parent.connected[Map.NORTH] == null && parent.connected[Map.WEST] == null);
+            int x2North = x - (houseDepth + roadWidth/2) * boolToInt(connected[Map.NORTH] != null) + roadWidth/2 * boolToInt(connected[Map.NORTH] == null && connected[Map.EAST] == null);
             int numberOfHouses = Math.abs((x2North-x1North) / minHouseWidth);
             float houseWidth = Math.abs((x2North-x1North) / (float) numberOfHouses);
             for(int houseNum = 0; houseNum < numberOfHouses; houseNum++){
@@ -121,8 +121,8 @@ public class Node implements java.io.Serializable{
                 new Building(x1, parent.y-roadWidth/2-houseDepth, x2, parent.y-roadWidth/2-houseDepth, x1, parent.y-roadWidth/2, x2, parent.y-roadWidth/2, Map.SOUTH);
             }
             //AND ONE TO THE SOUTH OF THE ROAD
-            int x1South = parent.x + (houseDepth + roadWidth/2) * boolToInt(parent.connected[Map.SOUTH] != null);
-            int x2South = x - roadWidth/2 * boolToInt(connected[Map.SOUTH] != null || isEndPoint);
+            int x1South = parent.x + (houseDepth + roadWidth/2) * boolToInt(parent.connected[Map.SOUTH] != null) - roadWidth/2 * boolToInt(parent.connected[Map.SOUTH] == null && parent.connected[Map.WEST] == null);
+            int x2South = x - roadWidth/2 * boolToInt(connected[Map.SOUTH] != null) + roadWidth/2 * boolToInt(connected[Map.SOUTH] == null && connected[Map.EAST] == null);
             numberOfHouses = Math.abs((x2South-x1South) / minHouseWidth);
             houseWidth = Math.abs((x2South-x1South) / (float) numberOfHouses);
             for(int houseNum = 0; houseNum < numberOfHouses; houseNum++){
@@ -132,8 +132,8 @@ public class Node implements java.io.Serializable{
             }
         }else if(parent == connected[Map.SOUTH]){
             //FOR THE VERTICAL MOTHERFUCKERS WE WILL AUTOMATICALLY REMOVE 1 HOUSE DEPTH
-            int y1West = y + (roadWidth/2 + houseDepth) * boolToInt(connected[Map.WEST] != null || isEndPoint);
-            int y2West = parent.y - roadWidth/2 * boolToInt(parent.connected[Map.WEST] != null);
+            int y1West = y + (roadWidth/2 + houseDepth) * boolToInt(connected[Map.WEST] != null) - roadWidth/2 * boolToInt(connected[Map.WEST] == null && connected[Map.NORTH] == null);
+            int y2West = parent.y - roadWidth/2 * boolToInt(parent.connected[Map.WEST] != null) + roadWidth/2 * boolToInt(parent.connected[Map.WEST] == null && parent.connected[Map.SOUTH] == null);
             int numberOfHouses = Math.abs((y2West-y1West) / minHouseWidth);
             int houseWidth = (int) Math.abs((y2West-y1West) / (float) numberOfHouses);
             for(int houseNum = 0; houseNum < numberOfHouses; houseNum++){
@@ -142,8 +142,8 @@ public class Node implements java.io.Serializable{
                 new Building(parent.x-roadWidth/2-houseDepth, y1, parent.x-roadWidth/2, y1, parent.x-roadWidth/2-houseDepth, y2, parent.x-roadWidth/2, y2, Map.EAST);
             }
 
-            int y1East = y + roadWidth/2 * boolToInt(connected[Map.EAST] != null || isEndPoint);
-            int y2East = parent.y - (roadWidth/2 + houseDepth) * boolToInt(parent.connected[Map.EAST] != null);
+            int y1East = y + roadWidth/2 * boolToInt(connected[Map.EAST] != null) - roadWidth/2 * boolToInt(connected[Map.EAST] == null && connected[Map.NORTH] == null);;
+            int y2East = parent.y - (roadWidth/2 + houseDepth) * boolToInt(parent.connected[Map.EAST] != null) + roadWidth/2 * boolToInt(parent.connected[Map.EAST] == null && parent.connected[Map.SOUTH] == null);
             numberOfHouses = Math.abs((y2East-y1East) / minHouseWidth);
             houseWidth = (int) Math.abs((y2East-y1East) / (float) numberOfHouses);
             for(int houseNum = 0; houseNum < numberOfHouses; houseNum++){
@@ -152,8 +152,8 @@ public class Node implements java.io.Serializable{
                 new Building(parent.x+roadWidth/2, y1, parent.x+roadWidth/2+houseDepth, y1, parent.x+roadWidth/2, y2, parent.x+roadWidth/2+houseDepth, y2, Map.WEST);
             }
         }else if(parent == connected[Map.NORTH]){
-            int y1West = parent.y + (roadWidth/2 + houseDepth) * boolToInt(parent.connected[Map.WEST] != null);
-            int y2West = y - roadWidth/2 * boolToInt(connected[Map.WEST] != null || isEndPoint);
+            int y1West = parent.y + (roadWidth/2 + houseDepth) * boolToInt(parent.connected[Map.WEST] != null) - roadWidth/2 * boolToInt(parent.connected[Map.WEST] == null && parent.connected[Map.NORTH] == null);
+            int y2West = y - roadWidth/2 * boolToInt(connected[Map.WEST] != null) + roadWidth/2 * boolToInt(connected[Map.WEST] == null && connected[Map.SOUTH] == null);
             int numberOfHouses = Math.abs((y2West-y1West) / minHouseWidth);
             int houseWidth = (int) Math.abs((y2West-y1West) / (float) numberOfHouses);
             for(int houseNum = 0; houseNum < numberOfHouses; houseNum++){
@@ -162,8 +162,8 @@ public class Node implements java.io.Serializable{
                 new Building(parent.x-roadWidth/2-houseDepth, y1, parent.x-roadWidth/2, y1, parent.x-roadWidth/2-houseDepth, y2, parent.x-roadWidth/2, y2, Map.EAST);
             }
             
-            int y1East = parent.y + roadWidth/2 * boolToInt(parent.connected[Map.EAST] != null);
-            int y2East = y - (roadWidth/2 + houseDepth) * boolToInt(connected[Map.EAST] != null || isEndPoint);
+            int y1East = parent.y + roadWidth/2 * boolToInt(parent.connected[Map.EAST] != null) - roadWidth/2 * boolToInt(parent.connected[Map.EAST] == null && parent.connected[Map.NORTH] == null);
+            int y2East = y - (roadWidth/2 + houseDepth) * boolToInt(connected[Map.EAST] != null) + roadWidth/2 * boolToInt(connected[Map.EAST] == null && connected[Map.SOUTH] == null);
             numberOfHouses = Math.abs((y2East-y1East) / minHouseWidth);
             houseWidth = (int) Math.abs((y2East-y1East) / (float) numberOfHouses);
             for(int houseNum = 0; houseNum < numberOfHouses; houseNum++){

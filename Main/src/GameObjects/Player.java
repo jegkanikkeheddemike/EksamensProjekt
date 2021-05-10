@@ -1,12 +1,16 @@
 package GameObjects;
 
 import java.util.ArrayList;
+
+import org.apache.log4j.varia.DenyAllFilter;
+
 import Framework.*;
 import Framework.PlayerEffects.*;
 import GameObjects.Items.Item;
 import GameObjects.Items.AmmoItems.AmmoItem;
 import GameObjects.Items.Weapons.*;
 import Setup.Main;
+import MapGeneration.Map;
 import MapGeneration.Node;
 
 public class Player extends Movables {
@@ -214,6 +218,7 @@ public class Player extends Movables {
     }
 
     void updateCurrentNode(){
+        //Skift knude spiller er tættest på
         Node newCurrentNode = currentNode;
         float newNodeToPlayer = GameMath.pointDistance(x, y, currentNode.x, currentNode.y);
         for(Node n : currentNode.connected){
@@ -226,27 +231,22 @@ public class Player extends Movables {
             }
         }
 
+        //Generer hvis nødvendigt nyt map og huse ud fra det nye punkt
         if(currentNode != newCurrentNode){
             currentNode = newCurrentNode;
-            if(currentNode.isEndPoint){
-                Main.m.generateNodesAtNode(currentNode);
-                //Main.m.removeUselessNodes();
-                for(Node n : currentNode.connected){
-                    if(n != null && n != currentNode.parent){
-                        if(!n.hasHouse){
-                            n.housesAlongParentEdge();
-                            for(Node nn : n.connected){
-                                if(nn != null && nn != nn.parent){
-                                    if(!nn.hasHouse){
-                                        nn.housesAlongParentEdge();
-                                    }
-                                }
-                            }
-                        }
+            if(!currentNode.hasHouse)
+                currentNode.housesAlongParentEdge();
+            
+            for(Node n : currentNode.connected){
+                if(n != currentNode.parent && n != null){
+                    if(n.isEndPoint){
+                        Main.m.generateNodesAtNode(n);
+                        //Main.m.removeUselessNodes();
+                    }
+                    if(!n.hasHouse){
+                        n.housesAlongParentEdge();
                     }
                 }
-            }else if(!currentNode.hasHouse){
-                currentNode.housesAlongParentEdge();
             }
         }
     }
