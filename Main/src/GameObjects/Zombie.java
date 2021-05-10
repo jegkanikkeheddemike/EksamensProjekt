@@ -414,6 +414,8 @@ public class Zombie extends Movables {
             delete();
             //Adds value of zombie to total score
             Main.addToScore(group.getBudget() * group.q[(int) genes[GENE_PRESET_NAME]] * group.n[(int) genes[GENE_PRESET_NAME]]);
+
+            UI.killedFirst = true;
         }
     }
 

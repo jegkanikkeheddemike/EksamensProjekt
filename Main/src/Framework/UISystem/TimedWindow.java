@@ -28,6 +28,7 @@ public class TimedWindow extends Window {
   
     public void drawWindow() {
       if (show) {
+        
         super.drawWindow();
       }
     }

@@ -414,6 +414,6 @@ public class Main extends PApplet {
         if (!System.getProperty("os.name").equals("Windows 10"))
             onWindows = false;
 
-        PApplet.main("Setup.Main");
+        PApplet.main(new Main().getClass());
     }
 }

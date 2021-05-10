@@ -6,7 +6,7 @@ import Setup.Main;
 
 public class Window {
     String name;
-    String description;
+    public String description;
   
     int x;
     int y;

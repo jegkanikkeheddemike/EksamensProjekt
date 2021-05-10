@@ -338,12 +338,12 @@ public class UIWindows {
         deathScreen.isActive = false;
     }
     public void makeTimedScreens(){
-        errorScreen = new TimedWindow(0, 0, Main.main.width, Main.main.height/5, "Error", 1000);
+        errorScreen = new TimedWindow(0, 0, Main.main.width, Main.main.height/4, "Error", 5000);
         errorScreen.backdropColor = Main.main.color(255, 0, 0, 125);
         errorScreen.elements.add(new TextDisplay("ErrorMessage", "", Main.main.width/2, (int) 30+(Main.main.height/10), 60, errorScreen, Main.main.CENTER, Main.main.color(255)));
       
         //SUCCESSWINDOW
-        successScreen = new TimedWindow(0, 0, Main.main.width, Main.main.height/5, "Success", 1000);
+        successScreen = new TimedWindow(0, 0, Main.main.width, Main.main.height/4, "Success", 5000);
         successScreen.backdropColor = Main.main.color(0, 255, 0, 125);
         successScreen.elements.add(new TextDisplay("SuccessMessage", "", Main.main.width/2, (int) 30+(Main.main.height/10), 60, successScreen, Main.main.CENTER, Main.main.color(255)));
     }
