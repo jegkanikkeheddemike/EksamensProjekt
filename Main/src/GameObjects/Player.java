@@ -7,6 +7,9 @@ import GameObjects.Items.Item;
 import GameObjects.Items.AmmoItems.AmmoItem;
 import GameObjects.Items.Weapons.*;
 import Setup.Main;
+import MapGeneration.Building;
+import MapGeneration.Map;
+import MapGeneration.Node;
 
 public class Player extends Movables {
     float xAcc = 2;
@@ -193,6 +196,57 @@ public class Player extends Movables {
 
         x += xSpeed;
         y += ySpeed;
+    }
+
+    void updateCurrentNode(){
+        Node newCurrentNode = currentNode;
+        float newNodeToPlayer = GameMath.pointDistance(x, y, currentNode.x, currentNode.y);
+        for(Node n : currentNode.connected){
+            if(n != null){
+                float nToPlayer = GameMath.pointDistance(x, y, n.x, n.y);
+                if(newNodeToPlayer > nToPlayer){
+                    newCurrentNode = n;
+                    newNodeToPlayer = nToPlayer;
+                }
+            }
+        }
+
+        if(currentNode != newCurrentNode){
+            currentNode = newCurrentNode;
+            if(!currentNode.hasHouse)
+                currentNode.housesAlongParentEdge();
+            
+            for(Node n : currentNode.connected){
+                if(n != currentNode.parent && n != null){
+                    if(n.isEndPoint){
+                        Main.m.generateNodesAtNode(n);
+                        //Main.m.removeUselessNodes();
+                    }
+                    if(!n.hasHouse){
+                        n.housesAlongParentEdge();
+                    }
+                }
+            }
+
+            for(Node n : Main.m.allNodes){
+                if(!n.endOrCornerDone){
+                    //END
+                    if(n.connected.length == 1){
+                        //MAKE A WALL HERE
+                        if(n.connected[Map.NORTH] == n.parent || n.connected[Map.SOUTH] == n.parent){
+                            new Wall(n.x-Node.roadWidth/2, n.y, n.x+Node.roadWidth/2, n.y);
+                        }else if(n.connected[Map.EAST] == n.parent || n.connected[Map.WEST] == n.parent){
+                            new Wall(n.x, n.y-Node.roadWidth/2, n.x, n.y+Node.roadWidth/2);
+                        }
+                        n.endOrCornerDone = true;
+                    }
+                    //CORNER
+                    else if(n.connected.length == 2){
+                        //MAKE A WALL HERE
+                    }
+                }
+            }
+        }
     }
 
     public Weapon getWeapon() {

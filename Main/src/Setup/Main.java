@@ -61,6 +61,11 @@ public class Main extends PApplet {
             //if(n.parent == n.connected[Map.EAST]){
             n.housesAlongParentEdge();
             //}
+            /*for (Node nn : n.connected) {
+                if (nn != n && nn != null) {
+                    nn.housesAlongParentEdge();
+                }
+            }*/
         }
 
         //new Building(-100, -100, width+100, -100, -100, height+100, width+100, height+100,Map.EAST);
@@ -107,20 +112,28 @@ public class Main extends PApplet {
     }
 
     void render() {
-        float translateX = width / 2 - player.middleX();
-        float translateY = height / 2 - player.middleY();
+        if(gameStarted){
+            float translateX = width / 2 - player.middleX();
+            float translateY = height / 2 - player.middleY();
 
-        translate(translateX, translateY);
+            translate(translateX, translateY);
 
-        try {
-            for (int i = 0; i < nearObjects.size(); i++) {
-                GameObject gameObject = nearObjects.get(i);
-                gameObject.draw();
+            try {
+                for (int i = 0; i < nearObjects.size(); i++) {
+                    GameObject gameObject = nearObjects.get(i);
+                    if (gameObject != null &&!gameObject.isDeleted)
+                        gameObject.draw();
+                }
+                m.draw();
+            }catch (Exception e) {
+                e.printStackTrace();
             }
+            if (onWindows && Shaders.shouldDrawShaders()) {
+                Shaders.drawZombieFOVCone();
+            }
+            translate(-translateX, -translateY);
+            UI.drawUI();
 
-            m.draw();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         if (onWindows)
             Shaders.drawZombieFOVCone();
