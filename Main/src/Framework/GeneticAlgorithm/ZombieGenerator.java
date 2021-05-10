@@ -45,7 +45,7 @@ public abstract class ZombieGenerator {
 
         int index = 0;
         Random r = new Random();
-        while (r.nextFloat() > reproductionSpread && index <= 19 && best20[index + 1] != null)
+        while (r.nextFloat() > reproductionSpread && index < 19 && best20[index + 1] != null)
             index++;
 
         Group parent = best20[index];

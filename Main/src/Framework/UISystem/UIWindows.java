@@ -40,22 +40,22 @@ public class UIWindows {
     }
     
     public void step(){
+        pauseScreen.stepWindow();
         startScreen.stepWindow();
         loginScreen.stepWindow();
         savesScreen.stepWindow();
         createUserScreen.stepWindow();
-        pauseScreen.stepWindow();
         deathScreen.stepWindow();
         successScreen.stepWindow();
         errorScreen.stepWindow();
     }
     public void draw(){
+        pauseScreen.drawWindow();
         deathScreen.drawWindow();
         startScreen.drawWindow();
         loginScreen.drawWindow();
         savesScreen.drawWindow();
         createUserScreen.drawWindow();
-        pauseScreen.drawWindow();
         successScreen.drawWindow();
         errorScreen.drawWindow();
     }
@@ -128,6 +128,14 @@ public class UIWindows {
                                     loginScreen.isActive = false;
                                     //Opdater saves listen med de nye gamesave navne
                                     priorSavesScreen = startScreen;
+                                    saves.elements.clear();
+                                    updateSavesList();
+                                    savesScreen.isActive = true;
+                                }else if(priorLoginScreen == deathScreen){
+                                    //Ryk videre til saves skærmen
+                                    loginScreen.isActive = false;
+                                    //Opdater saves listen med de nye gamesave navne
+                                    priorSavesScreen = deathScreen;
                                     saves.elements.clear();
                                     updateSavesList();
                                     savesScreen.isActive = true;
@@ -265,21 +273,7 @@ public class UIWindows {
     private void makePauseScreen(){
         pauseScreen = new Window(Main.main.width/4, Main.main.height/4, Main.main.width/2, (int) (Main.main.height/2), "PAUSESCREEN");
         pauseScreen.elements.add(new TextDisplay("Pause", "Game paused", Main.main.width/4, headlineSize/2+30, headlineSize, pauseScreen, Main.CENTER));
-        pauseScreen.elements.add(new Button("Save", "Save game", (int) (Main.main.width/8), headlineSize+30+verticalSpacer, Main.main.width/4, buttonHeight, pauseScreen){
-            @Override
-            public void reactClickedOn(){
-                Main.saveGame();
-            };
-        });
-        pauseScreen.elements.add(new Button("Login", "Login", (int) (Main.main.width/8), headlineSize+30+2*verticalSpacer+buttonHeight, Main.main.width/4, buttonHeight, pauseScreen){
-            @Override
-            public void reactClickedOn(){
-                pauseScreen.isActive = false;
-                loginScreen.isActive = true;
-                priorLoginScreen = pauseScreen;
-            };
-        });
-        pauseScreen.elements.add(new Button("Return", "Return to game", (int) (Main.main.width/8), headlineSize+30+3*verticalSpacer+2*buttonHeight, Main.main.width/4, buttonHeight, pauseScreen){
+        pauseScreen.elements.add(new Button("Return", "Return to game", (int) (Main.main.width/8), headlineSize+30+verticalSpacer, Main.main.width/4, buttonHeight, pauseScreen){
             @Override
             public void reactClickedOn(){
                 pauseScreen.isActive = false;
@@ -288,22 +282,48 @@ public class UIWindows {
                 Main.timeStop = false;
             };
         });
-
-        pauseScreen.elements.add(new Button("MainMenu","Main Menu",(Main.main.width/8), headlineSize+30+4*verticalSpacer+3*buttonHeight, Main.main.width/4, buttonHeight, pauseScreen){
+        pauseScreen.elements.add(new Button("Save", "Save game", (int) (Main.main.width/8), headlineSize+30+2*verticalSpacer+buttonHeight, Main.main.width/4, buttonHeight, pauseScreen){
+            @Override
+            public void reactClickedOn(){
+                Main.saveGame();
+            };
+        });
+        pauseScreen.elements.add(new Button("Login", "Login", (int) (Main.main.width/8), headlineSize+30+3*verticalSpacer+2*buttonHeight, Main.main.width/4, buttonHeight, pauseScreen){
+            @Override
+            public void reactClickedOn(){
+                pauseScreen.isActive = false;
+                loginScreen.isActive = true;
+                priorLoginScreen = pauseScreen;
+            };
+        });
+        pauseScreen.elements.add(new Button("Saves", "Start from save", (int) (Main.main.width/8), headlineSize+30+4*verticalSpacer+3*buttonHeight, Main.main.width/4, buttonHeight, pauseScreen){
+            @Override
+            public void reactClickedOn(){ 
+                if(Session.loggedIn){
+                    pauseScreen.isActive = false;
+                    priorSavesScreen = pauseScreen;
+                    saves.elements.clear();
+                    updateSavesList();
+                    savesScreen.isActive = true;
+                }else{
+                    errorScreen.getElement("ErrorMessage").description = "Your'e not logged in";
+                    errorScreen.show();
+                }
+            };
+        });
+        pauseScreen.elements.add(new Button("MainMenu","Main Menu",(Main.main.width/8), headlineSize+30+5*verticalSpacer+4*buttonHeight, Main.main.width/4, buttonHeight, pauseScreen){
             @Override
             public void reactClickedOn(){
                 pauseScreen.isActive = false;
                 startScreen.isActive = true;
             }
         });
-
-        pauseScreen.elements.add(new Button("ExitGame","Exit Game",(Main.main.width/8), headlineSize+30+5*verticalSpacer+4*buttonHeight, Main.main.width/4, buttonHeight, pauseScreen){
+        pauseScreen.elements.add(new Button("ExitGame","Exit Game",(Main.main.width/8), headlineSize+30+6*verticalSpacer+5*buttonHeight, Main.main.width/4, buttonHeight, pauseScreen){
             @Override
             public void reactClickedOn(){
                 Main.main.exit();
             }
         });
-
         pauseScreen.isActive = false;
     }    
     private void makeDeathScreen() {
@@ -313,12 +333,16 @@ public class UIWindows {
             @Override
             public void reactClickedOn(){
                 deathScreen.isActive = false;
-                priorSavesScreen = deathScreen;
-                saves.elements.clear();
-                updateSavesList();
-                savesScreen.isActive = true;
-                
-            }
+                if(!Session.loggedIn){
+                    loginScreen.isActive = true;
+                    priorLoginScreen = deathScreen;
+                }else{
+                    priorSavesScreen = deathScreen;
+                    saves.elements.clear();
+                    updateSavesList();
+                    savesScreen.isActive = true;
+                }
+            };
         });
         deathScreen.elements.add(new Button("MainMenu","Main Menu",(Main.main.width/8), headlineSize+30+2*verticalSpacer+buttonHeight, Main.main.width/4, buttonHeight, deathScreen){
             @Override

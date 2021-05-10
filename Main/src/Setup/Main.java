@@ -78,11 +78,6 @@ public class Main extends PApplet {
 
         for (Node n : m.initialNode.connected) {
             n.housesAlongParentEdge();
-            /*for (Node nn : n.connected) {
-                if (nn != n && nn != null) {
-                    nn.housesAlongParentEdge();
-                }
-            }*/
         }
 
         Random r = new Random();
@@ -192,7 +187,7 @@ public class Main extends PApplet {
                     if (gameObject != null &&!gameObject.isDeleted)
                         gameObject.draw();
                 }
-                m.draw();
+                //m.draw();
             }catch (Exception e) {
                 e.printStackTrace();
             }
