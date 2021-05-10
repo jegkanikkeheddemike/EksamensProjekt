@@ -1,7 +1,6 @@
 package Framework;
 
 import Framework.PlayerEffects.PlayerEffect;
-import Framework.UISystem.UIWindows;
 import Setup.Main;
 
 public class UI {
@@ -18,25 +17,21 @@ public class UI {
         
                 
         // #endregion
-        // #region KOORDINATES
-        Main.main.textSize(12);
-        Main.main.fill(255);
-        Main.main.text("x:" + (int) Main.player.x + " y:" + (int) Main.player.y, Main.main.width / 2f,
-                Main.main.height - 105);
-        // #endregion
         // #region WEAPONS
+        Main.main.textSize(20);
         Main.main.fill(255);
         if (!Main.player.cWNumber)
             Main.main.fill(0, 255, 0);
-        Main.main.text(Main.player.cWeapon0.wpnType, Main.main.width / 3f, Main.main.height - 105);
-        Main.main.text(Main.player.cWeapon0.cClip + "/" + Main.player.cWeapon0.clipSize, Main.main.width / 3f,
-                Main.main.height - 115);
+        Main.main.text(Main.player.cWeapon0.wpnType + " " + Main.player.cWeapon0.cClip + "/" + Main.player.cWeapon0.clipSize, 
+            Main.main.width / 3f, Main.main.height - 110
+        );
         Main.main.fill(255);
         if (Main.player.cWNumber)
             Main.main.fill(0, 255, 0);
-        Main.main.text(Main.player.cWeapon1.wpnType, Main.main.width / 3f + 500, Main.main.height - 105);
-        Main.main.text(Main.player.cWeapon1.cClip + "/" + Main.player.cWeapon1.clipSize, Main.main.width / 3f + 500,
-                Main.main.height - 115);
+        
+        String text = Main.player.cWeapon1.wpnType + " " + Main.player.cWeapon1.cClip + "/" + Main.player.cWeapon1.clipSize;
+        Main.main.text(text, 
+        Main.main.width / 1.5f- Main.main.textWidth(text), Main.main.height - 110);
 
         // #endregion
         // #region INVENTORY
@@ -84,24 +79,6 @@ public class UI {
             Main.main.textSize(30);
             Main.main.text("SHADERS ARE DISABLED, USE WINDOWS 10 TO ENABLE SHADERS", 850, 40);
         }
-
-        // #endregion
-        // #region GAME INFO
-        /*
-        Main.main.fill(255);
-        Main.main.textSize(12);
-        Main.main.text("Near Objects " + Main.nearObjects.size(), 10, 20);
-        Main.main.text("All Objects " + Main.allObjects.size(), 10, 40);
-        Main.main.text("Near Zombies " + Shaders.zombies.size(), 10, 60);
-        Main.main.text("Near Walls " + Shaders.walls.size(), 10, 80);
-        Main.main.text("Shader RenderTime: " + (Shaders.renderTime + "       ").substring(0, 4), 10, 100);
-        Main.main.text("Framerate (60): " + (Main.main.frameRate + "       ").substring(0, 4), 10, 120);
-        Main.main.text("Shaders: " + (Shaders.shouldDrawShaders() ? "Enabled"
-                : "Disabled due to low framerate"), 10, 140);
-                */
-        // #endregion
-        // #region Group info
-        //#endregion
 
         if (killedFirst  && !hasShowedM){
             Main.windows.successScreen.getElement("SuccessMessage").description = "You've killed your first enemy\nPress \"m\" to pause and save";

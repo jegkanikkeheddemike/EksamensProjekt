@@ -17,9 +17,17 @@ public abstract class AmmoItem extends Item {
         super.drawInInventory(x, y,boxSize);
         Main.main.textAlign(Main.CENTER);
         Main.main.noStroke();
-        Main.main.textSize((float)Math.ceil(boxSize/80*13));
+        int textSize = 20;
+        String text = itemType + ": "+ amount;
+        Main.main.textSize(textSize);
+
+        while(Main.main.textWidth(text) > boxSize){
+            textSize--;
+            Main.main.textSize(textSize);
+        }
+
         Main.main.fill(255);
-        Main.main.text(itemType + ": "+ amount, x+boxSize/2, y+boxSize/1.15f);
+        Main.main.text(text, x+boxSize/2, y+boxSize/1.15f);
         
     }
 
