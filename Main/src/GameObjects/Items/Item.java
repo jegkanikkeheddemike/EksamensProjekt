@@ -1,6 +1,7 @@
 package GameObjects.Items;
 
 import Framework.GameMath;
+import Framework.GameObject;
 import Framework.Images;
 import Framework.Movables;
 import Framework.PlayerEffects.*;

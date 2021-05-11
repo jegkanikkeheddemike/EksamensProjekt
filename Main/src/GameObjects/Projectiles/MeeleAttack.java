@@ -6,7 +6,7 @@ import GameObjects.Items.Weapons.MeeleWeapon;
 import Setup.Main;
 import Threads.NearThread;
 
-public class MeeleAttack extends Movables {
+public class MeeleAttack extends GameObject {
     float direction;
     float range;
     int timeAlive = maxTime;

@@ -1,11 +1,12 @@
 package GameObjects.Projectiles;
 
 import Framework.GameMath;
+import Framework.GameObject;
 import Framework.Movables;
 import GameObjects.Zombie;
 import Setup.Main;
 
-public class ZombieMeeleAttack extends Movables{
+public class ZombieMeeleAttack extends GameObject{
 
     float direction;
     float range;
