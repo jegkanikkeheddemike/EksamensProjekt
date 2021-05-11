@@ -1,4 +1,4 @@
-package MapGeneration;
+package Framework.MapGeneration;
 
 import java.util.ArrayList;
 import java.util.Arrays;

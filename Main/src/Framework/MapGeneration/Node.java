@@ -1,4 +1,4 @@
-package MapGeneration;
+package Framework.MapGeneration;
 
 import GameObjects.Wall;
 import Setup.Main;

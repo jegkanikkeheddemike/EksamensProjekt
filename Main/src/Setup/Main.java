@@ -13,10 +13,10 @@ import processing.event.MouseEvent;
 import Threads.*;
 import Framework.*;
 import Framework.GeneticAlgorithm.*;
+import Framework.MapGeneration.*;
 import Framework.Networking.*;
 import Framework.UISystem.*;
 import GameObjects.*;
-import MapGeneration.*;
 import S3FileServer.*;
 
 public class Main extends PApplet {

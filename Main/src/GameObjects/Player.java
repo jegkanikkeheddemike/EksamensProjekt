@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import org.apache.log4j.varia.DenyAllFilter;
 
 import Framework.*;
+import Framework.MapGeneration.Map;
+import Framework.MapGeneration.Node;
 import Framework.PlayerEffects.*;
 import GameObjects.Items.Item;
 import GameObjects.Items.AmmoItems.AmmoItem;
 import GameObjects.Items.Weapons.*;
 import Setup.Main;
-import MapGeneration.Map;
-import MapGeneration.Node;
 
 public class Player extends Movables {
     float xAcc = 2;
