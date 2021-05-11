@@ -234,12 +234,10 @@ public class Player extends Movables {
         //Generer hvis nødvendigt nyt map og huse ud fra det nye punkt
         if(currentNode != newCurrentNode){ //Hvis spillerens currentNode skal skiftes
             currentNode = newCurrentNode;
-            
             for(Node n : currentNode.connected){
                 if(n != currentNode.parent && n != null){
                     if(n.isEndPoint){
                         Main.m.generateNodesAtNode(n);
-                        //Main.m.removeUselessNodes();
                     }
                     if(!n.hasHouse){
                         n.housesAlongParentEdge();
