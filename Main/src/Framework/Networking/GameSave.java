@@ -9,8 +9,8 @@ import java.util.LinkedList;
 
 import Framework.GameObject;
 import Framework.GeneticAlgorithm.Group;
+import Framework.MapGeneration.Map;
 import GameObjects.Player;
-import MapGeneration.Map;
 
 public class GameSave implements java.io.Serializable{
     private static final long serialVersionUID = -2943159986346186078L;
