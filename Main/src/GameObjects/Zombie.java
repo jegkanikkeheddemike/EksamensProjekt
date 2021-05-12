@@ -6,7 +6,7 @@ import java.util.Random;
 import Framework.*;
 import Framework.GeneticAlgorithm.Group;
 import Framework.GeneticAlgorithm.ZombieGenerator;
-import GameObjects.Projectiles.ZombieMeeleAttack;
+import GameObjects.Projectiles.ZombieMeleeAttack;
 import GameObjects.Projectiles.ZombieShot;
 import Setup.Main;
 import processing.core.PVector;
@@ -177,7 +177,7 @@ public class Zombie extends Movables {
     void attack() {
         cooldown = maxCooldown;
         if (genes[GENE_IS_RANGED] == 0) {
-            new ZombieMeeleAttack(this, genes[GENE_DAMAGE]);
+            new ZombieMeleeAttack(this, genes[GENE_DAMAGE]);
             // Main.player.reactGetHit(genes[GENE_DAMAGE], "", this);
 
         }

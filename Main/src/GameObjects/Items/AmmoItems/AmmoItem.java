@@ -33,9 +33,7 @@ public abstract class AmmoItem extends Item {
 
     @Override
     public void reactPickedUp() {
-
         Item[] ammoList = Main.player.getItemListOfTypeFromInventory(itemType);
-
         for (Item item : ammoList) {
             AmmoItem ammoItem = (AmmoItem) item;
             if (ammoItem.amount == ammoItem.maxAmount)

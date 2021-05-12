@@ -1,10 +1,10 @@
 package GameObjects.Items.Weapons;
 
 import Framework.Images;
-import GameObjects.Projectiles.MeeleAttack;
+import GameObjects.Projectiles.MeleeAttack;
 import Setup.Main;
 
-public class Machete extends MeeleWeapon {
+public class Machete extends MeleeWeapon {
 
     public Machete(float x, float y) {
         super(x, y, "Machete", 60);
@@ -21,7 +21,7 @@ public class Machete extends MeeleWeapon {
 
     @Override
     public void use() {
-        new MeeleAttack(this, Main.player);
+        new MeleeAttack(this, Main.player);
     }
 
 }

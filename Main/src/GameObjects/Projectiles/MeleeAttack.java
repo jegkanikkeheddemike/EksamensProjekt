@@ -2,11 +2,11 @@ package GameObjects.Projectiles;
 
 import Framework.*;
 import GameObjects.Zombie;
-import GameObjects.Items.Weapons.MeeleWeapon;
+import GameObjects.Items.Weapons.MeleeWeapon;
 import Setup.Main;
 import Threads.NearThread;
 
-public class MeeleAttack extends GameObject {
+public class MeleeAttack extends GameObject {
     float direction;
     float range;
     int timeAlive = maxTime;
@@ -16,15 +16,15 @@ public class MeeleAttack extends GameObject {
 
     private static final int maxTime = 10;
 
-    public MeeleAttack(MeeleWeapon meeleWeapon, Movables parent) {
+    public MeleeAttack(MeleeWeapon meleeWeapon, Movables parent) {
         super(parent.middleX(), parent.middleY(),
-                meeleWeapon.range * (float) Math.sin(-parent.rotation + (float) Math.PI / 2),
-                meeleWeapon.range * (float) Math.cos(-parent.rotation + (float) Math.PI / 2));
+                meleeWeapon.range * (float) Math.sin(-parent.rotation + (float) Math.PI / 2),
+                meleeWeapon.range * (float) Math.cos(-parent.rotation + (float) Math.PI / 2));
         this.parent = parent;
         direction = parent.rotation;
-        this.range = meeleWeapon.range;
-        this.dmg = meeleWeapon.damage;
-        this.wpnType = meeleWeapon.wpnType;
+        this.range = meleeWeapon.range;
+        this.dmg = meleeWeapon.damage;
+        this.wpnType = meleeWeapon.wpnType;
         calculateAttack(parent);
     }
 

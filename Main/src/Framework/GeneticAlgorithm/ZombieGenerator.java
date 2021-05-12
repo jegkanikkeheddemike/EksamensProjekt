@@ -131,7 +131,7 @@ public abstract class ZombieGenerator {
 
                 // float allocatedBudget = group.n[i]*group.budget;
 
-                int amount = (int) Math.floor(group.n[i] * group.budget * group.q[i]);
+                int amount = (int) Math.floor(group.n[i] * group.budget * (1-group.q[i]));
 
                 for (int j = 0; j < amount; j++) {
                     group.zombies.add(zombieFromPreset(i, group.n[i] * group.budget * group.q[i], group));
