@@ -8,6 +8,10 @@ public abstract class DB{
     public static Connection db;
     static String connectionStatus = "Connecting to database...";
     static boolean isConnected = false;
+    static String dataBaseUsername = "budnjatm";
+    static String dataBasePassword = "N7xqaNxm9kabUT1qJOOQ0T_qwXGugjjX";
+    static String url = "jdbc:postgresql://hattie.db.elephantsql.com:5432/budnjatm";
+
     //HUSK!!
     //Resultset executeQuery(String"") bruges til KUN til at hente data
     //void updateQuery(String"") bruges Kun til at opdatere data i databasen 
@@ -21,9 +25,6 @@ public abstract class DB{
             catch (java.lang.ClassNotFoundException e) {
                 System.out.println(e.getMessage());
             }
-            String dataBaseUsername = "budnjatm";
-            String dataBasePassword = "N7xqaNxm9kabUT1qJOOQ0T_qwXGugjjX";
-            String url = "jdbc:postgresql://hattie.db.elephantsql.com:5432/budnjatm";
       
             try {
                 db = DriverManager.getConnection(url, dataBaseUsername, dataBasePassword);

@@ -69,7 +69,7 @@ public class Map implements java.io.Serializable {
         }else{ //if (deltaCoorParents[0] > 0){
             directionIndexes = new int[]{NORTH, SOUTH, WEST};
         }
-        int numberOfNewNodes = 1;//1+rand.nextInt(3);
+        int numberOfNewNodes = 1+rand.nextInt(3);
         //System.out.println("NUMBER OF NEW NODES: "+numberOfNewNodes+"");
         Node[] nodesIntersectionCheck = {null, null, null};
         for(int x = 0; x < numberOfNewNodes; x++){

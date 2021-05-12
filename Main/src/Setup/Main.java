@@ -72,10 +72,7 @@ public class Main extends PApplet {
         // MAKING THE REST OF THE MAP
         m = new Map(3);
         player = new Player(m.initialNode);
-
         m.generateMap();
-        m.removeUselessNodes();
-
         for (Node n : m.initialNode.connected) {
             n.housesAlongParentEdge();
         }
