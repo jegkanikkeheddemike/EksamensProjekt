@@ -123,7 +123,6 @@ public class Player extends Movables {
 
     @Override
     public void step() {
-
         updateAngle();
         updateMove();
         updateUseItems();
@@ -152,7 +151,6 @@ public class Player extends Movables {
 
     void updatePlayerEffects() {
         nomalizeEffects();
-
         for (int i = 0; i < playerEffects.size(); i++) {
             playerEffects.get(i).apply();
         }
@@ -173,7 +171,6 @@ public class Player extends Movables {
         } else {
             cMaxSpeed = 0;
         }
-
         boolean acceleratingX = false, acceleratingY = false;
         if (Main.keyDown('s') || Main.keyDown('S')) {
             ySpeed += yAcc;
@@ -192,24 +189,23 @@ public class Player extends Movables {
             acceleratingX = true;
         }
 
-        if (Math.abs(xSpeed) >= cMaxSpeed)
+        if (Math.abs(xSpeed) >= cMaxSpeed){
             xSpeed = Math.signum(xSpeed) * cMaxSpeed;
-        if (Math.abs(ySpeed) >= cMaxSpeed)
+        }
+        if (Math.abs(ySpeed) >= cMaxSpeed){
             ySpeed = Math.signum(ySpeed) * cMaxSpeed;
-        float totalSpeed = (float)Math.sqrt(Math.pow(xSpeed, 2)+Math.pow(ySpeed, 2));
-        
+        }
+        float totalSpeed = (float)Math.sqrt(Math.pow(xSpeed, 2)+Math.pow(ySpeed, 2));       
         if (totalSpeed > cMaxSpeed){
             xSpeed *= cMaxSpeed/totalSpeed;
             ySpeed *= cMaxSpeed/totalSpeed;
         }
-        
-        
-
-        if (!acceleratingX)
+        if (!acceleratingX){
             xSpeed *= friction;
-        if (!acceleratingY)
+        }
+        if (!acceleratingY){
             ySpeed *= friction;
-
+        }
         runStandardCollisions();
         makeSound();
 
@@ -230,13 +226,11 @@ public class Player extends Movables {
                 }
             }
         }
-
         //Generer hvis nødvendigt nyt map og huse ud fra det nye punkt
         if(currentNode != newCurrentNode){
             currentNode = newCurrentNode;
             if(!currentNode.hasHouse)
                 currentNode.housesAlongParentEdge();
-            
             for(Node n : currentNode.connected){
                 if(n != currentNode.parent && n != null){
                     if(n.isEndPoint){

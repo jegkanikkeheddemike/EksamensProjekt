@@ -77,7 +77,6 @@ public abstract class Movables extends GameObject {
             break;
         }
     }
-
     public GameObject[] getCollisions(float offsetX, float offsetY, String[] hitList) {
         ArrayList<GameObject> collisions = new ArrayList<GameObject>();
 
@@ -137,7 +136,6 @@ public abstract class Movables extends GameObject {
         }
         return collArray;
     }
-
     protected boolean collisionWith(GameObject g, float offsetX, float offsetY) {
 
         // TOPLEFT
