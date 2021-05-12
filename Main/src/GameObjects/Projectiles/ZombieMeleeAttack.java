@@ -6,7 +6,7 @@ import Framework.Movables;
 import GameObjects.Zombie;
 import Setup.Main;
 
-public class ZombieMeeleAttack extends GameObject{
+public class ZombieMeleeAttack extends GameObject{
 
     float direction;
     float range;
@@ -18,7 +18,7 @@ public class ZombieMeeleAttack extends GameObject{
 
     private static final int maxTime = attackTime + 10;
 
-    public ZombieMeeleAttack(Zombie parent, float dmg) {
+    public ZombieMeleeAttack(Zombie parent, float dmg) {
         super(parent.middleX(), parent.middleY(),
                 parent.range * (float) Math.sin(-parent.rotation + (float) Math.PI / 2),
                 parent.range * (float) Math.cos(-parent.rotation + (float) Math.PI / 2));
@@ -53,7 +53,7 @@ public class ZombieMeeleAttack extends GameObject{
         }
 
         if((distToPlayer < distToWall && distToPlayer != -1) || (distToWall == -1 && distToPlayer != -1) ){
-            Main.player.reactGetHit(dmg, "zMeele", parent);
+            Main.player.reactGetHit(dmg, "zMelee", parent);
         }
 
     }

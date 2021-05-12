@@ -1,8 +1,8 @@
 package GameObjects.Items.Weapons;
 
-public abstract class MeeleWeapon extends Weapon {
+public abstract class MeleeWeapon extends Weapon {
 
-    MeeleWeapon(float x, float y, String wpnType, int reloadTime) {
+    MeleeWeapon(float x, float y, String wpnType, int reloadTime) {
         super(x, y, wpnType, reloadTime, false);
         shotCooldown = reloadTime;
     }
